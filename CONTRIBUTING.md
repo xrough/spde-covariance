@@ -1,8 +1,9 @@
 # Contributing
 
 Contributions to the MIT-licensed transport-SPDE covariance toolkit are welcome.
-The current study is a finite-dimensional toy laboratory for identification,
-local covariance estimation and forecast evaluation. It implements established
+The finite-dimensional toy laboratory studies identification, local covariance
+estimation and forecast evaluation. A [fixed infinite-rank transport benchmark](docs/infinite-transport.md)
+adds coherent refinement and projection diagnostics. These implement established
 methods with reproducible synthetic validation; it does not establish a novel
 estimator or infinite-dimensional guarantees. Start with the [API guide](docs/api.md),
 [workflow](docs/workflow.md), and [methods](docs/methods.md). The
@@ -25,6 +26,7 @@ uv run --no-sync python examples/transport_pipeline.py
 uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/contribution-smoke
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/contribution-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/contribution-rq3
+uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/contribution-infinite
 ```
 
 The `reference` extra installs CVXPY/SCS for independent solver checks. Choose a

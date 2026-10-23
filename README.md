@@ -3,14 +3,14 @@
 [![Verification](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml/badge.svg)](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A Python research toolkit using a **four-dimensional toy model** to build
-intuition, validate covariance computations and prepare for infinite-dimensional
-curve dynamics. The current covariance estimators use established methods.
-This is an introductory numerical laboratory, with no new-estimator claim or
-infinite-dimensional statistical guarantee.
+A Python research toolkit for transport-SPDE covariance. A **four-dimensional
+toy laboratory** develops identification, estimation and forecast evaluation;
+a fixed infinite-rank benchmark then separates forcing truncation, curve
+projection and time resolution. Estimators use established methods. No new
+estimator or infinite-dimensional statistical guarantee is claimed.
 
-The longer-term application is futures-curve risk and prediction. Three
-questions organize both the finite studies and their eventual continuation:
+The longer-term application is futures-curve risk and prediction. Three questions
+organize both the finite studies and their continuation:
 
 | Question | Current finite study | Later direction |
 | --- | --- | --- |
@@ -132,7 +132,8 @@ to the constrained optimizer, not statistical error to truth.
   20 paired replications of frozen forecasts on future observations; selected
   windows do not establish an advantage over the fixed-window policy.
 - [Roadmap](docs/research-roadmap.md): preserve the three questions while moving
-  toward coherent truncations of a fixed infinite-dimensional model.
+  toward operator estimation. The [infinite-rank transport protocol](docs/infinite-transport.md)
+  implements coherent truncations of one fixed model, including hidden-mode leakage.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
@@ -146,15 +147,15 @@ quadrature diagnostics; dense computation targets moderate dimensions.
 [Methods](docs/methods.md) · [Verification](docs/verification.md) ·
 [CV evidence](docs/portfolio.md) · [Contributing](CONTRIBUTING.md)
 
-Reproduce the three smoke studies:
+Reproduce the smoke studies:
 
 ```sh
 uv run spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/stage1-smoke
 uv run spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/rq2-smoke
 uv run spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/rq3-smoke
+uv run spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/infinite-smoke
 ```
 
 Study protocols contain the configurations, commands and acceptance criteria.
 Runs preserve source/configuration manifests and machine-readable measurements.
-Code is in `src/spde_covariance/`; tests and analytical controls accompany it.
-Licensed under [MIT](LICENSE).
+Code, tests and analytical controls are licensed under [MIT](LICENSE).

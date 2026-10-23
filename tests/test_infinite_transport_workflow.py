@@ -96,3 +96,27 @@ def test_projected_level_adjustment_has_hidden_mode_term():
     # The full finite-forcing recursion has no hidden coordinates.
     full_trajectory = CurveTrajectory(times, levels, full.basis_id, full.kind)
     assert_allclose(extract_innovations(full_trajectory, full).values, shocks, atol=1e-16)
+
+
+def test_population_leakage_agrees_with_two_mode_scalar_oracle():
+    from spde_covariance.infinite_benchmark import population_audit
+    from spde_covariance.infinite_config import InfiniteTransportConfig
+
+    config = InfiniteTransportConfig(
+        forcing_dimensions=(2,),
+        projection_dimensions=(1,),
+        deltas=(0.2, 0.1),
+        fit_dimensions=(),
+        reference_checks=False,
+    )
+    results = population_audit(config)
+    q1 = PowerLawSource().eigenvalues(2)[1]
+    for row in results["population"]:
+        delta = row["delta"]
+        count = round(1 / delta)
+        factor = q1 * np.expm1(-delta) ** 2 / (2 * delta)
+        terminal = factor * -np.expm1(-2 * (1 - delta))
+        mean = factor * (1 - np.mean(np.exp(-2 * delta * np.arange(count))))
+        assert row["leakage_terminal_hs"] == pytest.approx(terminal, rel=2e-13)
+        assert row["leakage_mean_hs"] == pytest.approx(mean, rel=2e-13)
+    assert all(check["passed"] for check in results["numerical_checks"])

@@ -89,6 +89,9 @@ specified before such a result can be assessed.
 2. **Validate coherent refinement.** Couple approximations to one fixed curve
    model and check projection, tail, quadrature and transport errors separately.
    Keep fixed-interval innovation covariance distinct from source covariance.
+   The [fixed infinite-rank transport benchmark](infinite-transport.md) implements
+   this step with a Laguerre basis, unrenormalized forcing truncations, coupled
+   exact finite trajectories and explicit hidden-mode leakage diagnostics.
 3. **Revisit the same three questions.** Study observation stability, local
    estimation and future risk evaluation as spatial and temporal resolution
    change. New theoretical conclusions require their own assumptions and
