@@ -1,0 +1,121 @@
+[
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "7b3b532889ca6fc99b304b1f84f0317cc3a42a8a3723469d3f3209e4b19960a9",
+    "published_sha256": "7b3b532889ca6fc99b304b1f84f0317cc3a42a8a3723469d3f3209e4b19960a9",
+    "gzip": false
+  },
+  {
+    "source_name": "fit_diagnostics.json",
+    "published_name": "fit_diagnostics.json.gz",
+    "source_sha256": "7f0eaa0ab27b129b5b1dca347d009bc6ae53a6991634a6386959f9d375ae0f01",
+    "published_sha256": "177af1257d14909901ef411e6a35b39fac2bdfe93d99fe9701c5f92d45bb1c3d",
+    "gzip": true
+  },
+  {
+    "source_name": "forecast_scores.png",
+    "published_name": "forecast_scores.png",
+    "source_sha256": "92c8f1fb52250d2dd8314b541d800983a0845c3d0fe985327f5610fd507de208",
+    "published_sha256": "92c8f1fb52250d2dd8314b541d800983a0845c3d0fe985327f5610fd507de208",
+    "gzip": false
+  },
+  {
+    "source_name": "forecasts.json",
+    "published_name": "forecasts.json.gz",
+    "source_sha256": "6e1f10f116b50164c19f129c7609e90b568a9904f77ad3b3c495b98f78ffe76b",
+    "published_sha256": "ae662d045d4d831c02cb85b731172e40e757c38ab6c3e216e4f100697bdec878",
+    "gzip": true
+  },
+  {
+    "source_name": "geometry.json",
+    "published_name": "geometry.json.gz",
+    "source_sha256": "906dc03a6dbcc7a757be95b38b8f895c9b417ce3c88c271229ae25ff81673e2f",
+    "published_sha256": "26b8a06a4e363c68aefa3eb1a51fac8f326681b75fcdac215978d3757b7de526",
+    "gzip": true
+  },
+  {
+    "source_name": "horizon_sensitivity.png",
+    "published_name": "horizon_sensitivity.png",
+    "source_sha256": "e3f13f869173021a50978b3fd68a8e177f6e178959d542ce7e8a858b2c380476",
+    "published_sha256": "e3f13f869173021a50978b3fd68a8e177f6e178959d542ce7e8a858b2c380476",
+    "gzip": false
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "f53c2d34b828108964d3a51972383b90b199e3771a08a5a45381e5b69059a9e0",
+    "published_sha256": "f53c2d34b828108964d3a51972383b90b199e3771a08a5a45381e5b69059a9e0",
+    "gzip": false
+  },
+  {
+    "source_name": "observation_schedule.json",
+    "published_name": "observation_schedule.json.gz",
+    "source_sha256": "25650cfe64928faf8cc348b8d4ef8c1325f5125b16d5375328c1062b2c9f7f09",
+    "published_sha256": "6fbe425ea11a09a3f6bbac22758fb5114ce7479ac71db2400eb701368ce5a90a",
+    "gzip": true
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "47ba9b8d7261c0da7aa1af1452c6aa2acce8376dbb5f63e16a43265db5f2500a",
+    "published_sha256": "55c829aff95d7f57f5c318a3aa905f4e952f76a709c67e6b5a48ce3fde0ab94c",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "65bb196a00cc8e63a65b9e4f8cab1e042abca9df94c52603c0ef36d34550324c",
+    "published_sha256": "2048aac2d8813e6f8a74763a662089b56f1220d1a0419b9a565ea7f27996abc9",
+    "gzip": true
+  },
+  {
+    "source_name": "risk_evaluation.png",
+    "published_name": "risk_evaluation.png",
+    "source_sha256": "6e0d5569ae12b10b24d9daafedeb218340d7cacf188346d874368d9a48c47dca",
+    "published_sha256": "6e0d5569ae12b10b24d9daafedeb218340d7cacf188346d874368d9a48c47dca",
+    "gzip": false
+  },
+  {
+    "source_name": "risks.csv",
+    "published_name": "risks.csv.gz",
+    "source_sha256": "5d4ba265ccdcb19e6f1a6a5db0d91ff26c0ef790dd83ec22f5a81ba9d430f62a",
+    "published_sha256": "6441b15b0585ff88f2a2134c7c639d7bb50866ef72fa5f7f9ab400b1124fc104",
+    "gzip": true
+  },
+  {
+    "source_name": "scores.csv",
+    "published_name": "scores.csv.gz",
+    "source_sha256": "2334e7ee9e487bcd12c2ea20ade7f2e1d0b93b160ccb97e14911c7c8a382c45e",
+    "published_sha256": "36a70c2a43a7c061f0f25dc1800550112fbd93f69604c798f8a7622babd86fe0",
+    "gzip": true
+  },
+  {
+    "source_name": "selection_audit.json",
+    "published_name": "selection_audit.json.gz",
+    "source_sha256": "484cd37990a2e3dfeb42e934505aa214ebccb123563d5b2d2860c6f208392b21",
+    "published_sha256": "82093624bb8689eb3910af8ed22c1375cc1ff48312897ce51e79916b1a06f7ae",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "published_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "gzip": false
+  },
+  {
+    "source_name": "truth_metrics.csv",
+    "published_name": "truth_metrics.csv.gz",
+    "source_sha256": "ba3bc46fdfc06bcef2c1c49d1279bee977638f2939533657eb3ce343ccd4d5d3",
+    "published_sha256": "447e91563bba944a26cd9465d8b4bdae78f3a60e5c5a922b5bff8bd640194cb0",
+    "gzip": true
+  },
+  {
+    "source_name": "validation_scores.csv",
+    "published_name": "validation_scores.csv.gz",
+    "source_sha256": "98582a558367a05d5718c83ba4557e99c31f81854cf10034af26e9af74f47708",
+    "published_sha256": "39ead6c8cb3148320fba1bb8eea197ad1f412a97384f491cb51c8b05e4823317",
+    "gzip": true
+  }
+]

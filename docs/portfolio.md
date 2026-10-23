@@ -54,17 +54,20 @@ truth establishes identification or estimator superiority.
 
 ## RQ2 and RQ3 evidence
 
-The [RQ2 protocol](research-question-2.md) preserves the local-estimation study:
+The [RQ2 protocol](research-question-2.md) and [report](../experiments/results/rq2/report.md)
+preserve the local-estimation study:
 changing covariance, local pair coverage, constrained/projected fitting and
 direct risk estimates. It separates terminal estimation from prediction.
 
 The [RQ3 protocol](research-question-3.md) adds chronological forecast
 evaluation with earlier observed validation, frozen-origin forecasts and
-future observed scores. Its full report is pending computation. Until the
-measured report is available, describe this as a predeclared study; do not
-claim improved forecasting or a winning window policy.
+future observed scores. Its [full report](../experiments/results/rq3/report.md)
+records 20 paired replications, 5,708 unique numerical fits and 4,800 issued
+forecast records. Repeated static forecasts are not distinct fitted matrices.
+Every fit meets the declared numerical checks, but validation selection does not
+demonstrate an advantage over the fixed-window policy on the primary score.
 
-Even after a report is available, a valid description must identify its
+A valid description must identify its
 synthetic model, information set, comparison baseline and replication
 uncertainty. Results need not favor adaptation, and latent-error diagnostics
 must remain distinct from observable forecast scores.

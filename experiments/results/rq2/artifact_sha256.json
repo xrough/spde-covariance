@@ -1,0 +1,86 @@
+[
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "c39b68696bee89f10c573611ebee9cda8574ba42fcbb94381cb1f69245c47958",
+    "published_sha256": "c39b68696bee89f10c573611ebee9cda8574ba42fcbb94381cb1f69245c47958",
+    "gzip": false
+  },
+  {
+    "source_name": "coverage.png",
+    "published_name": "coverage.png",
+    "source_sha256": "b3f1d2c7845230a4236b1e0e9ce0b8bad56c59f28959f3e4a63d9b7be358d164",
+    "published_sha256": "b3f1d2c7845230a4236b1e0e9ce0b8bad56c59f28959f3e4a63d9b7be358d164",
+    "gzip": false
+  },
+  {
+    "source_name": "estimates.json",
+    "published_name": "estimates.json.gz",
+    "source_sha256": "d9552e73bcb4fa78c419de77a75fff3010b66bda814f98ab5687443d38cb183a",
+    "published_sha256": "8d551eb1aa35bf4bc90a38f37a00eabf4a6b598ae6a9c0b8c89e32895af7adbb",
+    "gzip": true
+  },
+  {
+    "source_name": "geometry.json",
+    "published_name": "geometry.json.gz",
+    "source_sha256": "00c9108754970866a820c8520dd7308bafb1e9fb7ef121ded041f6f30e38decc",
+    "published_sha256": "d97fff5c0e6c35da606a3ded3f240de7813bad9a29458841866d0e6258e79058",
+    "gzip": true
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "836fbb24aa069b83a60d97a95a7e94d91320e5cf3cd90cfce8c47d388fd0d900",
+    "published_sha256": "836fbb24aa069b83a60d97a95a7e94d91320e5cf3cd90cfce8c47d388fd0d900",
+    "gzip": false
+  },
+  {
+    "source_name": "replications.csv",
+    "published_name": "replications.csv.gz",
+    "source_sha256": "ca193f52b9d2c5f4fdb2454aa88f7987686fa36c2e5c998c0bb6d12188642236",
+    "published_sha256": "fba22195e5e874a002e07a7587ace776c1149a03420927341cb71e2474e6f751",
+    "gzip": true
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "1efb3ff63bc3a85a6056370433a251463a0a1fed8a360ed86ae7deaa79f61a10",
+    "published_sha256": "1efb3ff63bc3a85a6056370433a251463a0a1fed8a360ed86ae7deaa79f61a10",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "8db1a0a373e998af896438ad8f0aca4b6c90d930aa469069247b40f298c63261",
+    "published_sha256": "6e46dc3dd67f8626f8c5f54279ead14d8a6f00b5cc8e3d3dd5447cda4b88d3c1",
+    "gzip": true
+  },
+  {
+    "source_name": "risk_comparison.png",
+    "published_name": "risk_comparison.png",
+    "source_sha256": "12d08ea6294c0de26080f4ce9866a247db29585cc90dccffec477b2dccdc5245",
+    "published_sha256": "12d08ea6294c0de26080f4ce9866a247db29585cc90dccffec477b2dccdc5245",
+    "gzip": false
+  },
+  {
+    "source_name": "risks.csv",
+    "published_name": "risks.csv.gz",
+    "source_sha256": "c52539247a1e966e5c1278c4ce1f24c90e516d468aef6db3af0ff7bc9f8a5ecd",
+    "published_sha256": "c98e3fb560c748fec117be916a50a71a49c8e39b40b23d05405afeba6f7584db",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "published_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "gzip": false
+  },
+  {
+    "source_name": "window_error.png",
+    "published_name": "window_error.png",
+    "source_sha256": "a6f1c52246accad5a7a58269fc597ce0628307e425b4bf749074946111c034df",
+    "published_sha256": "a6f1c52246accad5a7a58269fc597ce0628307e425b4bf749074946111c034df",
+    "gzip": false
+  }
+]

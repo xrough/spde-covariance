@@ -10,6 +10,10 @@ older covariance regimes. This protocol studies that tradeoff in a fixed
 four-dimensional space. It does not claim a new general identification theorem
 or an optimal window-selection rule.
 
+The [completed 20-replication report](../experiments/results/rq2/report.md)
+retains all declared comparisons, figures and source provenance. Row-level
+measurements and fitted matrices are included as gzip archives with checksums.
+
 ## Mathematical problem
 
 In the declared orthonormal curve basis, independently across dates,

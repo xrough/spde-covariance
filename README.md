@@ -125,12 +125,12 @@ to the constrained optimizer, not statistical error to truth.
 
 ## Current studies and next steps
 
-- [RQ2 protocol](docs/research-question-2.md): current covariance and exposure
-  risk under changing coverage and covariance, using directly sampled Gaussian
-  innovations to isolate estimation.
-- [RQ3 protocol](docs/research-question-3.md): frozen-origin forecasts scored
-  on future observed innovations. The full report is **pending computation**;
-  no forecasting winner or market prediction result is claimed.
+- [RQ2 protocol](docs/research-question-2.md) and [report](experiments/results/rq2/report.md):
+  current covariance and risk under changing coverage, with directly sampled
+  Gaussian innovations to isolate estimation.
+- [RQ3 protocol](docs/research-question-3.md) and [report](experiments/results/rq3/report.md):
+  20 paired replications of frozen forecasts on future observations; selected
+  windows do not establish an advantage over the fixed-window policy.
 - [Roadmap](docs/research-roadmap.md): preserve the three questions while moving
   toward coherent truncations of a fixed infinite-dimensional model.
 

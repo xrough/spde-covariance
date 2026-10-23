@@ -43,8 +43,10 @@ or an optimal window rule.
 **RQ3: subsequent observations.** The [RQ3 protocol](research-question-3.md)
 holds each matrix forecast fixed over a future block. Historical validation
 selects window counts; future corrected outer products supply observable
-scores. The full report is pending computation. This closes a first finite
-cycle without claiming a new covariance dynamics model or market forecasts.
+scores. The [full report](../experiments/results/rq3/report.md) records 20 paired
+replications, including no demonstrated advantage from validation-selected
+windows over the fixed local policy. This closes a first finite cycle without
+claiming a new covariance dynamics model or market forecasts.
 
 The distinction between source covariance $C$, finite-interval innovation
 covariance $V_\Delta$, and nonunique Brownian loading $L$ persists throughout.
@@ -81,9 +83,9 @@ specified before such a result can be assessed.
 
 ## Ordered continuation and evidence gates
 
-1. **Complete the finite loop.** Preserve the existing RQ1/RQ2 controls, execute
-   the predeclared RQ3 study and report paired outcomes, including failures and
-   non-improvements.
+1. **Finite loop completed.** Preserve the existing RQ1/RQ2 controls and the
+   predeclared RQ3 study as regression examples. Reports retain paired outcomes,
+   including unavailable risks and non-improvements.
 2. **Validate coherent refinement.** Couple approximations to one fixed curve
    model and check projection, tail, quadrature and transport errors separately.
    Keep fixed-interval innovation covariance distinct from source covariance.

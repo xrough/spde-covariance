@@ -1,6 +1,6 @@
 # Software verification
 
-The automated checks on Python 3.13 cover
+The combined suite passes 254 tests on Python 3.13. These checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
 vectorization, PSD/trace feasibility, numerical certificates, CVXPY/SCS reference
@@ -58,6 +58,15 @@ separately; neither a small observed score nor a numerical certificate proves
 recovery in unobserved directions. There is no acceptance condition requiring a
 particular forecast rule to win, and MCSE is not a confidence interval for an
 unknown market covariance.
+
+The clean wheel also passed the transport example and a reduced RQ3 run outside
+the source checkout, using only its declared core dependencies. Optional convex
+references are checked separately in the reference-enabled test environment.
+The [full RQ2](../experiments/results/rq2/report.md) and
+[full RQ3](../experiments/results/rq3/report.md) reports record 20 paired
+replications each from clean source revision
+`0bf5ed6f15d0e8690c82b0dbdca2c1ebe412af1e`. Their numerical-source hashes are
+retained alongside complete measurements, with large artifacts gzip compressed.
 
 CI runs the numerical checks, example, notebook, all three seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and

@@ -9,9 +9,23 @@ estimates current risk. RQ3 evaluates estimates on later data. It is a controlle
 forecast-evaluation exercise using established estimators, not a new forecasting
 model or a market prediction claim.
 
-**Status:** the protocol is predeclared; the full checked-in report is pending
-computation. A measured ranking will be reported with replication uncertainty,
-including outcomes where an adaptive choice does not improve on a fixed policy.
+**Status:** completed with 20 paired replications. The [full report](../experiments/results/rq3/report.md)
+retains the predeclared comparisons, three figures, raw measurements and source
+provenance. All 5,708 unique fits and 4,800 issued forecast records satisfy the
+numerical checks; four convex references have maximum matrix discrepancy
+3.84e-8. Numerical accuracy is separate from forecasting accuracy.
+
+The measured outcomes are mixed in the intended way. For dense observations
+under rotating covariance, static minus fixed-local observed score is
+0.01691 ± 0.00166 MCSE, favouring refitting. Selected minus fixed-local is
+0.000583 ± 0.000473, with no demonstrated benefit from validation selection.
+Selected-minus-fixed mean scores are positive in all 20 scenario/design cells;
+many are small relative to their paired MCSE. These finite comparisons do not
+establish that a fixed window is universally optimal.
+
+Future exposure availability matters independently: the joint-every-64 design
+can score cross-pair risk on only one of the 64 test dates per replication.
+The report distinguishes those operational scores from latent simulation errors.
 
 ## Target and observation model
 
@@ -209,8 +223,8 @@ turn missing information into identified risk.
 
 ## Reproduce and continue
 
-The planned configuration names are `experiments/configs/rq3.toml` and
-`experiments/configs/rq3-smoke.toml`. Once the integrated runner is available:
+The full and smoke configurations are `experiments/configs/rq3.toml` and
+`experiments/configs/rq3-smoke.toml`:
 
 ```sh
 uv sync --locked --extra reference
@@ -219,7 +233,8 @@ uv run spde-covariance benchmark-rq3 experiments/configs/rq3.toml --output exper
 ```
 
 Use a fresh output directory for each run and retain its report, figures,
-replication measurements and manifest together. The full checked-in report is
-pending computation. [The roadmap](research-roadmap.md) describes how these
+replication measurements and manifest together. The [checked-in report](../experiments/results/rq3/report.md)
+includes gzip-compressed row-level artifacts and bundle checksums.
+[The roadmap](research-roadmap.md) describes how these
 finite experiments precede later work on coherent spatial refinement, richer
 volatility dynamics and empirical futures curves.
