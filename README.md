@@ -174,8 +174,9 @@ F(B)=\frac{1}{2}\sum_i w_i
 \qquad B\succeq0,\quad \mathrm{tr}(B)\le R.
 ```
 
-Weights are normalized; the defaults use a uniform trailing window. The ridge
-strength and trace cap are explicit. Accelerated projected gradient solves the
+Weights are normalized. By default, all supplied observations receive equal
+weight; a trailing window can be specified. The ridge strength and trace cap are
+explicit. Accelerated projected gradient solves the
 constrained problem. CVXPY/SCS provides an optional independent reference for
 small cases. A fit that fails its requested numerical budget raises an explicit
 convergence error with diagnostics.
@@ -263,7 +264,8 @@ integration:
 | 1/52 | 0.016060 | 1.11e-15 |
 | 1/252 | 0.003498 | 6.93e-16 |
 
-These are measurements for the declared constant-C analytical model. The
+These bridge measurements use the default exponential basis and constant source
+covariance `C = diag(0.4, 0.3, 0.2, 0.1)`, as in the quick-start example. The
 [manifest](experiments/results/stage1/manifest.json) records the actual source
 revision, environment and solver settings. Performance measurements are local
 single-run diagnostics, not hardware-independent speed claims.
