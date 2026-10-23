@@ -94,7 +94,7 @@ da_t=(Aa_t+b_t)dt+LdB_t,
 \qquad C=LL^{\top}.
 ```
 
-Here $C$ is a $J$-by-$J$ instantaneous source covariance in this basis. The simulator
+Here $C$ is the instantaneous source covariance in these $J$ orthonormal coordinates. The simulator
 accepts $C$. A loading $L$ is nonunique: multiplying it on the right by an orthogonal
 matrix preserves $C$. The reference example uses a full-rank $C$; estimation does
 not impose a fixed factor rank.
