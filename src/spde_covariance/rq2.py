@@ -475,6 +475,7 @@ def _run_rq2(config, output, root):
                             trace_cap=config.trace_cap,
                             solver_tolerance=1e-10,
                             max_iterations=100_000,
+                            numerical_error_budget=config.numerical_error_budget,
                         )
                         references.append(
                             {
@@ -486,6 +487,8 @@ def _run_rq2(config, output, root):
                                 "reference_converged": reference.converged,
                                 "reference_status": reference.status,
                                 "reference_covariance_error_bound": reference.covariance_error_bound,
+                                "reference_refinements": reference.reference_refinements,
+                                "reference_solver_tolerance": reference.reference_solver_tolerance,
                             }
                         )
         print(f"RQ2 replication {replication + 1}/{config.replications} complete", flush=True)

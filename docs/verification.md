@@ -1,6 +1,6 @@
 # Software verification
 
-The combined suite passes 254 tests on Python 3.13. These checks cover
+The combined suite passes 271 tests on Python 3.13. These checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
 vectorization, PSD/trace feasibility, numerical certificates, CVXPY/SCS reference
@@ -50,7 +50,11 @@ The [RQ2 protocol](research-question-2.md) records the new statistical experimen
 Its smoke study also passed from an installed wheel outside the source checkout,
 using the locked environment's NumPy/SciPy/Matplotlib dependencies. Small
 CVXPY/SCS comparisons must converge and meet the numerical-error budget as well
-as agree with the implementation.
+as agree with the implementation. A reference solve that meets SCS's stopping
+criterion can still miss the covariance-distance budget. The independent
+reference wrapper checks that certificate after feasibility projection and, if
+needed, retries SCS at tighter tolerances; it retains failure if the budget is
+still unmet. Regression tests cover both refinement and exhausted retries.
 
 The [RQ3 protocol](research-question-3.md) fixes validation and test blocks before
 simulation. Future observed scores and latent simulation errors are reported
@@ -67,6 +71,12 @@ The [full RQ2](../experiments/results/rq2/report.md) and
 replications each from clean source revision
 `0bf5ed6f15d0e8690c82b0dbdca2c1ebe412af1e`. Their numerical-source hashes are
 retained alongside complete measurements, with large artifacts gzip compressed.
+
+Publish a completed, accepted run into a new evidence directory with
+`python scripts/publish_benchmark_evidence.py SOURCE OUTPUT`. The publisher
+checks the manifest against its recorded Git revision, preserves that provenance,
+and writes compressed artifacts with original and published checksums. It
+refuses to overwrite a destination or publish dirty-source or failed runs.
 
 CI runs the numerical checks, example, notebook, all three seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and

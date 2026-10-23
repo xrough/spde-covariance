@@ -649,6 +649,7 @@ def _run(config, output, root):
                             trace_cap=config.trace_cap,
                             solver_tolerance=1e-10,
                             max_iterations=100_000,
+                            numerical_error_budget=config.numerical_error_budget,
                         )
                         references.append(
                             {
@@ -661,6 +662,8 @@ def _run(config, output, root):
                                 "objective_discrepancy": abs(reference.objective - own.objective),
                                 "reference_converged": reference.converged,
                                 "reference_covariance_error_bound": reference.covariance_error_bound,
+                                "reference_refinements": reference.reference_refinements,
+                                "reference_solver_tolerance": reference.reference_solver_tolerance,
                             }
                         )
         print(f"RQ3 replication {replication + 1}/{config.replications} complete", flush=True)
