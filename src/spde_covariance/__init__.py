@@ -1,5 +1,6 @@
 """Transport-SPDE innovation covariance in orthonormal Hilbert coordinates."""
 
+from .laguerre import LaguerreTransport, PowerLawSource
 from .trajectories import CurveTrajectory, InnovationBatch, extract_innovations, simulate_transport
 from .transport import ExponentialTransport, ProjectedSplineTransport, TransportPropagator
 from .workflow import (
@@ -17,7 +18,9 @@ __all__ = [
     "ExponentialTransport",
     "InnovationBatch",
     "InnovationCovarianceFit",
+    "LaguerreTransport",
     "ObservedInnovationBatch",
+    "PowerLawSource",
     "ProjectedSplineTransport",
     "TransportPropagator",
     "extract_innovations",
