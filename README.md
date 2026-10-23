@@ -18,6 +18,23 @@ Brownian loading **L** is a compatible factor of C. Neither C nor L is fitted by
 the current estimation workflow. Futures-curve calibration and prediction are
 subsequent applications.
 
+## Visualization
+
+![Transport-adjusted innovations and covariance estimation](assets/transport-spde-poster.png)
+
+One simulated transport-SPDE trajectory, its extracted innovations, and the
+running covariance estimate compared with analytical truth. The four-mode model
+uses weekly observations, four Brownian sources and zero additional drift.
+
+<details>
+<summary>Show the animated Matplotlib figure</summary>
+
+![Animated transport-adjusted innovations and covariance estimation](assets/transport-spde-preview.gif)
+
+[Watch or download the full-resolution MP4](assets/transport-spde.mp4).
+
+</details>
+
 ## Quick start
 
 Python 3.13 and [uv](https://docs.astral.sh/uv/) are required for the locked
@@ -272,17 +289,10 @@ single-run diagnostics, not hardware-independent speed claims.
 
 ## Scientific figures and animations
 
-The figures below are ordinary Matplotlib outputs from seeded numerical models.
-The transport figure is a single-path illustration, separate from the Monte
-Carlo benchmark above. It shows a curve and its transport prediction, extracted
-innovations, analytical/estimated covariance matrices, and running error/risk
-measurements. It uses four Brownian sources, zero additional drift, weekly
-steps and full clean coefficient observations.
-
-![Transport-adjusted innovations and covariance estimation](assets/transport-spde-poster.png)
-
-[Transport animation, MP4](assets/transport-spde.mp4) ·
-[GIF version](assets/transport-spde-preview.gif)
+The [transport figure and inline animation](#visualization) at the top of this
+README are ordinary Matplotlib outputs from a seeded model. This is a
+single-path illustration, separate from the Monte Carlo benchmark above, using
+full clean coefficient observations.
 
 The companion Gaussian example shows why separate marginal measurements cannot
 identify a contemporaneous cross-covariance. Correlations +0.8 and -0.8 give the
