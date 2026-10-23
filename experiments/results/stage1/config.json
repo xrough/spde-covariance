@@ -1,0 +1,29 @@
+{
+  "name": "stage1",
+  "seed": 20261023,
+  "replications": 20,
+  "train": 256,
+  "validation": 128,
+  "evaluation": 128,
+  "delta": 0.019230769230769232,
+  "trace_cap": 2.0,
+  "noise_variance": 0.001,
+  "numerical_error_budget": 0.0001,
+  "relative_candidates": [
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "shrinkage_candidates": [
+    0.0,
+    0.1,
+    0.5
+  ],
+  "window_candidates": [
+    128,
+    256
+  ],
+  "rank_rtol": 1e-10,
+  "reference_checks": true,
+  "stress_smoke": false
+}

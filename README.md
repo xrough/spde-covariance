@@ -13,11 +13,23 @@ Curve trajectory → transport adjustment → observed innovations → covarianc
 
 ## What is estimated?
 
-**The estimator returns the innovation covariance \(V_\Delta\).** The diffusion
-loading \(L\) and instantaneous diffusion covariance \(C=LL^\top\) are simulation
-inputs and reference quantities in the current workflow.
+**The estimator returns the innovation covariance $V_\Delta$.** The instantaneous
+diffusion covariance $C=LL^\top$ is supplied to simulation. The loading $L$ is a
+compatible, nonunique Brownian-loading factor. The current workflow fits neither
+$C$ nor $L$.
 
-In the exact reference model, orthonormal curve coordinates satisfy
+The curve model is a transport SPDE driven by independent Brownian motions:
+
+$$
+df_t(x)=\bigl(\partial_x f_t(x)+\beta_t(x)\bigr)dt
++\sum_{k=1}^{m}\ell_k(x)\,dB_t^k,
+\qquad (S_r f)(x)=f(x+r).
+$$
+
+In the exact reference model, write the curve as
+$f_t(x)=\sum_{j=1}^4 a_{t,j}\phi_j(x)$ in an orthonormal exponential basis.
+The loading functions satisfy $\ell_k(x)=\sum_j\phi_j(x)L_{jk}$.
+The same model in curve coordinates is
 
 $$
 da_t=Aa_t\,dt+b_t\,dt+L\,dB_t,
@@ -33,18 +45,18 @@ V_\Delta=\operatorname{Cov}(\xi_i)
 =\frac1\Delta\int_0^\Delta M_r C M_r^\top\,dr.
 $$
 
-Here \(d_i\) is the supplied integrated mild drift, or zero under an explicit
+Here $d_i$ is the supplied integrated mild drift, or zero under an explicit
 zero-drift assumption. The integral formula assumes constant deterministic
 diffusion covariance on the interval. It is exact for the exponential model;
 the spline backend uses its declared projected recursion.
 
 | Symbol | Meaning | Current workflow |
 | --- | --- | --- |
-| \(a_t\) | Coefficients representing the curve at time \(t\) | Clean trajectory input or simulated state |
-| \(L\) | Loading that turns Brownian forcing into curve shocks | Generates the model; not fitted |
-| \(C=LL^\top\) | Instantaneous diffusion covariance | Supplied to simulation; used in bridge diagnostics |
-| \(\xi_i\) | Normalized, transport-adjusted random innovation | Extracted from a clean trajectory |
-| \(V_\Delta\) | Covariance of \(\xi_i\) at sampling interval \(\Delta\) | **Estimated output** |
+| $a_t$ | Coefficients representing the curve at time $t$ | Clean trajectory input or simulated state |
+| $L$ | Loading that turns Brownian forcing into curve shocks | Generates the model; not fitted |
+| $C=LL^\top$ | Instantaneous diffusion covariance | Supplied to simulation; used in bridge diagnostics |
+| $\xi_i$ | Normalized, transport-adjusted random innovation | Extracted from a clean trajectory |
+| $V_\Delta$ | Covariance of $\xi_i$ at sampling interval $\Delta$ | **Estimated output** |
 
 The main analytical benchmark uses four independent Brownian sources and a
 full-rank four-dimensional source covariance. The resulting curve forcing is
@@ -52,11 +64,11 @@ spatially correlated. A specific spatial mollifier is not implemented. The
 framework allows other PSD source covariances and spline dimensions.
 
 For partial observations, fitting receives
-\(y_i=O_i\xi_i+\varepsilon_i\), the known maps \(O_i\), and the known fresh
+$y_i=O_i\xi_i+\varepsilon_i$, the known maps $O_i$, and the known fresh
 innovation-noise covariances. It does not receive latent covariance truth.
-Recovering \(C\) from \(V_\Delta\) is an additional inverse problem; recovering
-\(L\) also requires a factorization convention, since \(LQ\) gives the same
-covariance for orthogonal \(Q\).
+Recovering $C$ from $V_\Delta$ is an additional inverse problem; recovering
+$L$ also requires a factorization convention, since $LQ$ gives the same
+covariance for orthogonal $Q$.
 
 ## Run the workflow
 
@@ -119,7 +131,7 @@ calibration or predictive performance.
 [![Transport, Brownian forcing and covariance estimation](assets/transport-spde-preview.gif)](assets/transport-spde.mp4)
 
 [Watch the transport-SPDE video](assets/transport-spde.mp4): follow the curve,
-its transport prediction and the running estimate of \(V_\Delta\) in the exact
+its transport prediction and the running estimate of $V_\Delta$ in the exact
 four-dimensional model.
 
 [![Identical observed marginals and different spread risks](assets/observability-preview.gif)](assets/observability.mp4)
@@ -152,8 +164,9 @@ on this particular synthetic truth is modest.
 
 ![Paired estimator comparisons with Monte Carlo standard errors](experiments/results/stage1/comparison.png)
 
-All 160 selected/refitted constrained fits met a `1e-4` numerical covariance-error
-budget. The largest matrix discrepancy against four independent CVXPY/SCS
+All 80 selected/refitted constrained covariance fits and 80 transport-ablation
+fits met a `1e-4` numerical covariance-error budget. The largest matrix
+discrepancy against four independent CVXPY/SCS
 reference fits was `2.5e-9`. Baselines sometimes achieve smaller statistical
 error; the report includes paired differences and separate observed-covariance,
 off-grid kernel and exposure-risk metrics. The weekly transport ablation has
