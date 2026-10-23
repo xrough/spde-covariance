@@ -164,3 +164,7 @@ Independent convex-reference cases recorded: 4.
 `results.json` retains covariance summaries, risk bias/MSE, paired differences, analytic direct-risk controls, observation spectra and target diagnostics, moment bias, reference checks and acceptance. Replication-level CSV files retain the paired statistical measurements. `manifest.json` records the resolved configuration, source hashes, revision, environment and solver settings; provenance must be interpreted with its dirty-source flag.
 
 The protocol is documented in [research-question-2.md](../../../docs/research-question-2.md) in a standard experiments/runs/<run> output directory. This finite-dimensional Gaussian study does not establish confidence-interval coverage, recovery of instantaneous C, robustness to price-level noise or market forecasting performance.
+
+## Compressed evidence
+
+This evidence bundle retains the complete accepted run. CSV files and measurement/audit JSON files are compressed with gzip; artifact links point to those archives. Use `gzip -dc FILE.gz > FILE` to read an uncompressed copy. [Bundle checksums](artifact_sha256.json) record original and published bytes. The unchanged [manifest](manifest.json) retains the originating clean revision and source hashes.

@@ -30,29 +30,29 @@
   {
     "source_name": "manifest.json",
     "published_name": "manifest.json",
-    "source_sha256": "836fbb24aa069b83a60d97a95a7e94d91320e5cf3cd90cfce8c47d388fd0d900",
-    "published_sha256": "836fbb24aa069b83a60d97a95a7e94d91320e5cf3cd90cfce8c47d388fd0d900",
+    "source_sha256": "b059874df84d70fab12d18c5b3ea46b0d6edcba7b098175b1d3971785602baf8",
+    "published_sha256": "b059874df84d70fab12d18c5b3ea46b0d6edcba7b098175b1d3971785602baf8",
     "gzip": false
   },
   {
     "source_name": "replications.csv",
     "published_name": "replications.csv.gz",
-    "source_sha256": "ca193f52b9d2c5f4fdb2454aa88f7987686fa36c2e5c998c0bb6d12188642236",
-    "published_sha256": "fba22195e5e874a002e07a7587ace776c1149a03420927341cb71e2474e6f751",
+    "source_sha256": "ebff834a08a074030275d181f55c0e232be555a0cbd95c038c4fe9bbeddadbdd",
+    "published_sha256": "8cd972980e580fdf0c9766d18ee31e869b9b65bcf8c30da973d95f116d08cb92",
     "gzip": true
   },
   {
     "source_name": "report.md",
     "published_name": "report.md",
     "source_sha256": "1efb3ff63bc3a85a6056370433a251463a0a1fed8a360ed86ae7deaa79f61a10",
-    "published_sha256": "1efb3ff63bc3a85a6056370433a251463a0a1fed8a360ed86ae7deaa79f61a10",
+    "published_sha256": "e3015e738bfd8074b5f207dc08cc8b71f27b10dee0b9c90d833fe3c7fab41bbd",
     "gzip": false
   },
   {
     "source_name": "results.json",
     "published_name": "results.json.gz",
-    "source_sha256": "8db1a0a373e998af896438ad8f0aca4b6c90d930aa469069247b40f298c63261",
-    "published_sha256": "6e46dc3dd67f8626f8c5f54279ead14d8a6f00b5cc8e3d3dd5447cda4b88d3c1",
+    "source_sha256": "14554bd5556dcc8d71680b2df1f5a1521af8d1555a6ceb12f5b2aba4dad6e03e",
+    "published_sha256": "dd974419fb84f4262d6563e82b6c30e819459763d087e4ef6989dd68a4a50f1e",
     "gzip": true
   },
   {

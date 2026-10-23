@@ -397,7 +397,7 @@ Acceptance checks feasibility, optimizer error certificates and the declared ind
 
 ## Artifacts and provenance
 
-This checked-in evidence bundle retains the complete run. Row-level CSV files and large measurement/audit JSON files are compressed with gzip; links below point to those archives. Use `gzip -dc FILE.gz > FILE` to read an uncompressed copy. [Bundle checksums](artifact_sha256.json) record original and published bytes.
+This evidence bundle retains the complete accepted run. CSV files and measurement/audit JSON files are compressed with gzip; artifact links point to those archives. Use `gzip -dc FILE.gz > FILE` to read an uncompressed copy. [Bundle checksums](artifact_sha256.json) record original and published bytes. The unchanged [manifest](manifest.json) retains the originating clean revision and source hashes.
 
 [results.json](results.json.gz) contains the clustered summaries, paired comparisons, selection audit, geometry, model settings and acceptance. [scores.csv](scores.csv.gz) retains future observed scores; [risks.csv](risks.csv.gz) retains operational risk scores and availability; [truth_metrics.csv](truth_metrics.csv.gz) is simulation-only, including nullspace and weak-direction HS errors. [forecasts.json](forecasts.json.gz) stores every issued covariance, its training bounds, basis, issue time and geometry reference. [selection_audit.json](selection_audit.json.gz) retains candidate validation scores. [geometry.json](geometry.json.gz) retains training spectra and target diagnostics; [fit_diagnostics.json](fit_diagnostics.json.gz) retains per-fit certificates; [observation_schedule.json](observation_schedule.json.gz) records the future maps and noise covariances.
 

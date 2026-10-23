@@ -69,7 +69,7 @@ references are checked separately in the reference-enabled test environment.
 The [full RQ2](../experiments/results/rq2/report.md) and
 [full RQ3](../experiments/results/rq3/report.md) reports record 20 paired
 replications each from clean source revision
-`0bf5ed6f15d0e8690c82b0dbdca2c1ebe412af1e`. Their numerical-source hashes are
+`07c7ba0a90c332dcd74340de05f4fc2302d00b98`. Their numerical-source hashes are
 retained alongside complete measurements, with large artifacts gzip compressed.
 
 Publish a completed, accepted run into a new evidence directory with

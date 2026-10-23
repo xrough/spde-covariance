@@ -98,6 +98,10 @@ specified before such a result can be assessed.
    explicit additional modelling. They are not consequences of the current
    clean-innovation experiments.
 
+Nonlinear dynamics and stochastic volatility are optional later extensions. A
+well-posed linear model with genuinely infinite-dimensional forcing already
+raises the operator identification and approximation questions above.
+
 Detailed operational mathematics stays in [methods](methods.md); callable
 interfaces are in the [API](api.md). The [portfolio note](portfolio.md)
 separates delivered numerical evidence from future ambitions. Public notes

@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-23T11:44:55.720654+00:00",
+  "created_utc": "2026-10-23T12:09:39.214737+00:00",
   "config": {
     "name": "rq2",
     "seed": 20261023,
@@ -36,7 +36,7 @@
       "abrupt"
     ]
   },
-  "git_revision": "0bf5ed6f15d0e8690c82b0dbdca2c1ebe412af1e",
+  "git_revision": "07c7ba0a90c332dcd74340de05f4fc2302d00b98",
   "git_dirty": false,
   "source_sha256": {
     "spde_covariance/__init__.py": "4279c002415e781ea9cc7b1ab200ffe42a27fc7db9b173238b9ef002cae40c59",
@@ -44,16 +44,16 @@
     "spde_covariance/benchmark_stress.py": "ef150d31cb5af8dff86999942e88037073c862fab85dd4b353e3f6ebab53cd2d",
     "spde_covariance/benchmarks.py": "b6a4766de4525f537a2584efe246dc0143729f60645e1c9999762f4a5323bc49",
     "spde_covariance/bridge.py": "686269a75f79a83af4ae923b068e7797623a10e58da98337b8781f1ea9b6d80a",
-    "spde_covariance/estimation.py": "b6d0668cf3d3090f1defb00759e7258f0ab29762744391802f6d4733c6a4093e",
+    "spde_covariance/estimation.py": "1b13ece40ad204fe4873d8294b1f470c4cd630af7a4660898d91132fe792e917",
     "spde_covariance/experiments.py": "68ff85b355b041aed06151f8031f0e535239688b27fca0afe6afe19ee333f654",
     "spde_covariance/geometry.py": "76c4de796a49a7dbc4738261dcedda7cb3e4ff2059f68a26432a34c0a25ed8eb",
     "spde_covariance/linalg.py": "eaf4db8ef4cecb13cb0b742858fe187fc30ba0a6659a0ac7567f307473ea32db",
     "spde_covariance/observations.py": "f7ed586b1d89eba00f9733453063868a72146f84a9be6f34fc25bd2c3a528139",
     "spde_covariance/provenance.py": "1ab616f5bb8c6e94cc6c7a20de4cdd29b009da60f82bf251db35e684c82b1e5c",
-    "spde_covariance/rq2.py": "52b97f0d335a8662a6e87cbb461abe9ed19120bcb286a89817a7a8da0326b7d1",
+    "spde_covariance/rq2.py": "e762e3d0a4fcd9263d5c9cae80c245a92a078e64c68c6d62875f8919381c6666",
     "spde_covariance/rq2_design.py": "ccd4e356d86f4333d027f91fc3922450f193ebe2016a2c5f3bec33aa73231168",
     "spde_covariance/rq2_reporting.py": "d29aedd450a9d6dd6f3cca4a7f2e0ed806398c8f362f4d35d55fbc4387a52b3a",
-    "spde_covariance/rq3.py": "c1dfde504e9d8b66eb8fa77a660fd832026fe6d59c459b5ad69239fd83c3a0a2",
+    "spde_covariance/rq3.py": "6fc92ce5d5ac16a25548b5f18e7f56666c0300c4fdca91e0a2b6e4e192f913d8",
     "spde_covariance/rq3_config.py": "b5a5efdb1b99eb8452392d322ea6a3a350c3fb29008227dbf8da2c5a1b8a21a8",
     "spde_covariance/rq3_reporting.py": "e25615295a043e46a2189f5a9bb84cce198a0c5c708b3d8b996cc25628885bc0",
     "spde_covariance/simulation.py": "c9e2d91da8ccd3f62f32017e04ca94b00da4cb850f4acdca7693977390a931b1",
