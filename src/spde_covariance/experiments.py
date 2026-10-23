@@ -7,15 +7,29 @@ from pathlib import Path
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    benchmark = commands.add_parser("benchmark", help="run the paired synthetic benchmark suite")
-    benchmark.add_argument("config", type=Path)
-    benchmark.add_argument("--output", type=Path)
+    for command, help_text in (
+        ("benchmark", "run the paired synthetic benchmark suite"),
+        ("benchmark-rq2", "run local covariance and risk estimation experiments"),
+        ("benchmark-rq3", "evaluate frozen covariance forecasts on future observations"),
+    ):
+        benchmark = commands.add_parser(command, help=help_text)
+        benchmark.add_argument("config", type=Path)
+        benchmark.add_argument("--output", type=Path)
     arguments = parser.parse_args(argv)
     try:
-        from .benchmarks import run_benchmark
+        if arguments.command == "benchmark-rq3":
+            from .rq3 import run_rq3_benchmark
 
-        output = run_benchmark(arguments.config, arguments.output)
-    except (ValueError, FileExistsError, OSError, TypeError) as error:
+            output = run_rq3_benchmark(arguments.config, arguments.output)
+        elif arguments.command == "benchmark-rq2":
+            from .rq2 import run_rq2_benchmark
+
+            output = run_rq2_benchmark(arguments.config, arguments.output)
+        else:
+            from .benchmarks import run_benchmark
+
+            output = run_benchmark(arguments.config, arguments.output)
+    except (ValueError, FileExistsError, OSError, TypeError, RuntimeError) as error:
         parser.exit(2, f"error: {error}\n")
     print(output.resolve())
 

@@ -130,12 +130,18 @@ def test_acceleration_reaches_numerical_budget_on_an_ill_conditioned_problem():
         np.diag(operator) ** 4 / (np.diag(operator) ** 4 + regularization) * np.diag(truth)
     )
     reference = fit_covariance_reference(
-        data, regularization=regularization, trace_cap=1, solver_tolerance=1e-10
+        data,
+        regularization=regularization,
+        trace_cap=1,
+        solver_tolerance=1e-10,
+        numerical_error_budget=budget,
     )
     assert fit.lipschitz / (fit.q_min + regularization) > 9000
     assert fit.converged
     assert fit.solver == "accelerated_projected_gradient"
     assert fit.covariance_error_bound <= budget
+    assert reference.converged
+    assert reference.covariance_error_bound <= budget
     assert np.linalg.norm(fit.covariance - exact) <= fit.covariance_error_bound + 1e-12
     assert np.linalg.norm(fit.covariance - reference.covariance) <= (
         fit.covariance_error_bound + reference.covariance_error_bound + 1e-9
@@ -210,3 +216,101 @@ def test_invalid_parameters_fail(kwargs):
     _, data = example_data()
     with pytest.raises(ValueError):
         fit_covariance(data, **kwargs)
+
+
+def _scalar_reference_problem():
+    # Q=lambda=1e-4, so the exact unconstrained feasible optimizer is B=0.5.
+    return [Observation(0.0, [0.1], [[0.1]], [[0.0]])]
+
+
+@pytest.mark.parametrize("budget", [0, -1, np.nan, np.inf, True, np.array([0.01])])
+def test_reference_rejects_invalid_covariance_budgets(budget):
+    pytest.importorskip("cvxpy")
+    with pytest.raises(ValueError, match="numerical_error_budget"):
+        fit_covariance_reference(
+            _scalar_reference_problem(),
+            regularization=1e-4,
+            trace_cap=2,
+            numerical_error_budget=budget,
+        )
+
+
+def _controlled_scs_iterates(monkeypatch, iterates):
+    cp = pytest.importorskip("cvxpy")
+    original = cp.Problem.solve
+    settings = []
+
+    def solve(problem, **kwargs):
+        value = original(problem, **kwargs)
+        settings.append(kwargs.copy())
+        # Control only the returned SCS iterate, to exercise the independent
+        # post-projection certificate rather than trusting the solver status.
+        problem.variables()[0].value = np.array(
+            [[iterates[min(len(settings) - 1, len(iterates) - 1)]]]
+        )
+        return value
+
+    monkeypatch.setattr(cp.Problem, "solve", solve)
+    return settings
+
+
+def test_reference_budget_refines_scs_until_the_independent_certificate_passes(monkeypatch):
+    import spde_covariance.estimation as estimation
+
+    settings = _controlled_scs_iterates(monkeypatch, [0.500001, 0.5])
+
+    def primary_must_not_be_used(*args, **kwargs):
+        raise AssertionError("an independent reference must not polish with the primary solver")
+
+    monkeypatch.setattr(estimation, "fit_covariance", primary_must_not_be_used)
+    reference = fit_covariance_reference(
+        _scalar_reference_problem(),
+        regularization=1e-4,
+        trace_cap=2,
+        solver_tolerance=1e-8,
+        numerical_error_budget=1e-4,
+    )
+    assert reference.converged
+    assert reference.covariance_error_bound <= 1e-4
+    assert reference.reference_refinements == 1
+    assert reference.reference_solver_tolerance == pytest.approx(1e-10)
+    assert [item["eps"] for item in settings] == pytest.approx([1e-8, 1e-10])
+    assert [item["warm_start"] for item in settings] == [False, True]
+    assert all(item["solver"] == "SCS" for item in settings)
+    np.testing.assert_allclose(reference.covariance, [[0.5]], atol=1e-14)
+
+
+def test_reference_without_budget_preserves_single_solve_gap_criterion(monkeypatch):
+    settings = _controlled_scs_iterates(monkeypatch, [0.500001])
+    reference = fit_covariance_reference(
+        _scalar_reference_problem(),
+        regularization=1e-4,
+        trace_cap=2,
+        solver_tolerance=1e-8,
+    )
+    assert reference.converged  # Original objective-gap target is met.
+    assert reference.covariance_error_bound > 1e-4  # A covariance budget is stricter.
+    assert reference.reference_refinements == 0
+    assert reference.reference_solver_tolerance == 1e-8
+    assert len(settings) == 1
+
+
+def test_reference_refinement_is_bounded_and_retains_best_feasible_failure(monkeypatch):
+    settings = _controlled_scs_iterates(monkeypatch, [0.500001, 0.500002, 0.500003])
+    reference = fit_covariance_reference(
+        _scalar_reference_problem(),
+        regularization=1e-4,
+        trace_cap=2,
+        solver_tolerance=1e-8,
+        numerical_error_budget=1e-4,
+    )
+    assert not reference.converged
+    assert reference.covariance_error_bound > 1e-4
+    assert reference.reference_refinements == 2
+    assert len(settings) == 3
+    assert [item["eps"] for item in settings] == pytest.approx([1e-8, 1e-10, 1e-12])
+    # Later unconverged iterates must not replace a better certified-gap iterate.
+    np.testing.assert_allclose(reference.covariance, [[0.500001]], atol=1e-14)
+    assert reference.reference_solver_tolerance == 1e-8
+    assert reference.min_eigenvalue >= 0
+    assert reference.trace <= 2

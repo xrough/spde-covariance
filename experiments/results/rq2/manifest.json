@@ -1,0 +1,94 @@
+{
+  "created_utc": "2026-10-23T12:09:39.214737+00:00",
+  "config": {
+    "name": "rq2",
+    "seed": 20261023,
+    "replications": 20,
+    "intervals": 512,
+    "delta": 0.019230769230769232,
+    "windows": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "endpoints": [
+      256,
+      272,
+      304,
+      512
+    ],
+    "trace_cap": 2.0,
+    "noise_variance": 0.001,
+    "relative_regularization": 0.001,
+    "sensitivity_relatives": [
+      0.0001,
+      0.01
+    ],
+    "sensitivity_window": 64,
+    "numerical_error_budget": 0.0001,
+    "rank_rtol": 1e-10,
+    "reference_checks": true,
+    "scenarios": [
+      "constant",
+      "scalar",
+      "rotating",
+      "abrupt"
+    ]
+  },
+  "git_revision": "07c7ba0a90c332dcd74340de05f4fc2302d00b98",
+  "git_dirty": false,
+  "source_sha256": {
+    "spde_covariance/__init__.py": "4279c002415e781ea9cc7b1ab200ffe42a27fc7db9b173238b9ef002cae40c59",
+    "spde_covariance/baselines.py": "227470f9dc2630140769a088ecc5d12edda2a40da1c52c8802a02890c6d1b8dc",
+    "spde_covariance/benchmark_stress.py": "ef150d31cb5af8dff86999942e88037073c862fab85dd4b353e3f6ebab53cd2d",
+    "spde_covariance/benchmarks.py": "b6a4766de4525f537a2584efe246dc0143729f60645e1c9999762f4a5323bc49",
+    "spde_covariance/bridge.py": "686269a75f79a83af4ae923b068e7797623a10e58da98337b8781f1ea9b6d80a",
+    "spde_covariance/estimation.py": "1b13ece40ad204fe4873d8294b1f470c4cd630af7a4660898d91132fe792e917",
+    "spde_covariance/experiments.py": "68ff85b355b041aed06151f8031f0e535239688b27fca0afe6afe19ee333f654",
+    "spde_covariance/geometry.py": "76c4de796a49a7dbc4738261dcedda7cb3e4ff2059f68a26432a34c0a25ed8eb",
+    "spde_covariance/linalg.py": "eaf4db8ef4cecb13cb0b742858fe187fc30ba0a6659a0ac7567f307473ea32db",
+    "spde_covariance/observations.py": "f7ed586b1d89eba00f9733453063868a72146f84a9be6f34fc25bd2c3a528139",
+    "spde_covariance/provenance.py": "1ab616f5bb8c6e94cc6c7a20de4cdd29b009da60f82bf251db35e684c82b1e5c",
+    "spde_covariance/rq2.py": "e762e3d0a4fcd9263d5c9cae80c245a92a078e64c68c6d62875f8919381c6666",
+    "spde_covariance/rq2_design.py": "ccd4e356d86f4333d027f91fc3922450f193ebe2016a2c5f3bec33aa73231168",
+    "spde_covariance/rq2_reporting.py": "d29aedd450a9d6dd6f3cca4a7f2e0ed806398c8f362f4d35d55fbc4387a52b3a",
+    "spde_covariance/rq3.py": "6fc92ce5d5ac16a25548b5f18e7f56666c0300c4fdca91e0a2b6e4e192f913d8",
+    "spde_covariance/rq3_config.py": "b5a5efdb1b99eb8452392d322ea6a3a350c3fb29008227dbf8da2c5a1b8a21a8",
+    "spde_covariance/rq3_reporting.py": "e25615295a043e46a2189f5a9bb84cce198a0c5c708b3d8b996cc25628885bc0",
+    "spde_covariance/simulation.py": "c9e2d91da8ccd3f62f32017e04ca94b00da4cb850f4acdca7693977390a931b1",
+    "spde_covariance/spaces.py": "9d550e79fea9fbbf2d4d5f6ef0dcdccf0ba8726888021a5083a7c6f4cd3bdc15",
+    "spde_covariance/trajectories.py": "68e99ba04dc11bba910a1ad7ac2c23e6b116c61a9d25598c890fa1b39ee2e857",
+    "spde_covariance/transport.py": "b2d49868b677a66320dd2051c210b46000307c0d8b1328a8c9873b64816968de",
+    "spde_covariance/workflow.py": "644650a48a40382f3d6636fd7fae42e2d49bd9c42553b2377c686e8b6dc734f2"
+  },
+  "project_file_sha256": {
+    "uv.lock": "92afd2ab54cc8bae16d07d7150510fea53e05773b87b37e878d7313426d925d7",
+    "pyproject.toml": "295f1fbd74ec2db3e5db5282aa594d7b85d67c55e38a497894f52014da39c070"
+  },
+  "python": "3.13.12 (main, Feb  3 2026, 17:53:27) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-15.0.1-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2",
+    "cvxpy": "1.9.3",
+    "scs": "3.3.1",
+    "spde-covariance": "0.3.0"
+  },
+  "solver": {
+    "name": "accelerated_projected_gradient",
+    "relative_tolerance": 0.0,
+    "absolute_tolerance": 1e-09,
+    "max_iterations": 30000,
+    "numerical_error_budget": 0.0001
+  },
+  "experiment": "RQ2: deterministic time-varying Gaussian innovation covariance",
+  "space": {
+    "metric": "f(0)g(0)+integral exp(x) f' g'",
+    "maturity_unit": "year"
+  },
+  "target": "terminal finite-interval innovation covariance V; no C recovery or forecasting",
+  "fitting_information": "observations, known maps/noise, predeclared windows and ridge only",
+  "pairing": "shared latent innovations and exact dense-noise subsets across designs"
+}

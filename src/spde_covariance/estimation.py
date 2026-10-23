@@ -5,7 +5,8 @@ All matrices use an orthonormal Hilbert-space basis.  The objective is
 Negative eigenvalues of the noise-corrected measurements are retained.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from numbers import Real
 from typing import Sequence
 
 import numpy as np
@@ -25,6 +26,8 @@ class CovarianceEstimate:
     The certificate is an exact-arithmetic convexity bound evaluated in floating
     point, not a computer-assisted interval-arithmetic proof.  ``converged`` is
     true only when that certificate meets the requested tolerance.
+    Reference diagnostics record additional SCS solves and the tolerance of the
+    returned iterate; ``iterations`` includes all attempted reference solves.
     """
 
     covariance: FloatArray
@@ -45,6 +48,8 @@ class CovarianceEstimate:
     solver: str = "accelerated_projected_gradient"
     target: str = "innovation covariance V"
     basis: str = "orthonormal H coordinates"
+    reference_refinements: int = 0
+    reference_solver_tolerance: float | None = None
 
 
 @dataclass(frozen=True)
@@ -280,11 +285,18 @@ def fit_covariance_reference(
     weights: ArrayLike | None = None,
     solver_tolerance: float = 1e-8,
     max_iterations: int = 100_000,
+    numerical_error_budget: float | None = None,
 ) -> CovarianceEstimate:
     """Independent small-problem CVXPY/SCS formulation (optional dependency).
 
     Project the returned solver iterate to feasibility and evaluate the same gap
     certificate. Solver status alone is never treated as a numerical certificate.
+    With ``numerical_error_budget``, require the same certified Frobenius error
+    bound as the primary solver. If needed, independently refine the same SCS
+    problem up to twice, reducing its tolerance by a factor of 100 each time.
+    Return a certified feasible iterate when available, otherwise the iterate
+    with the smallest gap and ``converged=False`` after bounded refinements.
+    Without a budget, retain the original single-solve objective-gap criterion.
     """
     try:
         import cvxpy as cp
@@ -292,6 +304,19 @@ def fit_covariance_reference(
         raise ImportError("Install the 'reference' extra to use CVXPY/SCS") from error
     if not np.isfinite(solver_tolerance) or solver_tolerance <= 0:
         raise ValueError("solver_tolerance must be positive and finite")
+    if (
+        isinstance(max_iterations, (bool, np.bool_))
+        or not isinstance(max_iterations, (int, np.integer))
+        or max_iterations < 1
+    ):
+        raise ValueError("max_iterations must be a positive integer")
+    if numerical_error_budget is not None and (
+        isinstance(numerical_error_budget, (bool, np.bool_))
+        or not isinstance(numerical_error_budget, Real)
+        or not np.isfinite(numerical_error_budget)
+        or numerical_error_budget <= 0
+    ):
+        raise ValueError("numerical_error_budget must be finite and strictly positive")
     data, values, q, hessian, rhs, constant = _problem(
         observations, regularization, trace_cap, weights
     )
@@ -307,41 +332,54 @@ def fit_covariance_reference(
         + regularization * cp.sum_squares(variable) / 2
     )
     problem = cp.Problem(cp.Minimize(loss), [variable >> 0, cp.trace(variable) <= trace_cap])
-    problem.solve(solver="SCS", eps=solver_tolerance, max_iters=max_iterations)
-    if variable.value is None:
-        raise RuntimeError(f"SCS returned no estimate: {problem.status}")
-    matrix = project_psd_trace((variable.value + variable.value.T) / 2, trace_cap)
-    result = _result(
-        matrix,
-        data,
-        values,
-        q,
-        hessian,
-        rhs,
-        constant,
-        regularization,
-        trace_cap,
-        problem.solver_stats.num_iters or 0,
-        False,
-        str(problem.status),
-        "cvxpy_scs",
-    )
-    certified = result.objective_gap_bound <= solver_tolerance * max(1, abs(result.objective))
-    return _result(
-        matrix,
-        data,
-        values,
-        q,
-        hessian,
-        rhs,
-        constant,
-        regularization,
-        trace_cap,
-        result.iterations,
-        certified,
-        str(problem.status),
-        "cvxpy_scs",
-    )
+    best = None
+    total_iterations = 0
+    refinements_performed = 0
+    attempts = 1 if numerical_error_budget is None else 3
+    for refinement in range(attempts):
+        tolerance = float(solver_tolerance * 0.01**refinement)
+        if tolerance == 0:
+            break
+        problem.solve(
+            solver="SCS", eps=tolerance, max_iters=int(max_iterations), warm_start=refinement > 0
+        )
+        refinements_performed = refinement
+        if variable.value is None:
+            raise RuntimeError(f"SCS returned no estimate: {problem.status}")
+        total_iterations += problem.solver_stats.num_iters or 0
+        matrix = project_psd_trace((variable.value + variable.value.T) / 2, trace_cap)
+        result = _result(
+            matrix,
+            data,
+            values,
+            q,
+            hessian,
+            rhs,
+            constant,
+            regularization,
+            trace_cap,
+            total_iterations,
+            False,
+            str(problem.status),
+            "cvxpy_scs",
+        )
+        certified = result.objective_gap_bound <= solver_tolerance * max(1, abs(result.objective))
+        if numerical_error_budget is not None:
+            certified = certified and result.covariance_error_bound <= numerical_error_budget
+        result = replace(
+            result,
+            converged=certified,
+            reference_solver_tolerance=tolerance,
+        )
+        if (
+            best is None
+            or (result.converged and not best.converged)
+            or result.objective_gap_bound < best.objective_gap_bound
+        ):
+            best = result
+        if best.converged:
+            break
+    return replace(best, iterations=total_iterations, reference_refinements=refinements_performed)
 
 
 def estimate_risk(

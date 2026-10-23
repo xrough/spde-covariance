@@ -1,0 +1,45 @@
+{
+  "name": "rq3",
+  "seed": 20261023,
+  "replications": 20,
+  "intervals": 512,
+  "delta": 0.019230769230769232,
+  "windows": [
+    16,
+    32,
+    64,
+    128
+  ],
+  "validation_origins": [
+    128,
+    192
+  ],
+  "test_origins": [
+    256,
+    272,
+    304,
+    448
+  ],
+  "horizon": 16,
+  "static_window": 128,
+  "fixed_window": 128,
+  "trace_cap": 2.0,
+  "noise_variance": 0.001,
+  "relative_regularization": 0.001,
+  "numerical_error_budget": 0.0001,
+  "rank_rtol": 1e-10,
+  "reference_checks": true,
+  "scenarios": [
+    "constant",
+    "scalar",
+    "rotating",
+    "abrupt"
+  ],
+  "designs": [
+    "full",
+    "dense",
+    "split",
+    "joint8",
+    "joint64"
+  ]
+}
