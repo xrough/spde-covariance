@@ -1,0 +1,100 @@
+[
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "45e68f9275e6ec9b29a7b882e1a9fc7cc8bf7ab70ec7e5839748940f53f70e77",
+    "published_sha256": "45e68f9275e6ec9b29a7b882e1a9fc7cc8bf7ab70ec7e5839748940f53f70e77",
+    "gzip": false
+  },
+  {
+    "source_name": "covariance_kernels.png",
+    "published_name": "covariance_kernels.png",
+    "source_sha256": "dd67f7fc53d1973285f52e33451eab28f8db4c329cce8ade520d56f76c7ab1fc",
+    "published_sha256": "dd67f7fc53d1973285f52e33451eab28f8db4c329cce8ade520d56f76c7ab1fc",
+    "gzip": false
+  },
+  {
+    "source_name": "fit_results.json",
+    "published_name": "fit_results.json.gz",
+    "source_sha256": "9c9d37d6fa69f564a22d10edc59259b05e9c15d28f885f22f45d747c6d1ecfeb",
+    "published_sha256": "fbcd52e4c7854ddf2f964d1d38d54b8c5bf452dbad7144c5a3b8256228bfbb5e",
+    "gzip": true
+  },
+  {
+    "source_name": "leakage_risk.png",
+    "published_name": "leakage_risk.png",
+    "source_sha256": "4736b63fb5af828c59df292cc58559fde59ef1255794dd8a7c6b9a084923e12e",
+    "published_sha256": "4736b63fb5af828c59df292cc58559fde59ef1255794dd8a7c6b9a084923e12e",
+    "gzip": false
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "d8e501dfb9f06c5a9666e04916ea6aa734bb94f357b7a77e7b5757eef185eb00",
+    "published_sha256": "d8e501dfb9f06c5a9666e04916ea6aa734bb94f357b7a77e7b5757eef185eb00",
+    "gzip": false
+  },
+  {
+    "source_name": "numerical_checks.json",
+    "published_name": "numerical_checks.json.gz",
+    "source_sha256": "0857762f06078cbad0cb6f66c44cd8d74819a7ae03bf8fb1308b2c5238245b85",
+    "published_sha256": "5e0402a467938b26cc56ce5d2fdc032a474dc284d3deba5671d7c652c94bb59b",
+    "gzip": true
+  },
+  {
+    "source_name": "population.json",
+    "published_name": "population.json.gz",
+    "source_sha256": "3b3252e1216aa1588c792b667c2f16cc2b479fee25af9e62d8254831056ef731",
+    "published_sha256": "863861233eef774609a11424272cebef2ab025c5186bd5babbb19e3f73ac27ad",
+    "gzip": true
+  },
+  {
+    "source_name": "population_covariances.npz",
+    "published_name": "population_covariances.npz",
+    "source_sha256": "cfe1a398cc555d66711e2388da2761404e4a941c20a30caf888b51bd82e3ac71",
+    "published_sha256": "cfe1a398cc555d66711e2388da2761404e4a941c20a30caf888b51bd82e3ac71",
+    "gzip": false
+  },
+  {
+    "source_name": "replications.csv",
+    "published_name": "replications.csv.gz",
+    "source_sha256": "bae47f808027e5f82297a9d4a760bed7fb1853b16899a7a011eebd14ffbef01d",
+    "published_sha256": "d1cd9f449681c2857a1f0552c54a53450c505b34259de75b39c082f80201412c",
+    "gzip": true
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "f5a1081e5889583fd0dbd18aadf9ecdaec3621736b548233e3746c26798fa836",
+    "published_sha256": "9a8fe647760942de13d8e164c3bc4d7fd755c7d58edc19828bcf668657013870",
+    "gzip": false
+  },
+  {
+    "source_name": "resolution_errors.png",
+    "published_name": "resolution_errors.png",
+    "source_sha256": "553a24969ff6e1aace18629fff1eaf584ec628499e2ba1d1526e78e802d7eed6",
+    "published_sha256": "553a24969ff6e1aace18629fff1eaf584ec628499e2ba1d1526e78e802d7eed6",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "4194bff1b33621f6b489de9da272798fa703af86a7e4dd0b34482bd421e215c4",
+    "published_sha256": "b0f61fdf00dfa1671d78cccfd51aae11fb20799960f7c0779e254ca36dec03eb",
+    "gzip": true
+  },
+  {
+    "source_name": "risks.csv",
+    "published_name": "risks.csv.gz",
+    "source_sha256": "6afd8e2416f3b17be817f2b484d8118118a16bb283851cb869bf7639d13b44af",
+    "published_sha256": "b5c7d3f4e60d2e0dc2eb2218ce3fce29ca46e24e21d8adc3fc23ce57a4e3810d",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "published_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "gzip": false
+  }
+]

@@ -14,6 +14,13 @@ checks concern numerical representation. Neither supplies a new estimator or an
 infinite-dimensional statistical guarantee. The [three-question roadmap](research-roadmap.md)
 keeps those current deliverables separate from later curve-dynamics research.
 
+The [fixed infinite-rank transport benchmark](infinite-transport.md) adds one
+specified Hilbert-space model with infinitely many Brownian forcing channels.
+Its Laguerre prefixes are coherent finite-forcing approximations, with explicit
+remainder bounds. It studies covariance representation and hidden-mode effects
+before introducing a statistical operator-recovery claim. The finite model
+and estimation formulas below remain the introductory workflow.
+
 ## 1. Curve transport and the coordinate model
 
 Let $x \geq 0$ denote time to maturity and let $t$ denote calendar time, both

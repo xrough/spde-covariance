@@ -83,6 +83,40 @@ the exact semigroup identity. Rebuild the adapter after changing the underlying
 space. Spatial quadrature, repeated projection, and boundary truncation remain
 separate approximations.
 
+## Fixed infinite-rank transport control
+
+`LaguerreTransport(dimension, *, cache_max_bytes=16 * 1024**2)` implements the
+first `dimension` elements of one orthonormal basis in the weighted Sobolev
+space with `tau=1`. Its finite span is shift invariant, so its transport is
+exact within that span. Orthogonal projection of a larger curve can still
+introduce a hidden-mode term when extracting innovations. The basis family is
+fixed across dimensions; `basis_id` also identifies the particular dimension.
+
+It implements the same transport protocol, evaluation and observation helpers
+as the other backends. Additional methods are:
+
+```python
+model = LaguerreTransport(32)
+source = PowerLawSource(exponent=3.0, trace=1.0)
+C_M = source.finite_matrix(model.dimension)  # no trace renormalization
+V_M = model.innovation_covariance(C_M, 1 / 52)
+K_M = model.cumulative_covariance(C_M, 1.0)
+check = model.covariance_diagnostics(C_M, 1 / 52)
+```
+
+`PowerLawSource.eigenvalues(M)` retains the first `M` weights of the fixed
+infinite sequence. `tail_trace(M)`, `innovation_tail_bound(M, delta)` and
+`state_mse_tail_bound(M, t)` bound omitted forcing. Finite-projection bounds
+are supplied by `projected_tail_bound(J, M, delta)` and
+`operational_tail_bound(J, M, delta, t)`. The latter includes the omitted
+past-state contribution to residuals extracted from projected curves. A bound
+on covariance error and a bound on path mean-square error are different units;
+the benchmark keeps them separate.
+
+The [benchmark protocol](infinite-transport.md) specifies the basis, spectrum,
+coupling, reference integrations and error budgets. These numerical reference
+calculations do not assert statistical recovery of an infinite-rank operator.
+
 ## Trajectories, innovations, and observations
 
 ```python
@@ -324,3 +358,18 @@ references, summaries, three figures and source/environment provenance. Failed
 or interrupted runs retain explicit status diagnostics. See the
 [RQ3 protocol](research-question-3.md). These experiment interfaces do not change
 the core covariance estimator API.
+
+`infinite_benchmark.run_infinite_transport_benchmark(config, output=None)`
+accepts an `infinite_config.InfiniteTransportConfig` or a TOML path:
+
+```sh
+spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output NEW_DIRECTORY
+```
+
+It compares population covariances and coupled trajectories across forcing
+dimension, projection dimension and observation interval. The small smoke run
+tests numerical identities with an intentionally coarse forcing truncation;
+its tail-resolution flags must be read separately from software acceptance.
+Full runs use the predeclared configuration, preserve independent-path Monte
+Carlo uncertainty and record their source/environment manifest. Projected true
+innovations and residuals extracted from projected levels are separate targets.

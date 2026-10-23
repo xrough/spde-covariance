@@ -1,6 +1,6 @@
 # Software verification
 
-The combined suite passes 271 tests on Python 3.13. These checks cover
+The combined suite passes 329 tests on Python 3.13. Its checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
 vectorization, PSD/trace feasibility, numerical certificates, CVXPY/SCS reference
@@ -32,6 +32,7 @@ uv run --no-sync python scripts/check_notebook.py
 uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/verification
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/verification-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/verification-rq3
+uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/verification-infinite
 ```
 
 The end-to-end example estimates V_delta from 1,024 weekly innovations. Its
@@ -78,7 +79,26 @@ checks the manifest against its recorded Git revision, preserves that provenance
 and writes compressed artifacts with original and published checksums. It
 refuses to overwrite a destination or publish dirty-source or failed runs.
 
-CI runs the numerical checks, example, notebook, all three seeded smoke suites
+The [infinite-rank transport benchmark](infinite-transport.md) adds nested
+Laguerre coordinates, exact shift identities, elementary two-mode covariance
+integration, positive quadrature versus independently scaled block
+exponentials, forcing-band coupling and projected-level leakage controls.
+Numerical integration discrepancies are floating-point cross-checks. Analytic
+forcing-tail bounds and optimization certificates are separate quantities;
+none bounds sampling error to the infinite-dimensional covariance estimator.
+The smoke configuration intentionally leaves some tail-resolution flags false.
+Software acceptance checks the identities, feasibility and declared numerical
+tolerances; the full study must additionally resolve its final reference tails.
+
+The [recorded full transport study](../experiments/results/infinite-transport/report.md)
+passes both checks from clean source `3f573c746d720aceda8861a4655cb1f7d27ed2ef`.
+Its 240 constrained fits converge within budget; the two independent convex
+comparisons agree below 1.8e-15 in matrix HS norm. A clean wheel also passed the
+transport example and a reduced coupled benchmark outside the checkout, using
+only declared core dependencies. The wheel's Python sources match the recorded
+numerical implementation.
+
+CI runs the numerical checks, example, notebook, all four seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and
 video encoding run separately. Selected full-study evidence records its source
 revision and environment; numerical reports must be interpreted with that
