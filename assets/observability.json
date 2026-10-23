@@ -1,0 +1,65 @@
+{
+  "title": "What the observations cannot tell you",
+  "kind": "scientific animation; Gaussian innovation geometry companion diagnostic",
+  "seed": 1729,
+  "duration_seconds": 12.0,
+  "fps": 24,
+  "frame_count": 288,
+  "width": 1280,
+  "height": 720,
+  "codec": "H.264 / libx264",
+  "pixel_format": "yuv420p",
+  "faststart": true,
+  "models": {
+    "V_plus": [
+      [
+        1.0,
+        0.8
+      ],
+      [
+        0.8,
+        1.0
+      ]
+    ],
+    "V_minus": [
+      [
+        1.0,
+        -0.8
+      ],
+      [
+        -0.8,
+        1.0
+      ]
+    ]
+  },
+  "marginals": "Each coordinate is N(0,1) under both centered Gaussian models.",
+  "initial_observation_design": "One coordinate is measured per fresh independent draw; no paired values or within-draw cross-products are observed.",
+  "scan_construction": "Independent scalar N(0,1) draws, generated separately from all latent joint clouds; exactly one scan axis and one marginal marker visible per draw.",
+  "latent_clouds": "Illustrative hidden joint truth, explicitly labelled; not the data available to the unpaired design.",
+  "final_design_change_at_seconds": 9.120000000000001,
+  "final_design": "Both coordinates observed jointly on each new draw; paired samples reveal covariance orientation while marginal laws remain unchanged.",
+  "spread_exposure": [
+    1.0,
+    -1.0
+  ],
+  "spread_variance_formula": "a.T @ V @ a = 2 - 2*Cov(X1,X2), a=(1,-1)",
+  "spread_variances": [
+    0.4,
+    3.6
+  ],
+  "risk_variance_ratio": 9,
+  "scope": "Toy centered Gaussian innovation experiment, not an SPDE trajectory simulation, curve calibration, forecasting result, or novelty claim.",
+  "numpy_version": "2.5.4",
+  "matplotlib_version": "3.11.2",
+  "files": {
+    "video": "observability.mp4",
+    "preview": "observability-preview.gif",
+    "poster": "observability-poster.png"
+  },
+  "file_sizes_bytes": {
+    "observability.mp4": 310818,
+    "observability-preview.gif": 559587,
+    "observability-poster.png": 140414
+  },
+  "reproduction": "python examples/render_observability_video.py --seed 1729"
+}

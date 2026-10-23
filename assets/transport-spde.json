@@ -1,0 +1,145 @@
+{
+  "illustration": "exact finite-model transport SPDE; deterministic source, four Brownian channels",
+  "configuration": {
+    "seed": 1729,
+    "fps": 16,
+    "duration": 20,
+    "width": 1280,
+    "height": 720,
+    "delta_years": 0.019230769230769232,
+    "minimum_samples": 16,
+    "fit_every": 4,
+    "regularization": 0.001,
+    "trace_cap": 2.0,
+    "numerical_error_budget": 1e-06
+  },
+  "seed": 1729,
+  "steps": 320,
+  "physical_horizon_years": 6.153846153846154,
+  "model": {
+    "kind": "exact_transport",
+    "basis_id": "exponential-transport:235af0ba1b8a37af82a3e0d3307bdf26108726e83ef70de5965e201980cdc50d",
+    "rates_per_year": [
+      0.6,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "tau_years": 1.0
+  },
+  "source_covariance_C": [
+    [
+      0.4,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.3,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.2,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.1
+    ]
+  ],
+  "source_factor_L": [
+    [
+      0.6324555320336759,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.5477225575051661,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.4472135954999579,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.31622776601683794
+    ]
+  ],
+  "brownian_channels": 4,
+  "integrated_additional_drift": "zero",
+  "observation": "full clean coefficients O=I; no measurement noise",
+  "target": "V_delta = Cov((f_i-S_delta f_(i-1))/sqrt(delta)); distinct from source C and factor L",
+  "analytic_V_delta": [
+    [
+      0.39556874931049324,
+      -0.001623073745158945,
+      -0.002909868543922442,
+      -0.0021915035175761335
+    ],
+    [
+      -0.001623073745158945,
+      0.29449396173133413,
+      -0.0034583808476251914,
+      -0.002604666821858487
+    ],
+    [
+      -0.002909868543922442,
+      -0.0034583808476251914,
+      0.19273868759072904,
+      -0.004030270653418383
+    ],
+    [
+      -0.0021915035175761335,
+      -0.002604666821858487,
+      -0.004030270653418383,
+      0.09268745254571319
+    ]
+  ],
+  "estimator": {
+    "function": "spde_covariance.estimation.fit_covariance",
+    "window": "expanding, beginning at 16 increments",
+    "fit_count": 77,
+    "maximum_certified_numerical_error": 3.9532245457817524e-08,
+    "final_relative_hilbert_schmidt_error": 0.09814488194682315
+  },
+  "risk": "unit-H point-evaluation spread x=.5 minus x=2 years",
+  "rendering": {
+    "width": 1280,
+    "height": 720,
+    "fps": 16,
+    "duration_seconds": 20.0,
+    "codec": "H.264",
+    "pixel_format": "yuv420p",
+    "faststart": true,
+    "temporal_interpolation": "none; each MP4 frame is one actual discrete observation",
+    "gif": "8fps subsampling of the discrete frames, compressed to at most 8seconds"
+  },
+  "files": {
+    "video": "transport-spde.mp4",
+    "poster": "transport-spde-poster.png",
+    "preview": "transport-spde-preview.gif"
+  },
+  "environment": {
+    "python": "3.13.12",
+    "packages": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2"
+    }
+  },
+  "scope": "synthetic illustration; no empirical market, calibration, or prediction claim"
+}

@@ -1,0 +1,10 @@
+name = "stage1-smoke"
+seed = 20261023
+replications = 2
+train = 128
+validation = 64
+evaluation = 32
+relative_candidates = [0.001, 0.01]
+window_candidates = [128]
+reference_checks = true
+stress_smoke = true

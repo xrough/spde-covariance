@@ -1,0 +1,43 @@
+name: Verify transport covariance toolkit
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numerics:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          version: "0.13.5"
+          enable-cache: true
+      - run: uv sync --locked --extra reference
+      - run: uv run --no-sync ruff check .
+      - run: uv run --no-sync ruff format --check .
+      - run: uv run --no-sync pytest
+      - run: uv run --no-sync python examples/transport_pipeline.py
+      - run: uv run --no-sync python scripts/check_notebook.py
+      - run: uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/ci-stage1
+      - name: Verify a clean wheel installation outside the checkout
+        shell: bash
+        run: |
+          uv build --wheel
+          uv venv "$RUNNER_TEMP/spde-clean"
+          uv pip install --python "$RUNNER_TEMP/spde-clean/bin/python" dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/transport_pipeline.py"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py"
+          "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: smoke-${{ matrix.os }}
+          path: |
+            experiments/runs/ci-stage1
