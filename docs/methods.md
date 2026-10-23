@@ -7,6 +7,13 @@ transport-innovation covariance. The continuous curve model motivates that
 object; the package does not reconstruct an unrestricted covariance operator
 from sparse price levels.
 
+The primary statistical studies are a four-dimensional introductory laboratory.
+After known transport adjustment, their unrestricted covariance fitting is a
+generic linear-observation covariance problem. Higher-dimensional spline stress
+checks concern numerical representation. Neither supplies a new estimator or an
+infinite-dimensional statistical guarantee. The [three-question roadmap](research-roadmap.md)
+keeps those current deliverables separate from later curve-dynamics research.
+
 ## 1. Curve transport and the coordinate model
 
 Let $x \geq 0$ denote time to maturity and let $t$ denote calendar time, both
@@ -484,3 +491,51 @@ The [API](api.md) and [workflow](workflow.md) describe callable interfaces and
 their units. The [benchmark report](../experiments/results/stage1/report.md)
 contains measured outcomes, acceptance criteria, configuration and provenance;
 the equations above describe what those experiments estimate.
+
+## 10. Local estimation and subsequent forecast evaluation
+
+The [RQ2 protocol](research-question-2.md) separates current covariance
+estimation from forecast evaluation. It samples independent Gaussian
+innovations with prescribed deterministic covariance paths, then studies
+window length, temporal moment bias and maturity-pair coverage. The paths are
+not asserted to arise from a PSD source covariance through the SPDE bridge.
+Current-risk estimates are compared at their fitting endpoint, with no future
+observation supplied to the estimator.
+
+The [RQ3 protocol](research-question-3.md) reuses those innovation paths.
+Each policy fits through an origin, freezes its matrix for a future block and
+is scored against subsequent corrected observations. For a forecast $B_n$ and
+future date $j>n$, put $P_{n,j}=O_jB_nO_j^\top$. The observable score satisfies
+
+```math
+\begin{aligned}
+\ell_{n,j}
+&=\|P_{n,j}\|_F^2-2\langle Z_j,P_{n,j}\rangle_F,\\
+\mathbb E[\ell_{n,j}\mid\mathcal F_n]
+&=\|P_{n,j}-O_jV_jO_j^\top\|_F^2\\
+&\quad-\|O_jV_jO_j^\top\|_F^2.
+\end{aligned}
+```
+
+The conditional identity uses the protocol's centered, independent future
+innovations, deterministic designs and correct noise correction. The omitted
+constant makes a negative score valid. Expected differences rank errors in
+the observed covariance, without making unobserved directions identifiable.
+A full matrix forecast is frozen across the future block; it is not a
+forecast of a cumulative multi-interval curve move.
+
+For exposure $a$, a future proxy for $a^\top V_j a$ is available when
+$a=O_j^\top c_j$. It is $(c_j^\top y_j)^2-c_j^\top N_jc_j$, used in the scalar
+analogue of the same score. Historical pooled identification does not
+guarantee this per-date exposure availability.
+[Patton (2011)](https://public.econ.duke.edu/~ap172/Patton_vol_proxies_JoE_2011.pdf)
+studies scalar volatility-forecast comparison with imperfect conditionally
+unbiased proxies. The matrix identity above supplies this protocol's
+justification; no general outlier-robustness claim follows.
+
+RQ3 selects a trailing count using earlier observed validation blocks and
+freezes that choice before test evaluation. Latent covariance and risk errors
+are retained separately as synthetic diagnostics. Monte Carlo uncertainty is
+computed across independent replication averages, rather than treating
+dependent forecast dates as independent. No likelihood score, confidence
+interval, new volatility model or curve-level prediction is introduced.

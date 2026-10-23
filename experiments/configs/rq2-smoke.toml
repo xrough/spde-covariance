@@ -1,0 +1,10 @@
+name = "rq2-smoke"
+seed = 20261023
+replications = 2
+intervals = 128
+windows = [16, 64]
+endpoints = [80, 128]
+scenarios = ["constant", "scalar", "rotating", "abrupt"]
+sensitivity_relatives = []
+sensitivity_window = 64
+reference_checks = true

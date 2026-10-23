@@ -26,6 +26,8 @@ jobs:
       - run: uv run --no-sync python examples/transport_pipeline.py
       - run: uv run --no-sync python scripts/check_notebook.py
       - run: uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/ci-stage1
+      - run: uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/ci-rq2
+      - run: uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/ci-rq3
       - name: Verify a clean wheel installation outside the checkout
         shell: bash
         run: |
@@ -36,8 +38,11 @@ jobs:
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/transport_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py"
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
+          "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-rq3 --help
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: smoke-${{ matrix.os }}
           path: |
             experiments/runs/ci-stage1
+            experiments/runs/ci-rq2
+            experiments/runs/ci-rq3

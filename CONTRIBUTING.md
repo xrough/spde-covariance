@@ -1,10 +1,16 @@
 # Contributing
 
 Contributions to the MIT-licensed transport-SPDE covariance toolkit are welcome.
-Stage 1 focuses on reliable covariance estimation, observation diagnostics, and
-reproducible synthetic validation. Start with the [API guide](docs/api.md),
-[workflow](docs/workflow.md), and [methods](docs/methods.md). Curve calibration
-and prediction remain later application work.
+The current study is a finite-dimensional toy laboratory for identification,
+local covariance estimation and forecast evaluation. It implements established
+methods with reproducible synthetic validation; it does not establish a novel
+estimator or infinite-dimensional guarantees. Start with the [API guide](docs/api.md),
+[workflow](docs/workflow.md), and [methods](docs/methods.md). The
+[RQ2 protocol](docs/research-question-2.md) studies local estimation, and the
+[RQ3 protocol](docs/research-question-3.md) evaluates frozen covariance forecasts
+on future observations. Curve-level forecasting and market calibration remain
+later application work; the [roadmap](docs/research-roadmap.md) carries the same
+three questions into genuinely infinite-dimensional dynamics.
 
 ## Development and review
 
@@ -17,6 +23,8 @@ uv run --no-sync ruff format --check .
 uv run --no-sync pytest
 uv run --no-sync python examples/transport_pipeline.py
 uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/contribution-smoke
+uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/contribution-rq2
+uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/contribution-rq3
 ```
 
 The `reference` extra installs CVXPY/SCS for independent solver checks. Choose a
@@ -44,6 +52,12 @@ controls and partial-observation cases have separate purposes. Declare grids,
 windows, noise, caps, relative/actual penalties, and rank thresholds. Retain
 paired replicates and Monte Carlo uncertainty, including cases where a simple
 baseline performs better.
+
+Forecast selection must precede testing, and issued forecasts must use only
+observations through their issue origin. Keep latent truth out of fitting and
+selection. Aggregate forecast dates within independent replications before
+calculating Monte Carlo uncertainty. A past target-range check and the ability
+to score that exposure from a future observation are different diagnostics.
 
 Report convergence and feasibility. Solver certificates concern distance to the
 constrained optimum, not estimation error to truth. Compare constrained numerical

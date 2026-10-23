@@ -1,0 +1,16 @@
+name = "rq2"
+seed = 20261023
+replications = 20
+intervals = 512
+delta = 0.019230769230769232
+windows = [16, 32, 64, 128]
+endpoints = [256, 272, 304, 512]
+scenarios = ["constant", "scalar", "rotating", "abrupt"]
+trace_cap = 2.0
+noise_variance = 0.001
+relative_regularization = 0.001
+sensitivity_relatives = [0.0001, 0.01]
+sensitivity_window = 64
+numerical_error_budget = 0.0001
+rank_rtol = 0.0000000001
+reference_checks = true

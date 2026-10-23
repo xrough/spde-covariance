@@ -267,3 +267,47 @@ metrics, tuning audit, comparisons, and stress diagnostics. See the
 `simulate_innovations` and `integrate_innovation_covariance` support independent
 innovation simulation and the deterministic-source SPDE bridge. These interfaces
 do not provide real-market curve calibration or prediction.
+
+`rq2.run_rq2_benchmark(config, output=None)` accepts an `rq2_design.RQ2Config`
+or a TOML path. It writes only to a fresh or empty output directory:
+
+```sh
+spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output NEW_DIRECTORY
+```
+
+The RQ2 suite estimates terminal innovation covariance and exposure risks using
+predeclared trailing windows and relative ridge strengths. It performs no
+parameter selection. Outputs retain fitted matrices, per-replication metrics,
+paired risk-error differences, direct-risk analytic bias/variance, local Gram
+diagnostics, numerical certificates and independent references. A failed
+numerical check raises `RuntimeError` after saving diagnostics; unexpected
+errors and interruptions also save an explicit status. See the
+[mathematical problem and experiment protocol](research-question-2.md).
+
+`rq3.run_rq3_benchmark(config, output=None)` accepts an experiment-local
+`rq3.RQ3Config` or a TOML path. It also requires a fresh or empty output directory:
+
+```sh
+spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output NEW_DIRECTORY
+```
+
+The RQ3 suite reuses the RQ2 innovation simulations. It compares a static
+first-128 estimate, a refitted trailing-128 estimate, and a trailing window
+selected using strictly earlier validation blocks. Each issue origin produces
+one covariance matrix held fixed for the next 16 weekly innovation forecasts.
+It does not forecast the covariance of an accumulated 16-week return.
+
+The primary score is the observed, noise-corrected quadratic covariance score.
+Exposure-risk scores are available only when the future observation map measures
+the exposure jointly. Latent covariance and risk errors are separate simulation
+diagnostics and never enter fitting or selection. Monte Carlo uncertainty uses
+independent replication-level paired averages, rather than treating forecast
+dates as independent replications.
+
+Outputs include issued forecasts and their training boundaries, validation
+candidate scores and selected windows, future scores by origin and horizon,
+exposure availability, observability diagnostics, numerical certificates,
+references, summaries, three figures and source/environment provenance. Failed
+or interrupted runs retain explicit status diagnostics. See the
+[RQ3 protocol](research-question-3.md). These experiment interfaces do not change
+the core covariance estimator API.
