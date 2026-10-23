@@ -65,3 +65,18 @@ Code contributions are made under the repository's [MIT license](LICENSE).
 Preserve appropriate attribution for third-party material and the permissions of
 any contributed dataset. Generated runs and restricted data stay out of source
 control unless a selected reproducibility artifact is explicitly reviewed.
+
+## Equations and scientific figures
+
+For Markdown display equations, use fenced `math` blocks as described in
+[GitHub's documentation](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions).
+Keep inline expressions short, use explicit braces for fractions and roots,
+and keep complex math out of tables and headings. Use `\mathrm{Cov}` and
+`\mathrm{tr}` for the documented covariance and trace notation. Inspect the
+rendered GitHub page before merging equation changes. Notebook Markdown uses
+standard dollar-delimited inline and display math.
+
+Use conventional Matplotlib scientific figures with white backgrounds, labelled
+axes and units, restrained colors, readable legends and fixed comparison
+scales. Static figures should stand alone; animations are supplementary.
+Preserve seeds and numerical metadata when changing a figure's appearance.

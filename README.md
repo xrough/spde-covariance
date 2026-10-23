@@ -12,7 +12,7 @@ The central question is: **which covariance information can be recovered from
 the observed curve shocks, and how much error comes from sampling, observation
 geometry and numerical approximation?**
 
-The current output is the finite-interval innovation covariance **V_delta**.
+The current output is the finite-interval innovation covariance **$V_\Delta$**.
 The instantaneous diffusion covariance **C** is supplied to simulation, and the
 Brownian loading **L** is a compatible factor of C. Neither C nor L is fitted by
 the current estimation workflow. Futures-curve calibration and prediction are
@@ -42,9 +42,7 @@ from spde_covariance import (
 
 model = ExponentialTransport()
 source_covariance_C = np.diag([0.4, 0.3, 0.2, 0.1])
-simulation = simulate_transport(
-    model, np.arange(1025) / 52, source_covariance_C, seed=1729
-)
+simulation = simulate_transport(model, np.arange(1025) * (1 / 52), source_covariance_C, seed=1729)
 innovations = extract_innovations(simulation.trajectory, model)
 fit = fit_innovation_covariance(
     innovations,
@@ -60,7 +58,7 @@ print(fit.estimate.covariance_error_bound)  # numerical error to the optimizer
 The [example](examples/transport_pipeline.py) checks the result against an
 independently calculated analytical covariance. For this seed and 1,024 weekly
 innovations, relative Hilbert–Schmidt error is **0.0582**; the numerical
-covariance-error certificate is **2.31e-8**. These are different error measures.
+covariance-error certificate is about **2.3e-8**. These are different error measures.
 The [notebook](notebooks/transport_covariance.ipynb) adds kernel comparisons and
 partial-observation diagnostics.
 
@@ -68,7 +66,7 @@ partial-observation diagnostics.
 
 ### Curve dynamics and Brownian forcing
 
-Time t and remaining maturity x are measured in years. The reference model is
+Time $t$ and remaining maturity $x$ are measured in years. The reference model is
 
 ```math
 df_t(x)=\bigl(\partial_x f_t(x)+\beta_t(x)\bigr)dt
@@ -96,14 +94,14 @@ da_t=(Aa_t+b_t)dt+LdB_t,
 \qquad C=LL^{\top}.
 ```
 
-Here C is a J-by-J instantaneous source covariance in this basis. The simulator
-accepts C. A loading L is nonunique: multiplying it on the right by an orthogonal
-matrix preserves C. The reference example uses a full-rank C; estimation does
+Here $C$ is a $J$-by-$J$ instantaneous source covariance in this basis. The simulator
+accepts $C$. A loading $L$ is nonunique: multiplying it on the right by an orthogonal
+matrix preserves $C$. The reference example uses a full-rank $C$; estimation does
 not impose a fixed factor rank.
 
 ### Transport adjustment
 
-For clean coefficient trajectories observed at dates t_i, extraction computes
+For clean coefficient trajectories observed at dates $t_i$, extraction computes
 
 ```math
 \Delta_i=t_i-t_{i-1},
@@ -111,8 +109,8 @@ For clean coefficient trajectories observed at dates t_i, extraction computes
 \xi_i=\frac{a_{t_i}-M_{\Delta_i}a_{t_{i-1}}-d_i}{\sqrt{\Delta_i}}.
 ```
 
-The supplied d_i is the integrated mild drift contribution. Omitting it makes an
-explicit zero-drift assumption. With constant deterministic C on an interval,
+The supplied $d_i$ is the integrated mild drift contribution. Omitting it makes an
+explicit zero-drift assumption. With constant deterministic $C$ on an interval,
 exact transport gives
 
 ```math
@@ -127,11 +125,11 @@ Normalized innovations have units of curve units per square root year; their
 covariances have units of curve units squared per year.
 
 Thus an innovation is a transported, accumulated random shock. Its covariance
-V_i generally differs from C at a finite sampling interval. The high-level fit
+$V_i$ generally differs from $C$ at a finite sampling interval. The high-level fit
 requires equal intervals and an explicit common or local covariance assumption.
 A local fit approximates a common covariance within its selected window.
 Irregular extraction retains interval-specific targets; the common-target
-workflow rejects pooling unequal intervals. Recovering C from V is a separate
+workflow rejects pooling unequal intervals. Recovering $C$ from $V$ is a separate
 inverse problem.
 
 | Quantity | Interpretation | Role in the current workflow |
@@ -156,8 +154,8 @@ Z_i=y_i y_i^{\top}-N_i.
 ```
 
 The noise is fresh, centered and independent of the innovations, with known
-covariance. Under a common target, the expectation of Z_i is
-O_i V_delta O_i.T. Z_i is retained even when it has negative eigenvalues.
+covariance. Under a common target, the expectation of $Z_i$ is
+$O_i V_\Delta O_i^{\top}$. $Z_i$ is retained even when it has negative eigenvalues.
 Latent covariance truth is stored separately and never supplied to fitting.
 
 Observation maps can change with date. Their rows represent point evaluations,

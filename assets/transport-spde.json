@@ -125,6 +125,8 @@
     "codec": "H.264",
     "pixel_format": "yuv420p",
     "faststart": true,
+    "visual_style": "white Matplotlib research figure; standard labeled subplots",
+    "shared_covariance_color_scale": "fixed over the complete discrete experiment",
     "temporal_interpolation": "none; each MP4 frame is one actual discrete observation",
     "gif": "8fps subsampling of the discrete frames, compressed to at most 8seconds"
   },

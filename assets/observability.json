@@ -1,6 +1,6 @@
 {
-  "title": "What the observations cannot tell you",
-  "kind": "scientific animation; Gaussian innovation geometry companion diagnostic",
+  "title": "Unpaired Gaussian observations and covariance identification",
+  "kind": "Matplotlib scientific figure animation; Gaussian innovation geometry",
   "seed": 1729,
   "duration_seconds": 12.0,
   "fps": 24,
@@ -10,6 +10,7 @@
   "codec": "H.264 / libx264",
   "pixel_format": "yuv420p",
   "faststart": true,
+  "plot_style": "White Matplotlib figure, standard axes and legends, fixed scales, standard blue/orange colors",
   "models": {
     "V_plus": [
       [
@@ -34,10 +35,11 @@
   },
   "marginals": "Each coordinate is N(0,1) under both centered Gaussian models.",
   "initial_observation_design": "One coordinate is measured per fresh independent draw; no paired values or within-draw cross-products are observed.",
-  "scan_construction": "Independent scalar N(0,1) draws, generated separately from all latent joint clouds; exactly one scan axis and one marginal marker visible per draw.",
-  "latent_clouds": "Illustrative hidden joint truth, explicitly labelled; not the data available to the unpaired design.",
+  "unpaired_sample_construction": "200 independent scalar N(0,1) draws generated separately from all latent joint clouds; alternating draws observe different coordinates; rugs accumulate separately.",
+  "latent_clouds": "210 reference samples per model, labelled latent. These joint pairs are not observed by the unpaired design.",
+  "gaussian_contour_probability": 0.95,
   "final_design_change_at_seconds": 9.120000000000001,
-  "final_design": "Both coordinates observed jointly on each new draw; paired samples reveal covariance orientation while marginal laws remain unchanged.",
+  "final_design": "95 new joint samples per model, added as x markers only after the design changes to paired observation. Marginal laws remain unchanged.",
   "spread_exposure": [
     1.0,
     -1.0
@@ -48,7 +50,7 @@
     3.6
   ],
   "risk_variance_ratio": 9,
-  "scope": "Toy centered Gaussian innovation experiment, not an SPDE trajectory simulation, curve calibration, forecasting result, or novelty claim.",
+  "scope": "Centered Gaussian innovation geometry; not an SPDE trajectory, calibration or forecasting result.",
   "numpy_version": "2.5.4",
   "matplotlib_version": "3.11.2",
   "files": {
@@ -57,9 +59,9 @@
     "poster": "observability-poster.png"
   },
   "file_sizes_bytes": {
-    "observability.mp4": 310818,
-    "observability-preview.gif": 559587,
-    "observability-poster.png": 140414
+    "observability.mp4": 219200,
+    "observability-preview.gif": 289871,
+    "observability-poster.png": 117426
   },
   "reproduction": "python examples/render_observability_video.py --seed 1729"
 }

@@ -1,21 +1,29 @@
-# Reproducible scientific animations
+# Scientific figures and supplementary animations
 
 Both videos are generated from seeded numerical models with Matplotlib and
 ffmpeg. They contain no external footage or market data. The MP4 files use
 H.264, yuv420p pixels and faststart metadata for browser playback. GIF previews
-use fewer frames. The transport GIF compresses 20 seconds into 8 seconds; the
+use fewer frames. The PNG figures use conventional white Matplotlib subplots,
+labelled axes and units, ordinary legends, and fixed comparison scales. They
+are the primary illustrations in the README; animations are supplementary.
+The transport GIF compresses 20 seconds into 8 seconds; the
 observation companion keeps its 12-second pace.
 
 ## Transport and covariance estimation
 
 [Play the 20-second transport-SPDE video](../assets/transport-spde.mp4).
 
+![Transport and innovation covariance](../assets/transport-spde-poster.png)
+
 The exact four-dimensional exponential model uses four independent Brownian
 sources, constant source covariance C, zero additional drift and known transport.
 The video follows a curve, its transport prediction, and the normalized
 innovations. Existing package routines fit a running PSD, trace-capped ridge
 estimate of V_delta. The video labels C as a simulation input and V_delta as the
-estimated target. Actual discrete simulation frames are used; curve paths are
+estimated target. The six panels show the curve/transport comparison, analytical
+and fitted covariance matrices on a shared color scale, the normalized
+innovation, relative HS error, and the exposure-variance ratio. Actual discrete
+simulation frames are used; curve paths are
 not presented as interpolated continuous Brownian samples.
 
 ```sh
@@ -33,11 +41,17 @@ basis, source covariance, regularization, certificates and encoding settings.
 
 [Play the 12-second observation-diagnostics companion](../assets/observability.mp4).
 
+![Unpaired Gaussian observations](../assets/observability-poster.png)
+
 This is a Gaussian innovation illustration. The latent models have covariance
 matrices with unit diagonal and correlations +0.8 and -0.8. Observing one
 coordinate per independent draw produces the same marginal distributions.
-Their spread variances are 0.4 and 3.6. The joint clouds are explicitly labelled
-hidden until the final scene changes the design to paired observations.
+Their spread variances are 0.4 and 3.6. The five panels show latent reference
+clouds with 95% Gaussian contours, identical marginal densities with scalar
+observations, and the two spread variances. The static figure shows the unpaired
+design. The animation later changes the design explicitly to paired observations
+and marks the newly observed pairs. Latent reference clouds are labelled and
+are not supplied as data under the unpaired design.
 
 ```sh
 uv run --no-sync python examples/render_observability_video.py --output-dir assets
