@@ -376,3 +376,51 @@ programme; [Benth, Schroers and Veraart (2024)](https://arxiv.org/abs/2205.03927
 develop high-frequency asymptotic inference for a broader stochastic-volatility
 setting. This fixed deterministic-source foundation does not reproduce their
 CLT or claim a new infinite-dimensional statistical result.
+
+## Recorded first full study
+
+The [full report](../experiments/results/infinite-transport/report.md) records
+20 paired replications from clean numerical source
+`3f573c746d720aceda8861a4655cb1f7d27ed2ef`, using the committed full configuration.
+The [manifest](../experiments/results/infinite-transport/manifest.json) records
+the environment and numerical-source hashes; the artifact index preserves
+checksums for both raw and published measurements.
+
+At reference forcing $M=256$, the finite-interval effect and empirical sampling
+control are:
+
+| Interval (years) | HS norm of finite-reference V minus C | Oracle covariance MSE, J=8 (mean ± MCSE) | Exact Gaussian MSE |
+| --- | ---: | ---: | ---: |
+| 1/52 | 0.00257882 | 0.0245323 ± 0.00678248 | 0.0324263 |
+| 1/104 | 0.00130334 | 0.0143521 ± 0.00459749 | 0.0162437 |
+| 1/208 | 0.000655229 | 0.00940489 ± 0.00294011 | 0.00812968 |
+
+The first column of errors is a population HS norm; MSE is a squared HS error.
+The near-halving of the finite-interval effect is a numerical observation for
+this model and ladder, not an estimated general convergence rate. Increasing
+sampling frequency also increases the number of observations over the fixed
+one-year horizon. The J=8 empirical means differ from exact Gaussian expectations
+by at most 1.2 reported MCSE; these cases are not additional independent studies.
+
+At weekly sampling, increasing $J$ from 8 to 64 reduces the population covariance
+projection error from 0.00172013 to 0.0000109714, measured against full
+finite-reference $V$. The HS norm of time-average hidden-state leakage falls
+from 0.0000988364 to 0.00000295820. These are different errors. In the paired
+$J=8$ experiment, operational-minus-oracle covariance MSE is
+0.0000355182 ± 0.0000666618 MCSE. The nonzero population leakage does not establish
+a universally larger realized risk or covariance MSE in this small study.
+
+The remaining source trace is bounded by 6.32221e-6; the largest full innovation
+trace bound is 6.38261e-6 and the terminal state mean-square bound is 8.64801e-6.
+The maximum configured finite-J operational covariance tail bound is 1.78454e-6.
+Each passes its declared 1e-5 audit threshold, with units and targets kept
+separate. This does not require the intentionally varied J-projection errors
+to fall below that forcing-reference threshold.
+
+All 240 constrained fits are feasible and converged; the largest numerical
+covariance-distance certificate is 5.65966e-8 against a 1e-4 budget. Two small
+independent convex-reference comparisons have matrix discrepancies below
+1.8e-15. Independent-method integration and path-identity checks remain
+floating-point validation, not interval-arithmetic proofs. These results close
+the foundation benchmark; partial spatial observations and statistical
+operator recovery remain the next research questions.

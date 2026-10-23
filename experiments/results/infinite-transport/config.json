@@ -1,0 +1,36 @@
+{
+  "name": "infinite-transport",
+  "seed": 20261024,
+  "replications": 20,
+  "source_exponent": 3.0,
+  "source_trace": 1.0,
+  "horizon": 1.0,
+  "forcing_dimensions": [
+    64,
+    128,
+    256
+  ],
+  "projection_dimensions": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "deltas": [
+    0.019230769230769232,
+    0.009615384615384616,
+    0.004807692307692308
+  ],
+  "quadrature_order": 24,
+  "tail_budget": 1e-05,
+  "numerical_tolerance": 1e-09,
+  "transport_tolerance": 1e-10,
+  "fit_dimensions": [
+    8,
+    16
+  ],
+  "relative_regularization": 0.001,
+  "trace_cap": 2.0,
+  "numerical_error_budget": 0.0001,
+  "reference_checks": true
+}

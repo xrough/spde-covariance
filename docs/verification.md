@@ -90,6 +90,14 @@ The smoke configuration intentionally leaves some tail-resolution flags false.
 Software acceptance checks the identities, feasibility and declared numerical
 tolerances; the full study must additionally resolve its final reference tails.
 
+The [recorded full transport study](../experiments/results/infinite-transport/report.md)
+passes both checks from clean source `3f573c746d720aceda8861a4655cb1f7d27ed2ef`.
+Its 240 constrained fits converge within budget; the two independent convex
+comparisons agree below 1.8e-15 in matrix HS norm. A clean wheel also passed the
+transport example and a reduced coupled benchmark outside the checkout, using
+only declared core dependencies. The wheel's Python sources match the recorded
+numerical implementation.
+
 CI runs the numerical checks, example, notebook, all four seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and
 video encoding run separately. Selected full-study evidence records its source
