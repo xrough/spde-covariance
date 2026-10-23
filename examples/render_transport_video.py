@@ -26,14 +26,6 @@ from spde_covariance.estimation import fit_covariance
 from spde_covariance.trajectories import extract_innovations, simulate_transport
 from spde_covariance.transport import ExponentialTransport
 
-NAVY = "#08121F"
-CARD = "#0F2135"
-WHITE = "#F3F7FC"
-MUTED = "#A6B9CD"
-CYAN = "#56D4E8"
-CORAL = "#FF8D80"
-GOLD = "#F5C66A"
-
 
 @dataclass(frozen=True)
 class VideoConfig:
@@ -125,99 +117,80 @@ def _scene(config, data):
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.colors import LinearSegmentedColormap
-    from matplotlib.patches import Polygon, Rectangle
 
+    plt.style.use("default")
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "font.size": 10,
-            "text.color": WHITE,
-            "axes.labelcolor": MUTED,
-            "xtick.color": MUTED,
-            "ytick.color": MUTED,
-            "axes.edgecolor": "#28415B",
-            "savefig.facecolor": NAVY,
+            "font.size": 9,
+            "axes.titlesize": 10,
+            "axes.labelsize": 9,
+            "legend.fontsize": 8,
+            "xtick.labelsize": 8,
+            "ytick.labelsize": 8,
+            "figure.facecolor": "white",
+            "axes.facecolor": "white",
+            "savefig.facecolor": "white",
         }
     )
-    fig = plt.figure(figsize=(config.width / 100, config.height / 100), dpi=100, facecolor=NAVY)
-    fig.text(0.047, 0.94, "From a noisy curve to its covariance", fontsize=23, weight="bold")
-    fig.text(
-        0.047,
-        0.887,
-        r"$df_t=\partial_x f_t\,dt+L\,dW_t$    |    $C=LL^*$    |    "
-        "4 Brownian channels · exact finite model · zero additional drift",
-        color=MUTED,
-        fontsize=11,
+    fig, axes = plt.subplots(
+        2,
+        3,
+        figsize=(config.width / 100, config.height / 100),
+        dpi=100,
+        layout="constrained",
+        gridspec_kw={"width_ratios": (1.1, 1, 1)},
+    )
+    curve_axis, truth_axis, estimate_axis = axes[0]
+    innovation_axis, error_axis, risk_axis = axes[1]
+    fig.suptitle(
+        "Transport-SPDE innovation covariance\n"
+        r"Exact four-mode model; $\Delta=1/52$ year; full observations; no measurement noise",
+        fontsize=12,
+    )
+    fig.supxlabel(
+        r"$C=LL^*=\operatorname{diag}(0.4,0.3,0.2,0.1)$; four Brownian channels; "
+        "zero additional drift.\n"
+        f"Synthetic data, seed {config.seed}. Every animation frame is a discrete observation; "
+        "no interpolation in physical time.",
+        fontsize=8,
     )
 
-    def panel(bounds):
-        axis = fig.add_axes(bounds, facecolor=CARD)
+    for axis in (curve_axis, innovation_axis, error_axis, risk_axis):
+        axis.grid(color="0.85", linewidth=0.6)
+        axis.set_axisbelow(True)
         axis.spines[["top", "right"]].set_visible(False)
-        axis.tick_params(labelsize=9, length=3)
-        axis.grid(color="#54708D", alpha=0.17, linewidth=0.6)
-        return axis
 
-    curve_axis = panel([0.073, 0.50, 0.425, 0.30])
-    innovation_axis = panel([0.073, 0.20, 0.425, 0.18])
-    metric_axis = panel([0.588, 0.20, 0.363, 0.14])
-    fig.text(
-        0.073, 0.835, "01  TRANSPORT AND RANDOM FORCING", color=CYAN, fontsize=10, weight="bold"
-    )
-    fig.text(
-        0.588,
-        0.835,
-        "02  COVARIANCE OF NORMALIZED INNOVATIONS",
-        color=CYAN,
-        fontsize=10,
-        weight="bold",
-    )
-    fig.text(
-        0.588,
-        0.37,
-        "03  LEARNING FROM THE OBSERVED INCREMENTS",
-        color=CYAN,
-        fontsize=10,
-        weight="bold",
-    )
     x = data["maturities"]
     values = np.concatenate((data["curves"].ravel(), data["propagated"].ravel()))
     margin = 0.12 * np.ptp(values)
-    curve_axis.set(xlim=(0, 4), ylim=(values.min() - margin, values.max() + margin))
-    curve_axis.set_ylabel("Curve value (arbitrary units)")
-    curve_axis.tick_params(labelbottom=False)
-    trail = [
-        curve_axis.plot([], [], color=MUTED, alpha=0.05 + 0.035 * i, lw=1)[0] for i in range(6)
-    ]
-    (current,) = curve_axis.plot([], [], color=CYAN, lw=2.6, label=r"Observed $f_i$")
+    curve_axis.set(
+        title="(a) Curve and one-step transport",
+        xlim=(0, 4),
+        ylim=(values.min() - margin, values.max() + margin),
+        xlabel="Maturity x (years)",
+        ylabel="Curve value (arbitrary units)",
+    )
+    (current,) = curve_axis.plot([], [], color="tab:blue", lw=1.6, label=r"$f_i$")
     (predicted,) = curve_axis.plot(
-        [], [], color=CORAL, lw=1.8, ls="--", label=r"Transport $S_\Delta f_{i-1}$"
+        [], [], color="tab:orange", lw=1.4, ls="--", label=r"$S_\Delta f_{i-1}$"
     )
-    gap = Polygon(np.zeros((2 * len(x), 2)), closed=True, color=CORAL, alpha=0.13, linewidth=0)
-    curve_axis.add_patch(gap)
-    curve_axis.legend(
-        loc="upper right", facecolor=CARD, edgecolor="none", labelcolor=WHITE, fontsize=9
-    )
+    curve_axis.legend(loc="upper right", frameon=True)
     curve_clock = curve_axis.text(
-        0.025, 0.94, "", transform=curve_axis.transAxes, color=GOLD, fontsize=10
+        0.04, 0.96, "", transform=curve_axis.transAxes, va="top", fontsize=9
     )
 
     innovation_limit = float(np.max(np.abs(data["innovation_curves"]))) * 1.08
-    innovation_axis.set(xlim=(0, 4), ylim=(-innovation_limit, innovation_limit))
-    innovation_axis.set_xlabel("Maturity x (years)", labelpad=6)
-    innovation_axis.set_ylabel(r"Curve unit / $\sqrt{\mathrm{year}}$")
-    innovation_axis.axhline(0, color=MUTED, lw=0.7, alpha=0.5)
-    (innovation_line,) = innovation_axis.plot([], [], color=CYAN, lw=1.7)
-    positive = Polygon(np.zeros((2 * len(x), 2)), color=CYAN, alpha=0.2, linewidth=0)
-    negative = Polygon(np.zeros((2 * len(x), 2)), color=CORAL, alpha=0.2, linewidth=0)
-    innovation_axis.add_patch(positive)
-    innovation_axis.add_patch(negative)
-    fig.text(
-        0.073,
-        0.435,
-        r"Realized innovation: $X_i=(f_i-S_\Delta f_{i-1})/\sqrt{\Delta}$",
-        fontsize=11,
+    innovation_axis.set(
+        title="(d) Normalized innovation\n"
+        r"$X_i=(f_i-S_\Delta f_{i-1})/\sqrt{\Delta}$",
+        xlim=(0, 4),
+        ylim=(-innovation_limit, innovation_limit),
+        xlabel="Maturity x (years)",
+        ylabel=r"Curve units / $\sqrt{\mathrm{year}}$",
     )
+    innovation_axis.axhline(0, color="0.35", lw=0.6)
+    (innovation_line,) = innovation_axis.plot([], [], color="tab:blue", lw=1.4)
 
     color_limit = (
         max(
@@ -226,126 +199,90 @@ def _scene(config, data):
         )
         * 1.05
     )
-    cmap = LinearSegmentedColormap.from_list("covariance", [CORAL, CARD, CYAN])
-    truth_axis = fig.add_axes([0.592, 0.55, 0.157, 0.245], facecolor=CARD)
-    estimate_axis = fig.add_axes([0.79, 0.55, 0.157, 0.245], facecolor=CARD)
     for axis, title in (
-        (truth_axis, r"Analytic $V_\Delta$"),
-        (estimate_axis, r"Estimated $\widehat V_\Delta(n)$"),
+        (truth_axis, r"(b) Analytic covariance $V_\Delta$"),
+        (estimate_axis, r"(c) PSD-constrained estimate $\widehat V_\Delta$"),
     ):
-        axis.set_title(title, fontsize=12, pad=10)
+        axis.set_title(title)
         axis.set_xticks(range(4), ["1", "2", "3", "4"])
         axis.set_yticks(range(4), ["1", "2", "3", "4"])
-        axis.tick_params(length=0, labelsize=9)
+        axis.set_xlabel(r"$H$-basis mode")
+        axis.set_ylabel(r"$H$-basis mode")
         axis.set_xticks(np.arange(-0.5, 4, 1), minor=True)
         axis.set_yticks(np.arange(-0.5, 4, 1), minor=True)
-        axis.grid(which="minor", color=NAVY, linewidth=1.5)
+        axis.grid(which="minor", color="white", linewidth=0.6)
         axis.tick_params(which="minor", length=0)
-        axis.set_xlabel("H-basis mode", fontsize=9, labelpad=5)
-        for spine in axis.spines.values():
-            spine.set_visible(False)
-    truth_axis.set_ylabel("H-basis mode", fontsize=9)
-    truth_axis.imshow(data["truth"], cmap=cmap, vmin=-color_limit, vmax=color_limit)
+    truth_axis.imshow(data["truth"], cmap="RdBu_r", vmin=-color_limit, vmax=color_limit)
     estimate_image = estimate_axis.imshow(
-        np.zeros((4, 4)), cmap=cmap, vmin=-color_limit, vmax=color_limit
+        np.zeros((4, 4)), cmap="RdBu_r", vmin=-color_limit, vmax=color_limit
     )
-    truth_annotations, estimate_annotations = [], []
+
+    def annotation_color(number):
+        return "white" if abs(number) > 0.6 * color_limit else "black"
+
+    estimate_annotations = []
     for row in range(4):
         for column in range(4):
             number = data["truth"][row, column]
-            label = f"{0 if abs(number) < 0.0005 else number:.3f}"
-            truth_annotations.append(
-                truth_axis.text(
-                    column, row, label, ha="center", va="center", color=WHITE, fontsize=8
-                )
+            truth_axis.text(
+                column,
+                row,
+                f"{0 if abs(number) < 0.0005 else number:.3f}",
+                ha="center",
+                va="center",
+                color=annotation_color(number),
+                fontsize=8,
             )
             estimate_annotations.append(
-                estimate_axis.text(
-                    column, row, "", ha="center", va="center", color=WHITE, fontsize=8
-                )
+                estimate_axis.text(column, row, "", ha="center", va="center", fontsize=8)
             )
     awaiting = estimate_axis.text(
         0.5,
         0.5,
-        f"Awaiting {config.minimum_samples}\nincrements",
+        f"Fewer than {config.minimum_samples}\nincrements",
         transform=estimate_axis.transAxes,
         ha="center",
         va="center",
-        color=GOLD,
-        fontsize=11,
+        fontsize=10,
     )
-    colorbar_axis = fig.add_axes([0.625, 0.475, 0.29, 0.012])
-    colorbar = fig.colorbar(estimate_image, cax=colorbar_axis, orientation="horizontal")
-    colorbar.outline.set_visible(False)
-    colorbar.ax.tick_params(labelsize=8, length=2)
-    colorbar.set_label(
-        "Covariance (curve unit² / year) · fixed color scale", fontsize=8, labelpad=2
+    estimate_title = r"(c) PSD-constrained estimate $\widehat V_\Delta$"
+    fit_sample = estimate_axis.set_title(estimate_title + "\nExpanding window")
+    colorbar = fig.colorbar(
+        estimate_image, ax=[truth_axis, estimate_axis], fraction=0.035, pad=0.04
     )
-    fit_status = fig.text(0.588, 0.402, "", fontsize=10, color=GOLD)
+    colorbar.set_label(r"Covariance (curve units$^2$ / year)")
+    colorbar.ax.tick_params(labelsize=8)
 
     fit_counts = data["fit_counts"]
     all_errors = np.array([data["errors"][int(n)] for n in fit_counts])
     all_risk_ratios = np.array([data["risks"][int(n)] / data["true_risk"] for n in fit_counts])
-    upper = max(1.3, float(np.max(all_errors)) * 1.1, float(np.max(all_risk_ratios)) * 1.1)
-    metric_axis.set(xlim=(0, data["times"][-1]), ylim=(0, upper))
-    metric_axis.set_xlabel("Physical time t (years)", labelpad=6)
-    metric_axis.set_ylabel("Dimensionless")
-    metric_axis.axhline(1, color=MUTED, lw=0.8, ls=":", alpha=0.65)
-    (error_line,) = metric_axis.plot([], [], color=CORAL, lw=1.8, label="Relative HS error")
-    (risk_line,) = metric_axis.plot([], [], color=CYAN, lw=1.8, label="Risk / truth")
-    metric_axis.legend(
-        loc="upper right",
-        bbox_to_anchor=(0.97, 0.98),
-        facecolor=CARD,
-        edgecolor="none",
-        labelcolor=WHITE,
-        fontsize=7.5,
-        labelspacing=0.25,
-        handlelength=1.6,
-        borderaxespad=0.4,
+    error_axis.set(
+        title="(e) Covariance estimation error",
+        xlim=(0, data["times"][-1]),
+        ylim=(0, max(0.1, float(np.max(all_errors)) * 1.12)),
+        xlabel="Physical time t (years)",
+        ylabel="Relative HS error",
     )
-    fig.text(
-        0.588, 0.11, "Risk: unit-H spread between x = 0.5 and 2 years", fontsize=9, color=MUTED
+    (error_line,) = error_axis.plot(
+        [], [], color="tab:blue", lw=1.4, label=r"$\|\widehat V_\Delta-V_\Delta\|/\|V_\Delta\|$"
     )
-    summary = fig.text(0.073, 0.11, "", fontsize=11, color=WHITE)
-    fig.text(
-        0.047,
-        0.048,
-        "Discrete observations · no Brownian-time interpolation · synthetic illustration",
-        color=MUTED,
-        fontsize=9,
+    error_axis.legend(loc="upper right")
+    risk_axis.set(
+        title="(f) Maturity-spread variance\nUnit-H spread: 0.5 minus 2 years",
+        xlim=(0, data["times"][-1]),
+        ylim=(0, max(1.3, float(np.max(all_risk_ratios)) * 1.12)),
+        xlabel="Physical time t (years)",
+        ylabel="Estimated / analytic variance",
     )
-    fig.text(
-        0.953,
-        0.048,
-        r"$V_\Delta=\mathrm{Cov}(X_i)$; $C=LL^*$ is the source covariance",
-        color=MUTED,
-        fontsize=9,
-        ha="right",
-    )
-    progress_axis = fig.add_axes([0.047, 0.082, 0.906, 0.004], facecolor=CARD)
-    progress_axis.set(xlim=(0, 1), ylim=(0, 1))
-    progress_axis.axis("off")
-    progress = Rectangle((0, 0), 0, 1, color=CYAN)
-    progress_axis.add_patch(progress)
-
-    def polygon(top, bottom):
-        return np.vstack((np.column_stack((x, top)), np.column_stack((x[::-1], bottom[::-1]))))
+    risk_axis.axhline(1, color="0.4", lw=1, ls="--", label="Analytic variance")
+    (risk_line,) = risk_axis.plot([], [], color="tab:blue", lw=1.4, label="Estimated variance")
+    risk_axis.legend(loc="lower right")
 
     def update(frame):
         count = frame + 1
-        for offset, line in enumerate(trail):
-            previous = count - len(trail) + offset
-            line.set_data(x, data["curves"][previous] if previous >= 0 else np.full_like(x, np.nan))
-        curve = data["curves"][count]
-        transport = data["propagated"][frame]
-        current.set_data(x, curve)
-        predicted.set_data(x, transport)
-        gap.set_xy(polygon(curve, transport))
-        realized = data["innovation_curves"][frame]
-        innovation_line.set_data(x, realized)
-        positive.set_xy(polygon(np.maximum(realized, 0), np.zeros_like(x)))
-        negative.set_xy(polygon(np.minimum(realized, 0), np.zeros_like(x)))
+        current.set_data(x, data["curves"][count])
+        predicted.set_data(x, data["propagated"][frame])
+        innovation_line.set_data(x, data["innovation_curves"][frame])
         curve_clock.set_text(f"t = {data['times'][count]:.2f} years")
         available = fit_counts[fit_counts <= count]
         if len(available):
@@ -353,9 +290,10 @@ def _scene(config, data):
             matrix = data["estimates"][last]
             estimate_image.set_data(matrix)
             awaiting.set_visible(False)
+            fit_sample.set_text(estimate_title + f"\nExpanding window: n = {last} increments")
             for annotation, number in zip(estimate_annotations, matrix.ravel(), strict=True):
                 annotation.set_text(f"{0 if abs(number) < 0.0005 else number:.3f}")
-            fit_status.set_text(f"PSD ridge · expanding window n = {last}")
+                annotation.set_color(annotation_color(number))
             error_line.set_data(
                 data["times"][available], [data["errors"][int(n)] for n in available]
             )
@@ -363,24 +301,12 @@ def _scene(config, data):
                 data["times"][available],
                 [data["risks"][int(n)] / data["true_risk"] for n in available],
             )
-            summary.set_text(
-                f"Relative operator error {data['errors'][last]:.3f}    |    n = {count:03d} / {config.steps}"
-            )
         else:
             awaiting.set_visible(True)
-            fit_status.set_text("Collecting observed innovations before the first fit")
-            summary.set_text(
-                f"n = {count:03d} / {config.steps} · covariance needs repeated observations"
-            )
-        progress.set_width(count / config.steps)
+            fit_sample.set_text(estimate_title + "\nExpanding window")
+            for annotation in estimate_annotations:
+                annotation.set_text("")
 
-    if config.width != 1280:
-        from matplotlib.text import Text
-
-        # Preview dimensions retain the final composition's relative typography.
-        fig.canvas.draw()
-        for text in fig.findobj(match=Text):
-            text.set_fontsize(text.get_fontsize() * config.width / 1280)
     return fig, update
 
 
@@ -411,10 +337,10 @@ def render(output, config):
     with writer.saving(figure, str(output), dpi=100):
         for frame in range(config.steps):
             update(frame)
-            writer.grab_frame(facecolor=NAVY)
+            writer.grab_frame(facecolor="white")
     poster = output.with_name(output.stem + "-poster.png")
     update(config.steps - 1)
-    figure.savefig(poster, dpi=100, facecolor=NAVY)
+    figure.savefig(poster, dpi=100, facecolor="white")
     gif = output.with_name(output.stem + "-preview.gif")
     gif_duration = min(8.0, config.steps / config.fps)
     speed = (config.steps / config.fps) / gif_duration
@@ -476,6 +402,8 @@ def render(output, config):
             "codec": "H.264",
             "pixel_format": "yuv420p",
             "faststart": True,
+            "visual_style": "white Matplotlib research figure; standard labeled subplots",
+            "shared_covariance_color_scale": "fixed over the complete discrete experiment",
             "temporal_interpolation": "none; each MP4 frame is one actual discrete observation",
             "gif": "8fps subsampling of the discrete frames, compressed to at most 8seconds",
         },

@@ -1,8 +1,8 @@
-"""Render the Gaussian covariance-identification companion animation.
+"""Plot covariance nonidentifiability under unpaired Gaussian observations.
 
 Run: python examples/render_observability_video.py
-Requires the core NumPy/Matplotlib dependencies and ffmpeg with libx264.
-No market data, internet access, or optional Python dependencies are needed.
+Uses NumPy, Matplotlib, and ffmpeg with libx264. The MP4, GIF, static figure,
+and model/observation metadata are written to assets by default.
 """
 
 from __future__ import annotations
@@ -19,321 +19,197 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FFMpegWriter
-from matplotlib.patches import Ellipse, FancyBboxPatch
+from matplotlib.patches import Ellipse
 
-BACKGROUND = "#08121F"
-CARD = "#0F2135"
-EDGE = "#20364D"
-TEXT = "#F3F7FC"
-MUTED = "#A7BACF"
-CYAN = "#56D4E8"
-CORAL = "#FF8D80"
-GOLD = "#F5C66A"
-
-
-def _style_axis(axis):
-    axis.set_facecolor("none")
-    axis.tick_params(colors=MUTED, labelsize=10, length=0, pad=5)
-    for spine in axis.spines.values():
-        spine.set_color(EDGE)
-    axis.grid(color=EDGE, linewidth=0.6, alpha=0.65)
-    axis.set_axisbelow(True)
+COLORS = ("#1f77b4", "#ff7f0e")
+JOINT_START = 0.76
 
 
 def _scene(seed):
-    plt.rcParams.update({"font.family": "DejaVu Sans", "text.color": TEXT})
-    figure = plt.figure(figsize=(12.8, 7.2), dpi=100, facecolor=BACKGROUND)
-    figure.text(
-        0.035,
-        0.946,
-        "GAUSSIAN INNOVATIONS  /  OBSERVATION GEOMETRY",
-        fontsize=11,
-        color=MUTED,
-        weight="bold",
+    plt.style.use("default")
+    plt.rcParams.update({"font.size": 10, "axes.titlesize": 11, "axes.labelsize": 10})
+    figure = plt.figure(figsize=(12.8, 7.2), dpi=100, facecolor="white")
+    layout = figure.add_gridspec(
+        2,
+        3,
+        width_ratios=(1, 1, 0.82),
+        left=0.065,
+        right=0.97,
+        bottom=0.19,
+        top=0.86,
+        wspace=0.42,
+        hspace=0.46,
     )
-    figure.text(
-        0.035,
-        0.882,
-        "What the observations cannot tell you",
-        fontsize=28,
-        color=TEXT,
-        weight="bold",
-    )
-    subtitle = figure.text(
-        0.035,
-        0.833,
-        "Identical marginals. Opposite covariance. Very different spread risk.",
-        fontsize=14,
-        color=MUTED,
-    )
-    for left, width in ((0.035, 0.425), (0.48, 0.255), (0.755, 0.21)):
-        figure.add_artist(
-            FancyBboxPatch(
-                (left, 0.25),
-                width,
-                0.50,
-                boxstyle="round,pad=0.008,rounding_size=0.018",
-                transform=figure.transFigure,
-                facecolor=CARD,
-                edgecolor=EDGE,
-                linewidth=1.2,
-                zorder=-10,
-            )
-        )
-    hidden_title = figure.text(
-        0.2475, 0.711, "HIDDEN JOINT TRUTH", ha="center", fontsize=14, weight="bold"
-    )
-    figure.text(0.6075, 0.711, "SAME OBSERVED MARGINALS", ha="center", fontsize=12.5, weight="bold")
-    figure.text(0.86, 0.711, "SPREAD VARIANCE", ha="center", fontsize=14, weight="bold")
+    figure.suptitle("Unpaired Gaussian observations and covariance identification", fontsize=15)
 
     rng = np.random.default_rng(seed)
     matrices = (np.array([[1.0, 0.8], [0.8, 1.0]]), np.array([[1.0, -0.8], [-0.8, 1.0]]))
-    latent_clouds = [rng.multivariate_normal(np.zeros(2), matrix, size=210) for matrix in matrices]
-    joint_samples = [rng.multivariate_normal(np.zeros(2), matrix, size=95) for matrix in matrices]
-    # This stream is generated independently of every latent joint cloud. A
-    # displayed scalar is never paired with another coordinate from its draw.
-    independent_scalar_draws = rng.standard_normal(80)
-    scans, latent_scatters, observed_scatters, badges = [], [], [], []
-    for index, (left, color, covariance) in enumerate(
-        zip((0.062, 0.272), (CYAN, CORAL), matrices, strict=True)
-    ):
-        axis = figure.add_axes((left, 0.365, 0.16, 0.285))
-        _style_axis(axis)
-        axis.set(xlim=(-3.2, 3.2), ylim=(-3.2, 3.2), xticks=[-2, 0, 2], yticks=[-2, 0, 2])
+    latent = [rng.multivariate_normal(np.zeros(2), matrix, size=210) for matrix in matrices]
+    paired = [rng.multivariate_normal(np.zeros(2), matrix, size=95) for matrix in matrices]
+    # Independently generated scalar observations: alternating coordinates are
+    # measured on different draws. Consecutive values never form a joint pair.
+    unpaired = rng.standard_normal(200)
+    observed_pairs, initial_legends, paired_legends = [], [], []
+    contour_radius = np.sqrt(-2 * np.log(0.05))
+    for index, (matrix, color) in enumerate(zip(matrices, COLORS, strict=True)):
+        axis = figure.add_subplot(layout[index, 0])
+        axis.set(
+            xlim=(-3.2, 3.2),
+            ylim=(-3.2, 3.2),
+            xticks=[-2, 0, 2],
+            yticks=[-2, 0, 2],
+            xlabel="$X_1$",
+            ylabel="$X_2$",
+        )
         axis.set_aspect("equal")
-        axis.text(
-            0.97, 0.035, "$X_1$", transform=axis.transAxes, ha="right", color=MUTED, fontsize=10
+        axis.grid(alpha=0.2, linewidth=0.6)
+        sign, rho = ("+", 0.8) if index == 0 else ("-", -0.8)
+        axis.set_title(f"({'a' if index == 0 else 'b'}) Latent $V_{sign}$, $\\rho={rho:g}$")
+        cloud = axis.scatter(
+            *latent[index].T, s=8, c="0.6", alpha=0.32, edgecolors="none", label="Latent draws"
         )
-        axis.set_ylabel("$X_2$", color=MUTED, fontsize=11, labelpad=1)
-        axis.axhline(0, color=EDGE, linewidth=0.8)
-        axis.axvline(0, color=EDGE, linewidth=0.8)
-        latent = axis.scatter(
-            *latent_clouds[index].T, s=8, color=color, alpha=0.22, edgecolors="none", zorder=2
-        )
-        latent_scatters.append(latent)
-        eigenvalues, eigenvectors = np.linalg.eigh(covariance)
+        eigenvalues, eigenvectors = np.linalg.eigh(matrix)
         direction = eigenvectors[:, -1]
-        angle = np.degrees(np.arctan2(direction[1], direction[0]))
-        axis.add_patch(
-            Ellipse(
-                (0, 0),
-                3.6 * np.sqrt(eigenvalues[-1]),
-                3.6 * np.sqrt(eigenvalues[0]),
-                angle=angle,
-                facecolor="none",
-                edgecolor=color,
-                linewidth=2.0,
-                alpha=0.9,
-            )
+        ellipse = Ellipse(
+            (0, 0),
+            2 * contour_radius * np.sqrt(eigenvalues[-1]),
+            2 * contour_radius * np.sqrt(eigenvalues[0]),
+            angle=np.degrees(np.arctan2(direction[1], direction[0])),
+            facecolor="none",
+            edgecolor=color,
+            linewidth=1.5,
+            label="95% Gaussian contour",
         )
-        vertical = axis.axvline(0, color=GOLD, linewidth=2.3, alpha=0, zorder=4)
-        horizontal = axis.axhline(0, color=GOLD, linewidth=2.3, alpha=0, zorder=4)
-        scans.append((vertical, horizontal))
-        observed_scatters.append(
-            axis.scatter([], [], s=20, color=color, alpha=0, edgecolors="none", zorder=5)
+        axis.add_patch(ellipse)
+        observed = axis.scatter(
+            [], [], s=17, marker="x", c=color, linewidths=0.9, label="New paired data"
         )
-        badges.append(
-            axis.text(
-                0.5,
-                0.96,
-                "HIDDEN",
-                transform=axis.transAxes,
-                ha="center",
-                va="top",
-                fontsize=8.5,
-                color=MUTED,
-                weight="bold",
-                bbox={"facecolor": CARD, "edgecolor": "none", "pad": 2.5},
-                zorder=8,
-            )
+        observed_pairs.append(observed)
+        first_legend = axis.legend(
+            handles=[cloud, ellipse],
+            loc="upper left",
+            fontsize=7.5,
+            frameon=False,
+            handlelength=1.6,
         )
-        sign = "+0.8" if index == 0 else "−0.8"
-        figure.text(
-            left + 0.08,
-            0.315,
-            f"$V_{'+' if index == 0 else '-'}$   covariance {sign}",
-            ha="center",
-            fontsize=12,
-            color=color,
+        axis.add_artist(first_legend)
+        second_legend = axis.legend(
+            handles=[cloud, observed],
+            loc="upper left",
+            fontsize=7.5,
+            frameon=False,
+            handlelength=1.6,
         )
-    hidden_note = figure.text(
-        0.2475,
-        0.273,
-        "One measured axis per independent draw",
-        ha="center",
-        fontsize=11,
-        color=MUTED,
-    )
+        second_legend.set_visible(False)
+        initial_legends.append(first_legend)
+        paired_legends.append(second_legend)
 
     locations = np.linspace(-3.2, 3.2, 301)
     density = np.exp(-(locations**2) / 2) / np.sqrt(2 * np.pi)
-    marginal_axes, markers = [], []
-    for coordinate, bottom in enumerate((0.52, 0.325)):
-        axis = figure.add_axes((0.505, bottom, 0.205, 0.115))
-        _style_axis(axis)
-        axis.set(xlim=(-3.2, 3.2), ylim=(0, 0.45), xticks=[-2, 0, 2], yticks=[])
-        axis.spines[["top", "left", "right"]].set_visible(False)
-        axis.plot(locations, density, color=CYAN, linewidth=3.8, solid_capstyle="round")
-        axis.plot(locations, density, color=CORAL, linewidth=2, linestyle=(0, (3, 3)))
-        axis.text(
-            0,
-            1.11,
-            f"Coordinate $X_{coordinate + 1}$",
-            transform=axis.transAxes,
-            fontsize=12,
-            color=MUTED,
+    rugs = []
+    for coordinate in range(2):
+        axis = figure.add_subplot(layout[coordinate, 1])
+        axis.set(
+            xlim=(-3.2, 3.2),
+            ylim=(-0.065, 0.47),
+            xticks=[-2, 0, 2],
+            yticks=[0, 0.2, 0.4],
+            xlabel=f"$X_{coordinate + 1}$",
+            ylabel="Density",
         )
-        (marker,) = axis.plot(
+        axis.set_title(
+            f"({'c' if coordinate == 0 else 'd'}) Marginal distribution of $X_{coordinate + 1}$"
+        )
+        axis.plot(locations, density, color=COLORS[0], linewidth=1.6, label="$V_+$")
+        axis.plot(locations, density, color=COLORS[1], linewidth=1.6, linestyle="--", label="$V_-$")
+        (rug,) = axis.plot(
             [],
             [],
-            "o",
-            color=GOLD,
-            markersize=8,
-            markeredgecolor=TEXT,
+            "|",
+            color="0.3",
+            alpha=0.65,
+            markersize=6,
             markeredgewidth=0.8,
-            zorder=5,
+            label="Unpaired data",
         )
-        markers.append(marker)
-        marginal_axes.append(axis)
-    figure.text(
-        0.6075, 0.273, "$V_+$  /  $V_-$: the same $N(0,1)$", ha="center", fontsize=11, color=MUTED
-    )
+        rugs.append(rug)
+        axis.axhline(0, color="0.7", linewidth=0.6)
+        axis.legend(loc="upper right", frameon=False, fontsize=8)
 
-    risk_axis = figure.add_axes((0.795, 0.37, 0.14, 0.255))
-    _style_axis(risk_axis)
+    risk_axis = figure.add_subplot(layout[:, 2])
+    risks = np.array([0.4, 3.6])
+    risk_axis.bar([0, 1], risks, color=COLORS, width=0.55, alpha=0.82)
     risk_axis.set(
-        ylim=(0, 4.35),
-        xlim=(-0.65, 1.65),
-        yticks=[0, 2, 4],
+        xlim=(-0.7, 1.7),
+        ylim=(0, 4.15),
         xticks=[0, 1],
         xticklabels=["$V_+$", "$V_-$"],
+        yticks=[0, 1, 2, 3, 4],
+        ylabel="$\\mathrm{Var}(X_1-X_2)$",
+        title="(e) Spread variance",
     )
-    risk_axis.spines[["top", "right", "left"]].set_visible(False)
-    risk_axis.tick_params(axis="x", labelsize=14)
-    risks = np.array([0.4, 3.6])
-    bars = risk_axis.bar([0, 1], risks, color=[CYAN, CORAL], width=0.55, zorder=3)
+    risk_axis.grid(axis="y", alpha=0.2, linewidth=0.6)
+    risk_axis.set_axisbelow(True)
     for position, value in enumerate(risks):
-        risk_axis.text(
-            position,
-            value + 0.14,
-            f"{value:.1f}",
-            ha="center",
-            va="bottom",
-            fontsize=20,
-            weight="bold",
-            color=TEXT,
-        )
-    figure.text(
-        0.86,
-        0.656,
-        r"$\mathrm{Var}(X_1-X_2)=2-2\,\mathrm{Cov}(X_1,X_2)$",
+        risk_axis.text(position, value + 0.08, f"{value:.1f}", ha="center", fontsize=11)
+    risk_axis.text(
+        0.5,
+        0.95,
+        "$\\mathrm{Var}(X_1-X_2)=2-2\\rho$",
+        transform=risk_axis.transAxes,
         ha="center",
-        fontsize=10.5,
-        color=MUTED,
-    )
-    figure.text(
-        0.86, 0.289, "9× spread variance", ha="center", fontsize=16, weight="bold", color=TEXT
+        va="top",
+        fontsize=10,
     )
 
-    phase_title = figure.text(0.035, 0.173, "", fontsize=17, color=GOLD, weight="bold")
-    phase_note = figure.text(0.035, 0.128, "", fontsize=13, color=MUTED)
-    progress_background = plt.Line2D(
-        [0.035, 0.965],
-        [0.087, 0.087],
-        transform=figure.transFigure,
-        color=EDGE,
-        linewidth=3,
-        solid_capstyle="round",
-    )
-    progress = plt.Line2D(
-        [0.035, 0.035],
-        [0.087, 0.087],
-        transform=figure.transFigure,
-        color=GOLD,
-        linewidth=3,
-        solid_capstyle="round",
-    )
-    figure.add_artist(progress_background)
-    figure.add_artist(progress)
+    design_caption = figure.text(0.065, 0.105, "", fontsize=10.5)
     figure.text(
-        0.035,
-        0.035,
-        "COMPANION DIAGNOSTIC  •  Gaussian innovation geometry",
-        fontsize=10,
-        color=MUTED,
+        0.065,
+        0.06,
+        "Both models are centered with unit marginal variances. Latent joint samples are reference information.",
+        fontsize=9,
+        color="0.25",
     )
-    figure.text(0.965, 0.035, "Known marginal variances = 1", ha="right", fontsize=10, color=MUTED)
+    figure.text(
+        0.065,
+        0.027,
+        "Gaussian innovation geometry example; this figure is not an SPDE trajectory simulation.",
+        fontsize=9,
+        color="0.25",
+    )
 
     def update(fraction):
         fraction = float(np.clip(fraction, 0, 1))
-        joint_stage = fraction >= 0.76
-        progress.set_xdata([0.035, 0.035 + 0.93 * fraction])
+        scalar_count = min(200, int(200 * min(fraction / JOINT_START, 1)))
+        for coordinate, rug in enumerate(rugs):
+            values = unpaired[:scalar_count][coordinate::2]
+            rug.set_data(values, np.full(len(values), -0.032))
+        joint_stage = fraction >= JOINT_START
+        for before, after in zip(initial_legends, paired_legends, strict=True):
+            before.set_visible(not joint_stage)
+            after.set_visible(joint_stage)
         if not joint_stage:
-            draw_position = fraction * 24
-            draw_index = min(int(draw_position), len(independent_scalar_draws) - 1)
-            coordinate = draw_index % 2
-            scalar = independent_scalar_draws[draw_index]
-            pulse = np.sin(np.pi * (draw_position % 1)) ** 0.7
-            phase_title.set_text(
-                f"Independent draw {draw_index + 1:02d}: observe $X_{coordinate + 1}$ only"
+            for observed in observed_pairs:
+                observed.set_offsets(np.empty((0, 2)))
+            first_count, second_count = (scalar_count + 1) // 2, scalar_count // 2
+            design_caption.set_text(
+                f"Unpaired design: one coordinate per independent draw; "
+                f"$n_1={first_count}$, $n_2={second_count}$. No within-draw cross-products."
             )
-            phase_note.set_text(
-                "The other coordinate is missing. No within-draw cross-product is recorded."
-            )
-            subtitle.set_text(
-                "Identical marginals. Opposite covariance. Very different spread risk."
-            )
-            hidden_title.set_text("HIDDEN JOINT TRUTH")
-            hidden_note.set_text("One measured axis per independent draw")
-            for pair in scans:
-                pair[0].set_xdata([scalar, scalar])
-                pair[1].set_ydata([scalar, scalar])
-                pair[0].set_alpha(0.7 * pulse if coordinate == 0 else 0)
-                pair[1].set_alpha(0.7 * pulse if coordinate == 1 else 0)
-            for index, marker in enumerate(markers):
-                marker.set_data([scalar], [np.exp(-(scalar**2) / 2) / np.sqrt(2 * np.pi)])
-                marker.set_alpha(pulse if index == coordinate else 0)
-                marginal_axes[index].patch.set_alpha(0)
-            for cloud, observed, badge in zip(
-                latent_scatters, observed_scatters, badges, strict=True
-            ):
-                cloud.set_alpha(0.22)
-                observed.set_alpha(0)
-                badge.set_text("HIDDEN")
-                badge.set_color(MUTED)
         else:
-            phase = (fraction - 0.76) / 0.24
-            count = max(3, min(95, int(95 * min(1, phase * 1.5))))
-            phase_title.set_text("Change the design: observe $X_1$ and $X_2$ together")
-            phase_note.set_text(
-                "Joint observations supply the missing cross-products and reveal the orientation."
+            count = min(95, max(1, int(95 * (fraction - JOINT_START) / (1 - JOINT_START))))
+            for index, observed in enumerate(observed_pairs):
+                observed.set_offsets(paired[index][:count])
+            design_caption.set_text(
+                f"New paired-observation design: both coordinates measured together; "
+                f"$n={count}$ per model. Cross-products are available."
             )
-            subtitle.set_text(
-                "The marginal curves still match. Paired observations distinguish the models."
-            )
-            hidden_title.set_text("NOW: JOINT OBSERVATIONS")
-            hidden_note.set_text("A new observation design reveals covariance")
-            for pair in scans:
-                pair[0].set_alpha(0)
-                pair[1].set_alpha(0)
-            for marker in markers:
-                marker.set_alpha(0)
-            for index, (cloud, observed, badge) in enumerate(
-                zip(latent_scatters, observed_scatters, badges, strict=True)
-            ):
-                cloud.set_alpha(0.07)
-                observed.set_offsets(joint_samples[index][:count])
-                observed.set_alpha(0.88)
-                badge.set_text("PAIRED DATA")
-                badge.set_color(GOLD)
-        for bar in bars:
-            bar.set_alpha(0.92)
 
     return figure, update, matrices, risks
 
 
 def render_observability_video(output_dir=None, *, seed=1729, duration=12.0, fps=24):
-    """Create MP4, compact GIF, poster and explicit scientific metadata."""
+    """Render fixed-scale scientific plots and save their observation assumptions."""
     if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
         raise ValueError("seed must be a nonnegative integer")
     if not np.isfinite(duration) or not 10 <= duration <= 15:
@@ -354,8 +230,8 @@ def render_observability_video(output_dir=None, *, seed=1729, duration=12.0, fps
         fps=fps,
         codec="libx264",
         metadata={
-            "title": "What the observations cannot tell you",
-            "comment": "Gaussian innovation geometry; explicit independent unpaired and paired designs",
+            "title": "Unpaired Gaussian observations and covariance identification",
+            "comment": "Latent joint references, independent unpaired observations, and new paired observations",
         },
         extra_args=[
             "-pix_fmt",
@@ -372,9 +248,9 @@ def render_observability_video(output_dir=None, *, seed=1729, duration=12.0, fps
     with writer.saving(figure, str(mp4), dpi=100):
         for frame in range(frame_count):
             update(frame / (frame_count - 1))
-            writer.grab_frame(facecolor=BACKGROUND)
-    update(0.52)
-    figure.savefig(poster, dpi=100, facecolor=BACKGROUND)
+            writer.grab_frame(facecolor="white")
+    update(0.6)
+    figure.savefig(poster, dpi=100, facecolor="white")
     plt.close(figure)
     subprocess.run(
         [
@@ -398,8 +274,8 @@ def render_observability_video(output_dir=None, *, seed=1729, duration=12.0, fps
         [exposure @ covariance @ exposure for covariance in covariances], risks
     )
     metadata = {
-        "title": "What the observations cannot tell you",
-        "kind": "scientific animation; Gaussian innovation geometry companion diagnostic",
+        "title": "Unpaired Gaussian observations and covariance identification",
+        "kind": "Matplotlib scientific figure animation; Gaussian innovation geometry",
         "seed": seed,
         "duration_seconds": duration,
         "fps": fps,
@@ -409,18 +285,20 @@ def render_observability_video(output_dir=None, *, seed=1729, duration=12.0, fps
         "codec": "H.264 / libx264",
         "pixel_format": "yuv420p",
         "faststart": True,
+        "plot_style": "White Matplotlib figure, standard axes and legends, fixed scales, standard blue/orange colors",
         "models": {"V_plus": covariances[0].tolist(), "V_minus": covariances[1].tolist()},
         "marginals": "Each coordinate is N(0,1) under both centered Gaussian models.",
         "initial_observation_design": "One coordinate is measured per fresh independent draw; no paired values or within-draw cross-products are observed.",
-        "scan_construction": "Independent scalar N(0,1) draws, generated separately from all latent joint clouds; exactly one scan axis and one marginal marker visible per draw.",
-        "latent_clouds": "Illustrative hidden joint truth, explicitly labelled; not the data available to the unpaired design.",
-        "final_design_change_at_seconds": 0.76 * duration,
-        "final_design": "Both coordinates observed jointly on each new draw; paired samples reveal covariance orientation while marginal laws remain unchanged.",
+        "unpaired_sample_construction": "200 independent scalar N(0,1) draws generated separately from all latent joint clouds; alternating draws observe different coordinates; rugs accumulate separately.",
+        "latent_clouds": "210 reference samples per model, labelled latent. These joint pairs are not observed by the unpaired design.",
+        "gaussian_contour_probability": 0.95,
+        "final_design_change_at_seconds": JOINT_START * duration,
+        "final_design": "95 new joint samples per model, added as x markers only after the design changes to paired observation. Marginal laws remain unchanged.",
         "spread_exposure": exposure.tolist(),
         "spread_variance_formula": "a.T @ V @ a = 2 - 2*Cov(X1,X2), a=(1,-1)",
         "spread_variances": risks.tolist(),
         "risk_variance_ratio": 9,
-        "scope": "Toy centered Gaussian innovation experiment, not an SPDE trajectory simulation, curve calibration, forecasting result, or novelty claim.",
+        "scope": "Centered Gaussian innovation geometry; not an SPDE trajectory, calibration or forecasting result.",
         "numpy_version": np.__version__,
         "matplotlib_version": matplotlib.__version__,
         "files": {"video": mp4.name, "preview": preview.name, "poster": poster.name},
