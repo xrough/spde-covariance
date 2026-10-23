@@ -130,7 +130,7 @@ optimization certificates bound numerical error to the constrained optimizer.
   20 paired replications of frozen forecasts on future observations; selected
   windows do not establish an advantage over the fixed-window policy.
 - [Infinite-rank transport protocol](docs/infinite-transport.md) and [report](experiments/results/infinite-transport/report.md):
-  20 coupled path replications of one fixed model. Weekly covariance projection
+  20 coupled path replications. At 256 forcing modes, weekly covariance projection
   error falls from 1.72e-3 to 1.10e-5 at 8→64 coordinates; sampling error remains separate.
 
 Current experiments assume known observation maps/noise and correct drift.

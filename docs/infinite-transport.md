@@ -410,12 +410,14 @@ $J=8$ experiment, operational-minus-oracle covariance MSE is
 0.0000355182 ± 0.0000666618 MCSE. The nonzero population leakage does not establish
 a universally larger realized risk or covariance MSE in this small study.
 
-The remaining source trace is bounded by 6.32221e-6; the largest full innovation
-trace bound is 6.38261e-6 and the terminal state mean-square bound is 8.64801e-6.
-The maximum configured finite-J operational covariance tail bound is 1.78454e-6.
+At reference forcing M=256, the remaining source trace is bounded by 6.32221e-6;
+the largest full innovation trace bound is 6.38261e-6 and the terminal state
+mean-square bound is 8.64801e-6. The maximum finite-J operational covariance tail
+bound at this reference is 1.78454e-6.
 Each passes its declared 1e-5 audit threshold, with units and targets kept
 separate. This does not require the intentionally varied J-projection errors
-to fall below that forcing-reference threshold.
+to fall below that forcing-reference threshold. The coarser forcing levels
+retain their unresolved flags: twelve M=64 cases and two M=128 cases.
 
 All 240 constrained fits are feasible and converged; the largest numerical
 covariance-distance certificate is 5.65966e-8 against a 1e-4 budget. Two small
