@@ -1,0 +1,97 @@
+model,base_grid,cover,N,contrast,first,second,metric,replications,available_pairs,mean,mcse
+powerlaw,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,complete_weighted_error,20,20,0.0005696832549424335,0.0014772750293663424
+powerlaw,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,missing_weighted_error,20,20,0.010393173686692476,0.004212985296947444
+powerlaw,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,test_observed_score,20,20,-0.16749077389600017,0.055783939111590256
+powerlaw,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,complete_weighted_error,20,20,-1.8667050334567954,0.8291336307672327
+powerlaw,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,missing_weighted_error,20,20,-1.9462413370695484,0.8327890091148429
+powerlaw,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,test_observed_score,20,20,-0.16749077389600017,0.055783939111590256
+powerlaw,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,complete_weighted_error,20,20,-0.00013664181520627662,0.0011915350788243276
+powerlaw,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,missing_weighted_error,20,20,0.0006664463314292046,0.001096646588393078
+powerlaw,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,test_observed_score,20,20,-0.06398388199366707,0.057673152660721407
+powerlaw,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,complete_weighted_error,20,20,-6.393061041715109e-06,0.0011394859050306854
+powerlaw,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,missing_weighted_error,20,20,0.0006582414158186767,0.0008832612325123645
+powerlaw,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,test_observed_score,20,20,-0.058503423484916085,0.05757882515916034
+powerlaw,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,complete_weighted_error,20,20,-3.3773824754754905e-06,9.428903229338672e-06
+powerlaw,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,missing_weighted_error,20,20,3.6959654852749756e-06,2.6317154380891675e-05
+powerlaw,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,test_observed_score,20,20,-1.5260867121469347e-05,1.6209818935704376e-05
+powerlaw,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,complete_weighted_error,20,20,-0.0003268664803396191,0.00015693310802985443
+powerlaw,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,missing_weighted_error,20,20,-0.0006791189860205669,0.00030099473537065967
+powerlaw,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,test_observed_score,20,20,0.0,0.0
+powerlaw,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,complete_weighted_error,20,20,-0.003593051914867494,0.000831474668252091
+powerlaw,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,missing_weighted_error,20,20,0.0006445109499939585,0.0005561639630781099
+powerlaw,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,test_observed_score,20,20,-0.12309148824135718,0.08848541323884847
+powerlaw,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,complete_weighted_error,20,20,0.0,0.0
+powerlaw,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,missing_weighted_error,20,20,0.0,0.0
+powerlaw,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,test_observed_score,20,20,0.0,0.0
+powerlaw,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,complete_weighted_error,20,20,-0.03586891927370641,0.005824635264748686
+powerlaw,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,missing_weighted_error,20,20,-0.03938340013465365,0.008364613476777038
+powerlaw,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,test_observed_score,20,20,-0.26720560517300385,0.06037748328740763
+powerlaw,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,complete_weighted_error,20,20,-40.43719650587134,15.934976633861224
+powerlaw,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,missing_weighted_error,20,20,-40.578241329625236,15.935964973322926
+powerlaw,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,test_observed_score,20,20,-0.26720560517300385,0.06037748328740763
+powerlaw,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,complete_weighted_error,20,20,0.0009704826076789199,0.001989572680579625
+powerlaw,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,missing_weighted_error,20,20,0.003204656327394489,0.0017974684887973752
+powerlaw,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,test_observed_score,20,20,-0.08284501804919842,0.058556060485722504
+powerlaw,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,complete_weighted_error,20,20,-4.285390819509377e-05,0.0016337001755721647
+powerlaw,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,missing_weighted_error,20,20,0.0009219155338846916,0.001145395894855342
+powerlaw,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,test_observed_score,20,20,-0.07277639111374867,0.05793537250945333
+powerlaw,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,complete_weighted_error,20,20,-1.968919067580205e-05,5.459002031688367e-06
+powerlaw,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,missing_weighted_error,20,20,-3.302586827743301e-05,1.0659456873788277e-05
+powerlaw,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,test_observed_score,20,20,-4.912411017699014e-06,1.4048426446485995e-05
+powerlaw,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,complete_weighted_error,20,20,0.0001461438364332726,0.0008829064478092499
+powerlaw,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,missing_weighted_error,20,20,0.0003968566831021911,0.0018860768450271763
+powerlaw,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,test_observed_score,20,20,0.0,0.0
+powerlaw,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,complete_weighted_error,20,20,-0.011556712226945785,0.001413427139907841
+powerlaw,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,missing_weighted_error,20,20,-0.014442008727785952,0.003136192224282907
+powerlaw,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,test_observed_score,20,20,0.3422109347927972,0.17212757135073192
+powerlaw,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,complete_weighted_error,20,20,0.0,0.0
+powerlaw,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,missing_weighted_error,20,20,0.0,0.0
+powerlaw,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,test_observed_score,20,20,0.0,0.0
+rotated,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,complete_weighted_error,20,20,0.0007177187715364429,0.0024621714573769883
+rotated,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,missing_weighted_error,20,20,0.018190346500572198,0.005627732942078279
+rotated,41,3,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,test_observed_score,20,20,-0.4201088908911402,0.13718312685261622
+rotated,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,complete_weighted_error,20,20,-0.4723777407388831,0.21903800484360006
+rotated,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,missing_weighted_error,20,20,-0.5590011238182325,0.2219101345682349
+rotated,41,3,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,test_observed_score,20,20,-0.4201088908911402,0.13718312685261622
+rotated,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,complete_weighted_error,20,20,0.0006605992284457046,0.0014863789544709539
+rotated,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,missing_weighted_error,20,20,0.001875350574093548,0.0011325867631730912
+rotated,41,3,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,test_observed_score,20,20,-0.12733023232378854,0.10882014582167034
+rotated,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,complete_weighted_error,20,20,0.0009720530156155204,0.0015227403116512403
+rotated,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,missing_weighted_error,20,20,0.0017086619715137447,0.0011474382490892835
+rotated,41,3,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,test_observed_score,20,20,-0.11441541874718268,0.10912498048054058
+rotated,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,complete_weighted_error,20,20,6.0929683020787e-06,1.1536612990049089e-05
+rotated,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,missing_weighted_error,20,20,9.680259618571538e-06,2.4436463127109546e-05
+rotated,41,3,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,test_observed_score,20,20,-2.90793129352096e-05,2.379558594745996e-05
+rotated,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,complete_weighted_error,20,20,1.3102950843258548e-05,7.983952312638705e-05
+rotated,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,missing_weighted_error,20,20,6.338266520945768e-07,0.00015065173327953132
+rotated,41,3,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,test_observed_score,20,20,0.0,0.0
+rotated,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,complete_weighted_error,20,20,-0.005958971667582311,0.0010818287183915498
+rotated,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,missing_weighted_error,20,20,0.002662133705407822,0.0012056721534286375
+rotated,41,3,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,test_observed_score,20,20,-0.24421178075655803,0.19349256976995347
+rotated,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,complete_weighted_error,20,20,0.0,0.0
+rotated,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,missing_weighted_error,20,20,0.0,0.0
+rotated,41,3,512,stability guard versus validation alone,stability_guarded,validation_only,test_observed_score,20,20,0.0,0.0
+rotated,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,complete_weighted_error,20,20,-0.04570006922831972,0.007681485314003262
+rotated,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,missing_weighted_error,20,20,-0.05129203283811592,0.011100412611761472
+rotated,41,9,512,PSD coherence at rank2,coherent_eta0_zero_rank2,pairwise_rank2,test_observed_score,20,20,-0.46421798674414844,0.12840910582682263
+rotated,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,complete_weighted_error,20,20,-314.430273582051,146.38056401200248
+rotated,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,missing_weighted_error,20,20,-314.627792059871,146.38249110068298
+rotated,41,9,512,PSD coherence at full support,coherent_eta0_zero_support,pairwise_support,test_observed_score,20,20,-0.46421798674414844,0.12840910582682263
+rotated,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,complete_weighted_error,20,20,0.0011025962296543055,0.002326981650742691
+rotated,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,missing_weighted_error,20,20,0.0031991152822718276,0.002034458998711249
+rotated,41,9,512,entrywise shrinkage at rank2,ridge_rank2,pairwise_rank2,test_observed_score,20,20,-0.12557901556244816,0.11890465870514069
+rotated,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,complete_weighted_error,20,20,0.0004248058835952945,0.0019928584005337773
+rotated,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,missing_weighted_error,20,20,0.0013238981576245354,0.0013104507030087492
+rotated,41,9,512,shrinkage within coherent support,coherent_eta0.001_zero_support,coherent_eta0_zero_support,test_observed_score,20,20,-0.1081074438659357,0.11717319752000974
+rotated,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,complete_weighted_error,20,20,-8.214999221634045e-06,5.257884800930573e-06
+rotated,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,missing_weighted_error,20,20,-1.2330590527490775e-05,1.0390964546422825e-05
+rotated,41,9,512,positive floor within coherent support,coherent_eta0.001_resolution_support,coherent_eta0.001_zero_support,test_observed_score,20,20,7.092760142768384e-07,2.0147481928907705e-05
+rotated,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,complete_weighted_error,20,20,0.0005485874203638108,0.0010334406484663944
+rotated,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,missing_weighted_error,20,20,0.0010612342876421322,0.0023096351914907755
+rotated,41,9,512,rank2 versus support after coherent fitting,coherent_eta0.001_resolution_rank2,coherent_eta0.001_resolution_support,test_observed_score,20,20,0.0,0.0
+rotated,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,complete_weighted_error,20,20,-0.01648832154211212,0.002504539162447658
+rotated,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,missing_weighted_error,20,20,-0.0223253538228472,0.0052647785429800744
+rotated,41,9,512,global PSD projection after raw rank2,pairwise_rank2_psd,pairwise_rank2,test_observed_score,20,20,0.6431681828358364,0.26309376273238255
+rotated,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,complete_weighted_error,20,20,0.0,0.0
+rotated,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,missing_weighted_error,20,20,0.0,0.0
+rotated,41,9,512,stability guard versus validation alone,stability_guarded,validation_only,test_observed_score,20,20,0.0,0.0

@@ -513,7 +513,13 @@ is the linear map for **normalized** covariance integration in the
 Frobenius-isometric `svec` coordinates of the declared source basis. Use
 `admissibility.covariance_integration_matrix(propagator, delta,
 quadrature_order=24)` to prepare and reuse this map. The evaluation matrix
-has one row per grid node and one column per finite source coordinate.
+has one row per grid node and one column per **output** coordinate J.
+The propagator-only path uses the matched source/output dimension. For a larger
+forcing support M, `source_classes.projected_covariance_integration_matrix(M,J,delta)`
+returns the rectangular `dJ x dM` map, where `dL=L*(L+1)//2`.
+The source witness is M-by-M while the projected innovation is J-by-J.
+See [output versus forcing support](source-classes.md) for numerical-map and
+fixed-generating-source tail allowances; neither excludes every infinite source.
 The kernel may be indefinite for diagnosis. Positive grid weights retain
 their supplied scale; the default is unweighted discrete Frobenius distance.
 
@@ -560,3 +566,13 @@ distance intervals. Its certificates and held-out observed scores do not
 establish correctness of the completed missing entries. See the
 [coherent-completion protocol](coherent-completion.md) for the declared
 models, evaluation targets and source-cutoff limitations.
+
+The experimental composition layer in `completion_strategy` provides immutable
+`CompletionStrategySettings`, `fit_completion_strategy`, balanced training
+splits and explicit guarded validation selection. It does not change the
+kernel-facing or H-coordinate estimator APIs. See [strategy conventions](completion-strategies.md).
+`CompletionResearchConfig` and `CompletionForecastConfig` are experiment-local
+interfaces selected by the TOML `study` marker through the existing
+`benchmark-partial` and `benchmark-rq3` commands. They retain unavailable fits
+and method-specific diagnostics; they do not convert completed kernels to
+H-coordinate covariance matrices.

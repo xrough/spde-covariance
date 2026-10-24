@@ -1,0 +1,8 @@
+{
+  "input": "experiments/results/completion-ablation/estimates.csv.gz",
+  "input_sha256": "efb99ecb8f02f513c33d706f4652bf2388a9ad9844bdad7053834d4b96b1e413",
+  "script": "scripts/completion_contrasts.py",
+  "script_sha256": "2b69fc3a77d60f6776802a689a4eb7e73e38e3525c919b03644bd201d9cdf040",
+  "definition": "first minus second; paired within replication; MCSE across replications",
+  "scope": "postprocessing only; no fitting, model or parameter selection"
+}

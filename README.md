@@ -3,30 +3,28 @@
 [![Verification](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml/badge.svg)](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A Python research toolkit for transport-SPDE covariance. A **four-dimensional
-toy laboratory** develops identification, estimation and forecast evaluation;
+A Python research toolkit for transport-SPDE covariance. Its **four-dimensional toy laboratory**
+develops identification, estimation and forecast evaluation;
 a fixed infinite-rank benchmark separates forcing truncation, curve projection,
 time resolution and partial-observation error. Established estimators are used;
 no new estimator or infinite-dimensional statistical guarantee is claimed.
 
 The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
-| Question | Current finite study | Later direction |
+| Question | Toy foundation | Fixed-model continuation |
 | --- | --- | --- |
 | **1. Identification** | Which covariance entries and exposure risks do partial observations reveal? | Observation geometry as spatial resolution increases |
-| **2. Current-risk estimation** | How do sampling error, changing covariance and maturity-pair coverage interact? | Local operator/risk estimation with representation error |
-| **3. Forecast evaluation** | How do estimates score on strictly subsequent observations? | Functional uncertainty forecasts under richer dynamics |
+| **2. Current-risk estimation** | How do sampling error, changing covariance and maturity-pair coverage interact? | Kernel/risk estimation with representation diagnostics |
+| **3. Forecast evaluation** | How do estimates score on strictly subsequent observations? | Completed-kernel forecasts under declared source paths |
 
-The [research roadmap](docs/research-roadmap.md) explains the progression and
-the distinction between current numerical evidence and future research.
+The [roadmap](docs/research-roadmap.md) distinguishes numerical evidence from future research.
 
 ## See the toy model
 
 ![Transport-adjusted innovations and covariance estimation](assets/transport-spde-poster.png)
 
-One seeded four-mode transport trajectory, its normalized innovations and the
-estimated covariance against analytical truth. This illustration uses full,
-clean coefficients, four Brownian sources and zero additional drift.
+One seeded four-mode transport trajectory, its normalized innovations and estimated covariance
+against analytical truth, using clean coefficients, four Brownian sources and zero additional drift.
 
 <details>
 <summary>Show the animated Matplotlib figure</summary>
@@ -89,9 +87,8 @@ V_\Delta=\mathrm{Cov}(\xi_i)
 =\frac{1}{\Delta}\int_0^\Delta M_r C M_r^\top dr.
 ```
 
-**The fitted target is $V_\Delta$, not $C$ or $L$.** The simulator accepts $C$;
-a compatible Brownian loading $L$ is nonunique. The default exact exponential
-model has four Gaussian Brownian channels and no explicit spatial mollifier.
+**The fitted target is $V_\Delta$, not $C$ or $L$.** The simulator accepts $C$; a loading $L$ is nonunique.
+The default exact exponential model has four Gaussian Brownian channels and no explicit spatial mollifier.
 After transport adjustment, its covariance-fitting core is a generic problem
 with partial linear observations.
 
@@ -104,13 +101,11 @@ It does not turn missing pairs into identified data. The [coherent strategy](doc
 fits compatible PSD fragments before completion; the [runnable example](examples/coherent_pipeline.py)
 also checks distance to a declared finite constant-source SPDE class. Historical
 raw and separately PSD-projected completion remain available.
-The [methods](docs/methods.md) retain the full SPDE setup, Hilbert metric,
-exact/projected distinction, objective and certificate formulas.
+The [methods](docs/methods.md) retain the SPDE setup, metric, approximations, objective and certificates.
 
 ## What the numerical evidence says
 
-The [Stage 1 report](experiments/results/stage1/report.md) uses 20 paired synthetic
-replications. Relative Hilbert–Schmidt errors are Monte Carlo means ± MCSE:
+The [Stage 1 report](experiments/results/stage1/report.md) uses 20 paired synthetic replications; relative Hilbert–Schmidt errors are means ± MCSE:
 
 | Information setting | Constrained ridge error | Numerical Gram rank |
 | --- | ---: | ---: |
@@ -124,27 +119,24 @@ identify missing directions. The full-data empirical baseline scores 0.1189 ±
 0.0098, so ridge does not win every comparison. MCSE measures simulation precision;
 optimization certificates bound numerical error to the constrained optimizer.
 
-## Current studies and next steps
+## Current studies
 
-- [RQ2 protocol](docs/research-question-2.md) and [report](experiments/results/rq2/report.md):
-  current covariance and risk under changing coverage, with directly sampled
-  Gaussian innovations to isolate estimation.
-- [RQ3 protocol](docs/research-question-3.md) and [report](experiments/results/rq3/report.md):
-  20 paired replications of frozen forecasts on future observations; selected
-  windows do not establish an advantage over the fixed-window policy.
-- [Infinite-rank transport protocol](docs/infinite-transport.md) and [report](experiments/results/infinite-transport/report.md):
-  20 coupled path replications. At 256 forcing modes, weekly covariance projection
-  error falls from 1.72e-3 to 1.10e-5 at 8→64 coordinates; sampling error remains separate.
-- [Partial-observation protocol](docs/partial-observations.md) and [report](experiments/results/partial-observations/report.md):
-  20 paired replications, shared data across dimensions, and observed-data selection.
-  More coordinates do not remove weak observation directions; selection offers no uniform advantage.
-- [Canonical-completion protocol](docs/canonical-completion.md), [reference controls](experiments/results/canonical-reference/report.md)
-  and [SPDE fragment study](experiments/results/canonical-spde/report.md): structural completion,
-  sampling error, inverse sensitivity and risk ambiguity are reported separately.
-  The [findings](docs/completion-findings.md) summarize measured outcomes and limitations.
-- [PSD-consistent completion](docs/coherent-completion.md): joint fragment fitting,
-  observed-data penalty selection and finite constant-source SPDE diagnostics;
-  [paired numerical follow-up](experiments/results/coherent-completion/report.md).
+- Finite [RQ2](docs/research-question-2.md) and [RQ3](docs/research-question-3.md):
+  estimation under changing coverage and 20-replication past-only forecast evaluation.
+- [Fixed infinite-rank transport](docs/infinite-transport.md) and [evidence](experiments/results/infinite-transport/report.md):
+  forcing, curve projection and time-discretization errors remain distinct.
+- [Partial observations](docs/partial-observations.md): shared data across dimensions; more coordinates do not remove weak information.
+- [Canonical completion](docs/canonical-completion.md), [paper controls](experiments/results/canonical-reference/report.md)
+  and [SPDE fragments](experiments/results/canonical-spde/report.md): structural completion and risk ambiguity.
+- [Coherent fitting](docs/coherent-completion.md), [ablations](experiments/results/completion-ablation/report.md)
+  and [joint refinement](experiments/results/completion-refinement/report.md): PSD coherence,
+  shrinkage, floors, forcing support and overlap amplification are tested separately.
+- [Completion forecasts](experiments/results/completion-forecast/report.md): three frozen forecast rules
+  on future weekly innovations; [findings and limits](docs/completion-continuation-findings.md).
+
+The [research protocol](docs/completion-research.md) and [source-class note](docs/source-classes.md)
+distinguish output dimension from forcing support. No finite-class diagnostic
+excludes every infinite-dimensional SPDE; numerical grid stability is not a continuum guarantee.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
@@ -154,22 +146,15 @@ quadrature diagnostics; dense computation targets moderate dimensions.
 
 ## Find details and reproduce
 
-[API](docs/api.md) · [Workflow](docs/workflow.md) ·
-[Methods](docs/methods.md) · [Verification](docs/verification.md) ·
+[API](docs/api.md) · [Workflow](docs/workflow.md) · [Methods](docs/methods.md) · [Verification](docs/verification.md) ·
 [CV evidence](docs/portfolio.md) · [Contributing](CONTRIBUTING.md)
 
 Reproduce the smoke studies:
 
 ```sh
-uv run spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/stage1-smoke
-uv run spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/rq2-smoke
-uv run spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/rq3-smoke
-uv run spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/infinite-smoke
-uv run spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/partial-smoke
-uv run spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/canonical-smoke
-uv run spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output experiments/runs/coherent-smoke
+uv run spde-covariance benchmark-partial experiments/configs/completion-research-smoke.toml --output experiments/runs/research-smoke
+uv run spde-covariance benchmark-rq3 experiments/configs/completion-forecast-smoke.toml --output experiments/runs/forecast-smoke
 ```
 
-Protocols and the [roadmap](docs/research-roadmap.md) link evidence and next questions.
-Runs preserve source/configuration manifests and machine-readable measurements.
+Protocols and the [roadmap](docs/research-roadmap.md) link evidence and next questions; runs retain source/configuration manifests and measurements.
 Code, tests and analytical controls are licensed under [MIT](LICENSE).

@@ -104,3 +104,11 @@ numerical/software reliability. It does not validate empirical futures
 forecasting, curve calibration, confidence intervals, outlier robustness,
 or infinite-dimensional statistical guarantees. Timing results apply to the
 reported environment, not to all hardware.
+
+The [completion continuation](completion-continuation-findings.md) adds
+reproducible mechanism ablations, fixed-model resolution and forcing-support
+diagnostics, and past-only completed-kernel forecasts. A defensible description
+is: “Implemented covariance-completion comparisons with PSD constraints,
+observation-aware validation, numerical certificates and reproducible synthetic
+risk evaluation.” Its numerical results are design-specific; they do not
+establish a novel estimator, uniform superiority or empirical trading value.
