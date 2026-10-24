@@ -117,3 +117,37 @@ def test_canonical_rejects_irregular_local_or_bad_point_maps():
             method_options={},
             covariance_assumption="common",
         )
+
+
+def test_zero_date_weight_coverage_is_not_filled_as_observed_zero():
+    data, layout = example_data()
+    weights = np.ones(len(data.observations))
+    weights[::2] = 0
+    with pytest.raises(ValueError, match="positive date-weight coverage"):
+        fit_covariance_kernel(
+            data,
+            layout=layout,
+            method="canonical",
+            method_options={"rank": 1, "weights": weights},
+            covariance_assumption="common",
+        )
+
+
+def test_touching_fragment_intervals_are_not_positive_measure_overlaps():
+    E = np.ones((3, 1))
+    rows = (np.array([0, 1]), np.array([1, 2]))
+    observations = tuple(
+        Observation(i + 1.0, np.ones(2), E[ids], np.zeros((2, 2))) for i, ids in enumerate(rows)
+    )
+    data = ObservedInnovationBatch(np.arange(3.0), observations, "constant", "exact_transport")
+    layout = FragmentLayout(
+        np.arange(3.0), np.ones(3), ((0.0, 1.0), (1.0, 2.0)), rows, E, "constant"
+    )
+    with pytest.raises(ValueError, match="positive-length"):
+        fit_covariance_kernel(
+            data,
+            layout=layout,
+            method="canonical",
+            method_options={"rank": 1},
+            covariance_assumption="common",
+        )

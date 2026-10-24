@@ -205,3 +205,81 @@ must show canonical bias separately from estimation error, raw PSD failures
 separately from optional repair, and all predeclared cases rather than a
 favorable subset. A completed covariance can support subsequent prediction
 only under the corresponding modeling and observation assumptions.
+
+## Integrated benchmark protocol
+
+The `benchmark-partial` command dispatches TOMLs marked `study="fragments"`
+to this study. Unmarked historical configurations retain their original
+partial-observation behavior. The [end-to-end example](../examples/canonical_pipeline.py)
+starts with a transport trajectory, extracts innovations, observes dense
+fragments and compares the two adapters. The larger Monte Carlo studies
+directly simulate the same normalized innovation covariance to isolate RQ2;
+they do not reconstruct innovations from sparse curve levels.
+
+| Profile | Generating kernels | Training prefixes | Base grids | Covers | Replications |
+| --- | --- | --- | --- | --- | --- |
+| Reference | Paper K1 finite-rank, K2 Brownian, K3 analytic | 100, 500 | 100 on [0,1] | 3, 9 | 100 |
+| SPDE | Fixed power-law and rotated infinite-rank sources | 128, 512, 2048 | 41, 81, 161 on [0,3] years | 3, 9 | 20 |
+
+Both use seed `20261026`, known zero mean, balanced shuffled fragment cycles,
+and nested sample prefixes. Parent curve values and fresh independent point
+noise are generated once per replication/source, before grid or method views.
+The same standardized Gaussian draws pair the source/noise cases. SPDE base
+grids are augmented by the fixed exposure maturities and delivery endpoints;
+actual grid sizes are recorded. Noise variances are 0 and 0.001. Weekly
+innovations use the existing transported source with 512 forcing modes,
+power-law exponent 3, source trace 1 and rotation angle pi/6.
+
+Paper manual ranks are 4 for K1 and 2 otherwise. SPDE ranks 1, 2, 4, 8 are
+declared in advance, with 2 primary; paper-consistent 95% FVE is an additional
+policy where defined. Each policy preserves the observed empirical partial
+kernel, so **observed validation cannot distinguish its invisible rank changes**.
+FVE on an indefinite separator and unsupported manual ranks are unavailable,
+with no fallback rank. Every raw estimate and its separately weighted PSD
+projection are retained in measurements; representative matrices use rep0 at
+the declared central resolution/count, never the most favorable replication.
+
+At base grid81 and N512, ridge compares J4/8/16 and relative penalties
+0.001/0.01/0.1, scaled by each observed Gram norm. The trace cap is 2 and
+the numerical covariance-distance budget is 1e-4. Selection uses observations
+2049–2176 only; testing uses 2177–2688. Training ends at the selected prefix,
+with no validation refit. Exact ties choose smaller J then larger relative
+penalty. Canonical policies have no validation tuning. The dense geometry
+cache holds at most32 repeated-design entries.
+
+All methods report weighted errors on observed, missing and complete regions,
+error to the population finite-grid canonical reference, and that reference's
+discrepancy from the generating kernel separately. Scores use the original
+fragment Frobenius loss, not the maturity-weighted diagnostic norm. Compare
+scores only within an identical source, design, grid and noise setting.
+Paired MCSE is calculated from one difference per independent replication.
+Paper-style ISE tables use median and mean absolute deviation from the median;
+the archive also contains deviations from the mean and unscaled median absolute
+deviation because the paper does not specify the deviation center precisely.
+
+Point-spread scoring requires its full support on one observed fragment.
+The continuous delivery target and its grid-quadrature approximation are
+separate: a finite point grid has no exact continuous-delivery risk proxy.
+Exact attainable identification ranges are supplied for two-block population
+controls; they are not inferred from noisy empirical or recursive blocks.
+Raw/projected risk differences and trace/observed-entry changes are recorded.
+
+Population checks compare256/512 modes, add321-point refinement, vary overlap
+widths0.05/0.2/0.4 and support cutoffs1e-10/1e-12/1e-14. Relative weighted
+differences above1e-4 on common physical targets are flagged as numerical
+reference instability. Agreement does not certify continuum convergence or
+bound inverse-amplified forcing-tail error.
+
+```sh
+uv run spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/canonical-smoke
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 uv run spde-covariance benchmark-partial experiments/configs/canonical-reference.toml --output experiments/runs/canonical-reference
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 uv run spde-covariance benchmark-partial experiments/configs/canonical-spde.toml --output experiments/runs/canonical-spde
+```
+
+The [reference evidence](../experiments/results/canonical-reference/report.md)
+and [SPDE evidence](../experiments/results/canonical-spde/report.md) retain source,
+configuration, environment and solver manifests plus full measurement tables.
+Wall times are machine-specific; they are not portable performance guarantees.
+These controls reproduce the stated kernels and explicit-rank recurrence,
+not the paper's unspecified random draws, sparse-fragment smoothing studies,
+or every published table value.

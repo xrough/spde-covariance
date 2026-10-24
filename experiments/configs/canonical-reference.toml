@@ -1,0 +1,11 @@
+study = "fragments"
+name = "canonical-reference"
+profile = "reference"
+seed = 20261026
+replications = 100
+training_counts = [100, 500]
+covers = [3, 9]
+grids = [100]
+models = ["finite_rank", "brownian", "analytic"]
+noise_variances = [0.0]
+ridge_comparison = false

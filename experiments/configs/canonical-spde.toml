@@ -1,0 +1,16 @@
+study = "fragments"
+name = "canonical-spde"
+profile = "spde"
+seed = 20261026
+replications = 20
+training_counts = [128, 512, 2048]
+covers = [3, 9]
+grids = [41, 81, 161]
+models = ["powerlaw", "rotated"]
+noise_variances = [0.0, 0.001]
+reference_dimension = 512
+validation_count = 128
+test_count = 512
+ranks = [1, 2, 4, 8]
+ridge_comparison = true
+population_checks = true

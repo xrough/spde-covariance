@@ -122,10 +122,10 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             )
         if np.any(statistics.pair_weight_sums[layout.declared_mask] <= 0):
             raise ValueError("every declared observed pair needs positive date-weight coverage")
-        cliques = tuple(
-            np.flatnonzero((layout.nodes >= a - 1e-12) & (layout.nodes <= b + 1e-12))
-            for a, b in layout.intervals
-        )
+        for i, (a, b) in enumerate(layout.intervals[1:], start=1):
+            if not any(max(a, c) < min(b, d) for c, d in layout.intervals[:i]):
+                raise ValueError("canonical fragment estimation requires positive-length overlap")
+        cliques = layout.cliques
         completion = complete_kernel(
             np.where(layout.declared_mask, statistics.partial_kernel, np.nan),
             cliques=cliques,

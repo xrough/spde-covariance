@@ -401,3 +401,33 @@ the per-date proxy check does not by itself establish failure of pooled
 identification. Observed validation loss also cannot validate an unobserved
 operator direction. See the [protocol](partial-observations.md) for fixed
 exposures, source families, chronology, approximation bounds and limitations.
+# Kernel-facing covariance workflow
+
+`fit_innovation_covariance` continues to return a certified PSD/trace-constrained
+H-coordinate estimate. The additional `fit_covariance_kernel(data, *, layout,
+method, method_options, covariance_assumption)` returns `KernelCovarianceFit`:
+its `.kernel` is a grid of covariance values, and **has no `.covariance` alias**.
+`.nodes`, `.weights`, `.grid_id`, `.estimand` and `.metadata` retain grid measure,
+units, innovation intervals and basis provenance. Arrays are immutable snapshots.
+
+`FragmentLayout(nodes, weights, intervals, row_to_nodes, evaluation_matrix,
+basis_id)` validates that every observed row is the stated point evaluation on
+one dense fragment. It never reinterprets delivery averages as point values.
+The original ridge estimator still supports delivery-average observations.
+
+For `method="ridge"`, options pass unchanged to `fit_innovation_covariance`;
+`.kernel` is the evaluation of that H-coordinate estimate and `.operator_fit`
+retains its numerical certificate. For `method="canonical"`, options are
+`rank` or `fve`, `support_rtol`, optional date `weights`, `minimum_pair_count`,
+and `psd_projection`. Common covariance and equal innovation intervals are
+required. A rank beyond numerical positive support, or FVE on a materially
+indefinite separator, is explicitly unavailable. The high-level adapter raises
+an informative error; `complete_kernel` returns a result with `.kernel=None`
+and diagnostics for experiment reporting. FVE must lie strictly between zero
+and one and uses the paper's strict cumulative-trace threshold.
+
+The raw canonical estimate remains `.kernel`, including possible indefiniteness.
+An explicitly requested `.projected_kernel` is a separate weighted PSD estimate
+with recorded observed-entry and trace changes. Neither is an H-coordinate
+matrix or has an H-optimization certificate. See the [completion methods note](canonical-completion.md)
+and [runnable SPDE example](../examples/canonical_pipeline.py).
