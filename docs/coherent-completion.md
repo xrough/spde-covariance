@@ -178,6 +178,9 @@ These bounds can remain informative at an iteration limit; failure to meet
 the requested objective-gap tolerance remains explicit. A candidate source
 is an optimization witness, not an estimate proven to recover the physical
 source. The kernel fit is not replaced by this diagnostic projection.
+For an empirical input, separation describes the fitted kernel. Sampling and
+representation error can produce a positive distance even when its generating
+process belongs to the declared class; this is not a statistical rejection test.
 
 An exact two-dimensional transport example uses the orthonormal first
 integrated-Laguerre functions $e_0(x)=1$ and $e_1(x)=1-e^{-x}$. Their shift is
@@ -250,3 +253,19 @@ finite numerical certificates from statistical or infinite-model claims.
 The completion target remains the conditional-independence completion of
 [Waghmare and Panaretos (2022)](https://arxiv.org/html/2107.07350v3), unless
 additional source-model restrictions are imposed explicitly.
+
+## Configured follow-up
+
+The focused paired study uses base grid 41, 20 replications, source cutoff 512,
+training counts 128/512/2048, three/nine fragments and noise variances zero and
+0.001. The larger historical grid and paper-control studies remain separate.
+The full run allows 100,000 ADMM iterations while retaining a $10^{-4}$
+observed-partial distance budget. An independent retry of a difficult noiseless
+nine-fragment case required 25,820 iterations; ordinary residual tolerances
+alone would have accepted it too early under the smaller iteration allowance.
+
+Four spawned workers each prepare one bounded model cache. All random streams
+depend on replication indices, and aggregation sorts those indices rather than
+worker completion order. Per-replication checkpoints retain the parent manifest
+hash and are not silently reused across revisions. The smoke study uses one
+worker and a $10^{-3}$ partial budget against its much larger sampling error.

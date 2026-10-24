@@ -24,6 +24,7 @@ class CoherentBenchmarkConfig(FragmentBenchmarkConfig):
     admissibility_dimensions: tuple[int, ...] = (4, 8, 16)
     admissibility_gap: float = 1e-8
     admissibility_max_iterations: int = 20_000
+    workers: int = 1
 
     def __post_init__(self):
         if self.study != "coherent":
@@ -51,8 +52,10 @@ class CoherentBenchmarkConfig(FragmentBenchmarkConfig):
         )
         for name in ("eigenvalue_floor", "admm_rho", "admissibility_gap"):
             object.__setattr__(self, name, _positive(getattr(self, name), name))
-        for name in ("admm_max_iterations", "admissibility_max_iterations"):
+        for name in ("admm_max_iterations", "admissibility_max_iterations", "workers"):
             object.__setattr__(self, name, _integer(getattr(self, name), name))
+        if self.workers > 4:
+            raise ValueError("at most four dense worker processes are supported")
         dimensions = tuple(
             _integer(v, "admissibility_dimensions") for v in self.admissibility_dimensions
         )

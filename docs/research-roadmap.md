@@ -130,3 +130,27 @@ The [reference study](../experiments/results/canonical-reference/report.md) and
 [SPDE study](../experiments/results/canonical-spde/report.md) provide numerical
 controls, not a theorem or empirical market validation. Existing RQ3 machinery
 is preserved; this increment adds no new forecast model.
+
+The [PSD-consistent follow-up](coherent-completion.md) fits one shared partial
+kernel subject to compatible PSD clique constraints before completing it.
+Observed validation selects an upstream penalty, which changes observable
+predictions. Its finite constant-source diagnostic reports distance to a
+declared transport/source class; it does not identify the true source or
+exclude a larger infinite-dimensional class.
+
+The next evidence gates are now more specific:
+
+1. Separate the effects of clique PSD constraints, upstream shrinkage,
+   eigenvalue floors and full-support completion through controlled ablations.
+   A comparison of whole strategies does not isolate one mechanism.
+2. Refine one fixed underlying model while controlling forcing support,
+   evaluation-basis mismatch and separator inverse amplification separately.
+   A fixed finite-grid eigenvalue floor needs a resolution-aware replacement
+   before any continuum interpretation.
+3. Compare matched finite source classes with larger forcing supports and
+   explicit integration/tail allowances. A nonzero distance of an estimated
+   kernel can also reflect sampling and representation error; it is not a
+   statistical test rejecting the generating SPDE.
+4. Reuse the existing RQ3 chronology only after those identification and
+   estimation limitations are quantified. Complete covariance feasibility
+   does not make unseen functional risks observed or forecast-validated.

@@ -12,6 +12,30 @@ def write_coherent_report(config, output, results, examples, cone_rows):
     plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
     summary = results["summary"]
     q, variance = max(config.grids), max(config.noise_variances)
+    middle_n = config.training_counts[len(config.training_counts) // 2]
+
+    def mean_mcse(row, metric):
+        if row is None or row.get(metric + "_mean") is None:
+            return "unavailable"
+        mean, mcse = row[metric + "_mean"], row.get(metric + "_mcse")
+        return f"{mean:.5g} ± {mcse:.2g}" if mcse is not None else f"{mean:.5g} (MCSE unavailable)"
+
+    def central_row(records, model, cover, policy, target=None):
+        return next(
+            (
+                row
+                for row in records
+                if row["model"] == model
+                and row["base_grid"] == q
+                and row["cover"] == cover
+                and row["noise_variance"] == variance
+                and row["N"] == middle_n
+                and row["policy"] == policy
+                and (target is None or row.get("target") == target)
+            ),
+            None,
+        )
+
     policies = ("pairwise_rank2", "pairwise_rank2_psd", "coherent_fixed", "coherent_selected")
     labels = ("Pairwise rank 2", "Pairwise + PSD", "Coherent fixed", "Coherent selected")
     fig, axes = plt.subplots(
@@ -67,7 +91,9 @@ def write_coherent_report(config, output, results, examples, cone_rows):
         and e["cover"] == max(config.covers)
     ]
     fig, axes = plt.subplots(1, len(policies), figsize=(13, 3), squeeze=False)
+    fig.subplots_adjust(top=0.77, bottom=0.2, left=0.05, right=0.86, wspace=0.4)
     scale = max((float(np.max(np.abs(e["kernel"]))) for e in selected_examples), default=1)
+    image = None
     for ax, policy, label in zip(axes[0], policies, labels, strict=True):
         record = next((e for e in selected_examples if e["policy"] == policy), None)
         if record is not None:
@@ -80,11 +106,17 @@ def write_coherent_report(config, output, results, examples, cone_rows):
                 vmax=scale,
                 cmap="RdBu_r",
             )
-            ax.set(xlabel="Maturity (years)", ylabel="Maturity (years)", title=label)
-    if selected_examples:
-        fig.colorbar(image, ax=list(axes[0]), shrink=0.8, label="Innovation kernel")
+            ax.set(
+                xlabel="Maturity (years)",
+                ylabel="Maturity (years)",
+                title=label,
+                xlim=(0, 3),
+                ylim=(0, 3),
+            )
+    if image is not None:
+        colour_axis = fig.add_axes([0.89, 0.23, 0.012, 0.50])
+        fig.colorbar(image, cax=colour_axis, label="Innovation kernel")
     fig.suptitle("Illustrative replication zero: same observations for every method")
-    fig.subplots_adjust(top=0.77, bottom=0.2, left=0.05, right=0.88, wspace=0.4)
     fig.savefig(output / "kernel-comparison.png", dpi=150)
     plt.close(fig)
 
@@ -146,6 +178,8 @@ def write_coherent_report(config, output, results, examples, cone_rows):
         "",
         f"Relative partial penalties {list(config.partial_regularizations)} multiply the maximum training pair coverage. The fixed policy uses the candidate nearest 0.001; exact validation ties prefer the larger penalty. Weighted-coordinate eigenvalue floor {config.eigenvalue_floor:g}, support cutoff {config.support_rtol:g}, observed-partial optimizer-distance budget {config.numerical_error_budget:g}. The floor is a finite-grid regularizer, not a fixed continuum white-noise operator.",
         "",
+        f"Execution uses {config.workers} process worker(s), with ADMM capped at {config.admm_max_iterations} iterations and each replication checkpoint bound to the parent source/configuration manifest. Replication seeds and aggregation order are independent of scheduling. Timings are elapsed per-candidate costs in this shared execution environment, not hardware-independent performance claims.",
+        "",
         "The weighted fitting objective differs from the original-domain Frobenius validation score. Upstream penalties alter observed predictions, so validation can compare them. Hard completion ranks remain invisible to a score restricted to unchanged observed entries. Risk scores are available only when one future fragment measures the whole exposure jointly.",
         "",
         "## Kernel errors",
@@ -179,6 +213,46 @@ def write_coherent_report(config, output, results, examples, cone_rows):
         "",
         f"These kernel images use one common colour scale and the same observations: {config.models[0]}, base grid {q}, {max(config.covers)} fragments, N={config.training_counts[len(config.training_counts) // 2]}, noise {variance:g}, replication zero. Nonuniform augmented maturity coordinates are retained. This illustration does not replace the paired summaries.",
         "",
+        "## Paired observed scores and exposure risks",
+        "",
+        f"Central case: N={middle_n}, base grid {q}, noise variance {variance:g}; every configured model and fragment cover is shown.",
+        "",
+        "The observed-score difference is coherent selected minus pairwise rank two on identical future observations. Negative values favor the selected strategy for observed-pair covariance loss. MCSE uses replication-paired differences. This comparison does not validate never-observed cross-block covariance.",
+        "",
+        "| Model | Fragments | N | Selected minus raw observed score | Paired replications |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for model in config.models:
+        for cover in config.covers:
+            row = central_row(results["paired_differences"], model, cover, "coherent_selected")
+            available = row.get("test_observed_score_available", 0) if row is not None else 0
+            lines.append(
+                f"| {model} | {cover} | {middle_n} | {mean_mcse(row, 'test_observed_score')} | {available}/{config.replications} |"
+            )
+    lines += [
+        "",
+        "Risk MSE is measured against the generating grid kernel in simulation; it does not imply an operational risk score is available. A future score requires the whole exposure to be observed jointly in an actual fragment. Score availability below counts replications with a score, not individual future dates.",
+        "",
+        "| Model | Fragments | Policy | Exposure | Risk MSE | Operational risk score | Score-available replications |",
+        "|---|---:|---|---|---:|---:|---:|",
+    ]
+    for model in config.models:
+        for cover in config.covers:
+            for policy in ("pairwise_rank2", "coherent_selected"):
+                for target in ("point_spread", "long_spread"):
+                    row = central_row(results["risk_summary"], model, cover, policy, target)
+                    available = row.get("risk_score_available", 0) if row is not None else 0
+                    replications = row["replications"] if row is not None else config.replications
+                    score = (
+                        mean_mcse(row, "risk_score")
+                        if available
+                        else "unavailable: no joint future exposure observation"
+                    )
+                    lines.append(
+                        f"| {model} | {cover} | {policy} | {target} | {mean_mcse(row, 'risk_squared_error')} | {score} | {available}/{replications} |"
+                    )
+    lines += [
+        "",
         "## Numerical feasibility and certificates",
         "",
     ]
@@ -196,6 +270,8 @@ def write_coherent_report(config, output, results, examples, cone_rows):
         "",
         "The diagnostic minimizes distance to kernels generated by a constant PSD source covariance in the declared finite Laguerre space and source trace cap. The returned source is an optimization witness, not an identified physical loading. The convex gap yields a distance interval even if the requested gap tolerance is not attained.",
         "",
+        "At unfinished solves, upper bounds are distances of the current feasible witnesses. They can be nonmonotone in J even for nested finite classes whose exact minimum distance cannot increase. Read lower and upper bounds together; an increasing upper-bound curve is not evidence that the exact nested-class distance increased.",
+        "",
         "The source-cone audit separately reports the best weighted symmetric kernel approximation in the evaluation-basis span (SVD relative threshold 1e-12). Total finite-class distance includes that representation mismatch as well as the source PSD/trace restrictions; it cannot be attributed entirely to a transport obstruction.",
         "",
         "| Two-dimensional control (interval one year) | Distance lower | Distance upper |",
@@ -209,7 +285,9 @@ def write_coherent_report(config, output, results, examples, cone_rows):
         "",
         f"{results['cone_checks']} finite-grid diagnostics are saved; {results['cone_unconverged']} did not reach the requested objective-gap tolerance and retain their valid distance bounds. Population checks cover generating and canonical targets; empirical diagnostics use only the declared illustrative replication zero, middle training count and largest noise variance. They are not Monte Carlo evidence of a universal obstruction.",
         "",
-        "A strictly positive lower distance rejects only the declared finite constant-source class with its trace cap and numerical integration map. It does not exclude an infinite-dimensional SPDE, a larger source support or a time-varying source. Grid/quadrature and omitted forcing uncertainty are not covered by the optimizer gap. The positive-definite two-dimensional control shows why PSD alone need not imply membership in this restricted source cone.",
+        "A strictly positive lower distance establishes that the particular target matrix lies outside the declared finite constant-source class with its trace cap and numerical integration map. It does not exclude an infinite-dimensional SPDE, a larger source support or a time-varying source. Grid/quadrature and omitted forcing uncertainty are not covered by the optimizer gap. The positive-definite two-dimensional control shows why PSD alone need not imply membership in this restricted source cone.",
+        "",
+        "For empirically fitted kernels this is a compatibility diagnostic of the estimate, not a statistical rejection of the data-generating process. No sampling-calibrated rejection test is implemented.",
         "",
         "## Artifacts and limits",
         "",
