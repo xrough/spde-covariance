@@ -482,16 +482,20 @@ def _write_csv(path, rows):
 
 def run_partial_benchmark(config, output=None):
     """Run into a fresh directory, retaining numerical failures and every candidate."""
+    from .coherent_config import CoherentBenchmarkConfig
     from .fragment_config import FragmentBenchmarkConfig
 
     if isinstance(config, (str, Path)):
         with Path(config).open("rb") as stream:
             values = tomllib.load(stream)
-        config = (
-            FragmentBenchmarkConfig(**values)
-            if values.get("study") == "fragments"
-            else PartialBenchmarkConfig(**values)
+        kind = {"fragments": FragmentBenchmarkConfig, "coherent": CoherentBenchmarkConfig}.get(
+            values.get("study"), PartialBenchmarkConfig
         )
+        config = kind(**values)
+    if isinstance(config, CoherentBenchmarkConfig):
+        from .coherent_benchmark import run_coherent_benchmark
+
+        return run_coherent_benchmark(config, output)
     if isinstance(config, FragmentBenchmarkConfig):
         from .fragment_benchmark import run_fragment_benchmark
 

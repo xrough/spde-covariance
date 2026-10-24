@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from spde_covariance import (
+    CoherentConvergenceError,
     ExponentialTransport,
     FragmentLayout,
     ObservedInnovationBatch,
@@ -82,6 +83,53 @@ def test_canonical_is_kernel_only_and_truth_is_not_input():
     assert fit.projected_kernel is not None
     assert np.linalg.eigvalsh(fit.projected_kernel)[0] >= -1e-10
     assert "canonical" in fit.estimand
+
+
+def test_coherent_adapter_preserves_target_and_rejects_failed_certificate():
+    data, layout = example_data()
+    options = {
+        "regularization": 0.001,
+        "eigenvalue_floor": 1e-5,
+        "numerical_error_budget": 1e-4,
+        "rho": 0.2,
+    }
+    fit = fit_covariance_kernel(
+        data,
+        layout=layout,
+        method="coherent",
+        method_options=options,
+        covariance_assumption="common",
+    )
+    altered = replace(data, metadata={"latent_truth": -np.eye(4) * 1e9})
+    again = fit_covariance_kernel(
+        altered,
+        layout=layout,
+        method="coherent",
+        method_options=options,
+        covariance_assumption="common",
+    )
+    np.testing.assert_array_equal(fit.kernel, again.kernel)
+    assert fit.diagnostics["completion"]["output_psd"]
+    assert fit.diagnostics["coherent_partial"]["partial_error_bound"] <= 1e-4
+    assert fit.operator_fit is None and fit.projected_kernel is None
+    assert not hasattr(fit, "covariance")
+    with pytest.raises(CoherentConvergenceError) as caught:
+        fit_covariance_kernel(
+            data,
+            layout=layout,
+            method="coherent",
+            method_options={**options, "max_iterations": 1},
+            covariance_assumption="common",
+        )
+    assert not caught.value.fit.converged
+    with pytest.raises(ValueError, match="unknown coherent"):
+        fit_covariance_kernel(
+            data,
+            layout=layout,
+            method="coherent",
+            method_options={**options, "rank": 2},
+            covariance_assumption="common",
+        )
 
 
 def test_canonical_rejects_irregular_local_or_bad_point_maps():

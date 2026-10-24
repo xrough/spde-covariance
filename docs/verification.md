@@ -1,6 +1,6 @@
 # Software verification
 
-The suite has 417 passing tests on Python 3.13. Its checks cover
+The suite runs on Python 3.13. Its checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
 vectorization, PSD/trace feasibility, numerical certificates, CVXPY/SCS reference
@@ -28,12 +28,16 @@ uv run --no-sync pytest
 uv run --no-sync ruff check .
 uv run --no-sync ruff format --check .
 uv run --no-sync python examples/transport_pipeline.py
+uv run --no-sync python examples/canonical_pipeline.py
+uv run --no-sync python examples/coherent_pipeline.py
 uv run --no-sync python scripts/check_notebook.py
 uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/verification
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/verification-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/verification-rq3
 uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/verification-infinite
 uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/verification-partial
+uv run --no-sync spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/verification-canonical
+uv run --no-sync spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output experiments/runs/verification-coherent
 ```
 
 The end-to-end example estimates V_delta from 1,024 weekly innovations. Its
@@ -116,7 +120,56 @@ and the separately reported full-study reference-tail budgets pass. The
 compressed evidence retains every candidate, selected/fixed comparison,
 exposure-availability row and replication-level outcome with checksums.
 
-CI runs the numerical checks, example, notebook, all five seeded smoke suites
+The [coherent-completion follow-up](coherent-completion.md) adds a shared
+observed-partial PSD fit before completion. `tests/test_coherent.py` checks
+clique compatibility, weighted coordinates, primal/dual gap evaluation,
+feasibility restoration, convergence failure and an optional independent
+CVXPY/SCS formulation. `tests/test_coherent_controls.py` includes analytic
+controls distinguishing partial PSD, completed-kernel PSD and transport-source
+admissibility. Hard rank truncation can still spoil PSD after a compatible
+partial fit, so it is tested separately from supported untruncated completion.
+
+`tests/test_kernel_workflow.py` checks the `method="coherent"` adapter's
+target/provenance preservation and rejection of failed partial certificates.
+The low-level partial solver retains a feasible result with `converged=False`
+when it misses the requested optimizer-distance budget; the high-level adapter
+raises `CoherentConvergenceError` and retains that result on `.fit`. ADMM
+residuals are recorded separately from the distance certificate. The bound
+concerns the weighted observed-partial optimizer, not missing-entry truth or
+error after completion. `tests/test_coherent_benchmark.py` checks that changing
+validation observations changes selection scores without changing the
+training-only candidate fits.
+
+`tests/test_admissibility.py` checks normalized covariance-map polarization,
+the adjoint for non-self-adjoint transport, weighted scale and coordinate
+invariance, feasible controls, finite-source cone obstructions, immutable
+results, degenerate cases and iteration-limit intervals. An optional CVXPY
+comparison checks the same small constrained problem. In the actual
+two-mode Laguerre control, a PSD innovation matrix has an indefinite inverse
+constant source, distinguishing PSD covariance feasibility from membership
+in that declared source cone.
+
+The source diagnostic supplies lower and upper bounds on distance to a
+finite, trace-capped, constant-source class. Its objective gap remains
+available on an unconverged exit; reports must retain both distance endpoints,
+the iteration status and the source cutoff. Positive residuals below the
+solver uncertainty cannot establish separation. Integration and floating-point
+cross-checks remain distinct from the convex numerical-map certificate.
+Caller-supplied grid/tail allowances perturb the input kernel against the same
+finite class; they do not certify exclusion from infinite-dimensional or
+time-varying sources. No completed-source recovery claim follows from these
+checks.
+
+The [coherent example](../examples/coherent_pipeline.py) exercises known
+transport, noisy point fragments, the compatible partial fit, canonical
+completion and the finite-source diagnostic through the public API. The
+`coherent-smoke.toml` command above checks the configured paired workflow and
+archives certificates, selection audits and source-cone intervals. The smoke
+configuration uses a deliberately smaller forcing reference than a full study;
+its finite numerical acceptance is not a full-reference tail-resolution or
+statistical-accuracy claim.
+
+CI runs the numerical checks, examples, notebook, configured seeded smoke studies
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and
 video encoding run separately. Selected full-study evidence records its source
 revision and environment; numerical reports must be interpreted with that
