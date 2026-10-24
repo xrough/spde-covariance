@@ -222,6 +222,56 @@ constrained to be a variance; no clipping is introduced for the comparison.
 
 ## Evidence and limitations
 
+The [full report](../experiments/results/partial-observations/report.md) records
+20 paired replications from clean numerical source
+`6d2be636fe23bb5db9ad39e2296ae731abddda1a`. All 3,600 candidate fits meet the
+$10^{-4}$ finite-objective covariance budget; the largest certificate is
+$9.9997\times10^{-5}$. Both independent convex comparisons pass, with maximum
+matrix discrepancy $1.52\times10^{-9}$. These are numerical checks, not
+statistical recovery bounds.
+
+At training size 512, observed-validation-selected fits have the following
+relative operator HS errors against the common finite reference. Entries are
+means ± replication MCSE; all five designs and both sources are retained.
+
+| Design | Power-law source | Rotated source |
+| --- | ---: | ---: |
+| Two points | 0.6750 ± 0.0032 | 0.4145 ± 0.0016 |
+| Two deliveries | 0.7209 ± 0.0045 | 0.4092 ± 0.0022 |
+| Nested 8 | 0.3359 ± 0.0442 | 0.2294 ± 0.0194 |
+| Nested 16 | 0.3929 ± 0.0456 | 0.1784 ± 0.0186 |
+| Rotating 4 | 0.5370 ± 0.0384 | 0.4982 ± 0.0841 |
+
+Observed-space tuning does not optimize latent operator error. The paired
+test-score comparisons do not show a uniform advantage over the fixed
+$J=16$, relative-ridge-0.001 baseline. A larger observation set or candidate
+dimension does not guarantee a better selected estimate in this experiment.
+The 16-contract numerical Gram rank is 10/10 at $J=4$, 44/136 at $J=16$ and
+69/528 at $J=32$, at relative threshold $10^{-10}$. Discarded numerical
+directions can include very weak positive eigenvalues; these counts are not
+proofs of exact nullspace dimensions.
+
+The off-grid exposure has no same-date full-$H$ proxy in any design, so all
+its operational risk scores are unavailable. Matching point and delivery
+risks have 24/128 future proxy dates in the rotating design, and 128/128 when
+their contracts are jointly observed throughout. Their direct estimates do
+not require recovering the entire covariance matrix.
+For the power-law source, two-point design and 512 training observations,
+direct point-spread risk MSE is $(6.6755\pm2.4399)\times10^{-6}$, versus
+$(4.0173\pm0.5300)\times10^{-4}$ for the observed-score-selected matrix's
+plug-in risk. Both uncertainties are replication MCSE. This is a measured
+case, not a universal ordering of estimators; the full report retains all
+available and unavailable exposure comparisons.
+
+At $M=256$, the full innovation trace-tail bound is $6.38\times10^{-6}$, the
+16-contract observed HS tail bound is $1.27\times10^{-6}$, and each declared
+unit-$H$ spread-risk tail bound is $4.86\times10^{-8}$; all meet the declared
+$10^{-5}$ tail budget. Some $J=32$ finite-reference approximation errors are
+smaller than their observed tail bound. They are not resolved measurements of
+the corresponding exact infinite-model errors. The report preserves these
+reference and representation diagnostics separately, alongside the numerical
+quadrature/block-exponential cross-checks.
+
 Reproduce the smaller execution check with
 
 ```bash

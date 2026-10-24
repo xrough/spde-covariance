@@ -109,6 +109,12 @@ smoke run's intentionally coarse forcing approximation.
 A clean wheel passed a reduced two-source partial-observation run outside the
 checkout using only its declared core dependencies; optional reference solves
 were verified separately in the reference-enabled test environment.
+The [full partial-observation report](../experiments/results/partial-observations/report.md)
+records 3,600 converged fits and two independent convex comparisons from clean
+source `6d2be636fe23bb5db9ad39e2296ae731abddda1a`. All finite numerical budgets
+and the separately reported full-study reference-tail budgets pass. The
+compressed evidence retains every candidate, selected/fixed comparison,
+exposure-availability row and replication-level outcome with checksums.
 
 CI runs the numerical checks, example, notebook, all five seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and

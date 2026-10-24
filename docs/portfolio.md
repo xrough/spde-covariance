@@ -2,22 +2,23 @@
 
 ## What has been delivered
 
-The project is a finite-dimensional introductory research laboratory. It
-combines established covariance estimators with transport adjustment,
-observation diagnostics and reproducible synthetic experiments. Its value is
+The project combines a finite-dimensional introductory laboratory with a fixed
+infinite-rank transport benchmark. It uses established covariance estimators,
+transport adjustment, observation diagnostics and reproducible synthetic experiments. Its value is
 in mathematical clarity, numerical implementation, fair evaluation and
 research-software practice; a new estimator or theorem is not a delivered
 result.
 
 A supported CV bullet is:
 
-> Developed and benchmarked a finite-dimensional transport-covariance research
+> Developed and benchmarked a transport-SPDE covariance research
 > toolkit with PSD-constrained optimization, observation-geometry diagnostics,
 > analytical controls and reproducible synthetic validation.
 
-The four-mode setting should be explained in a technical discussion. It is a
-controlled starting point for later infinite-dimensional curve dynamics,
-rather than empirical evidence about a futures market.
+The four-mode control and fixed infinite-rank benchmark should be distinguished
+in a technical discussion. Numerical refinement of a specified infinite model
+does not establish an infinite-dimensional statistical guarantee or empirical
+evidence about a futures market.
 
 ## Supporting Stage 1 evidence
 
@@ -73,6 +74,17 @@ uncertainty. Results need not favor adaptation, and latent-error diagnostics
 must remain distinct from observable forecast scores.
 
 ## Technical discussion points and limits
+
+The [fixed infinite-rank transport study](../experiments/results/infinite-transport/report.md)
+adds coupled spatial/time refinement with analytic forcing-tail bounds. The
+[partial-observation study](partial-observations.md) and its
+[full report](../experiments/results/partial-observations/report.md) keep actual
+measurements fixed across covariance dimensions and select dimension/ridge on
+observed validation data. Its 3,600 candidate fits pass a $10^{-4}$ numerical
+budget, with two independent convex comparisons. Selection does not establish
+a uniform improvement over the predeclared fixed baseline or recovery of
+unobserved risks. These studies extend numerical scope without claiming a new
+infinite-dimensional statistical method.
 
 - Exact exponential transport provides an analytical control; projected
   splines expose representation, boundary and semigroup defects.
