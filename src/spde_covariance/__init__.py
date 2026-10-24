@@ -1,5 +1,7 @@
 """Transport-SPDE innovation covariance in orthonormal Hilbert coordinates."""
 
+from .admissibility import AdmissibilityDiagnostic, diagnose_constant_source_admissibility
+from .coherent import CoherentConvergenceError, CoherentPartialFit, fit_coherent_partial
 from .fragments import FragmentLayout
 from .kernel_workflow import KernelCovarianceFit, fit_covariance_kernel
 from .laguerre import LaguerreTransport, PowerLawSource
@@ -15,6 +17,9 @@ from .workflow import (
 )
 
 __all__ = [
+    "AdmissibilityDiagnostic",
+    "CoherentConvergenceError",
+    "CoherentPartialFit",
     "ConvergenceError",
     "CurveTrajectory",
     "ExponentialTransport",
@@ -28,6 +33,8 @@ __all__ = [
     "ProjectedSplineTransport",
     "TransportPropagator",
     "extract_innovations",
+    "diagnose_constant_source_admissibility",
+    "fit_coherent_partial",
     "fit_innovation_covariance",
     "fit_covariance_kernel",
     "interval_diagnostics",

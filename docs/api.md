@@ -401,6 +401,7 @@ the per-date proxy check does not by itself establish failure of pooled
 identification. Observed validation loss also cannot validate an unobserved
 operator direction. See the [protocol](partial-observations.md) for fixed
 exposures, source families, chronology, approximation bounds and limitations.
+
 ## Kernel-facing covariance workflow
 
 `fit_innovation_covariance` continues to return a certified PSD/trace-constrained
@@ -431,3 +432,131 @@ An explicitly requested `.projected_kernel` is a separate weighted PSD estimate
 with recorded observed-entry and trace changes. Neither is an H-coordinate
 matrix or has an H-optimization certificate. See the [completion methods note](canonical-completion.md)
 and [runnable SPDE example](../examples/canonical_pipeline.py).
+
+### Compatible PSD partial kernels
+
+The same adapter accepts `method="coherent"`. It jointly fits one shared
+observed partial kernel whose declared clique matrices are PSD, then applies
+supported canonical completion without hard rank truncation. It requires
+`covariance_assumption="common"`, equal innovation intervals, positive
+`regularization`, and an explicit `numerical_error_budget`. Accepted options
+are:
+
+```python
+method_options = {
+    "regularization": 1e-3,
+    "eigenvalue_floor": 1e-5,
+    "numerical_error_budget": 1e-4,
+    "rho": 0.2,
+    "max_iterations": 20_000,
+    "support_rtol": 1e-12,
+    # Optional: weights (across dates), minimum_pair_count, psd_projection.
+}
+```
+
+The shared optimization variable is `A = sqrt(W) @ K @ sqrt(W)` on the
+observed pair mask, where `W` contains the layout's quadrature weights.
+Pair coverage weights the noise-corrected data fit; ridge and the clique
+eigenvalue floor also act in these weighted grid coordinates. The floor is
+not a lower bound on eigenvalues of an H-coordinate covariance operator.
+The observed partial kernel can change in this fit; it is not an unchanged
+empirical partial followed by a PSD repair of the completed matrix.
+
+`fit.diagnostics["coherent_partial"]` retains the feasible primal/dual
+objectives, gap, `partial_error_bound`, clique feasibility restoration and
+ADMM residuals. The error bound measures weighted Frobenius distance **on
+observed pairs to the declared partial optimizer**. It excludes completion
+amplification, statistical error, H-operator error and source-covariance error.
+`fit.operator_fit` is `None`; no H-coordinate certificate is attached.
+Missing entries remain chosen by the canonical conditional-independence
+assumption. A PSD completed kernel does not establish that those entries
+match the generating kernel.
+
+The adapter raises `CoherentConvergenceError` when the partial fit misses its
+requested numerical budget. Its `.fit` retains the feasible partial and
+diagnostics. The lower-level interface returns that result directly:
+
+```python
+fit_coherent_partial(
+    partial_kernel, *, pair_weights, cliques, weights=None,
+    regularization=0.0, eigenvalue_floor=0.0, numerical_error_budget=1e-5,
+    rho=1.0, max_iterations=20_000, absolute_tolerance=1e-8,
+    relative_tolerance=1e-7, check_every=10, adaptive_rho=True,
+)
+```
+
+`CoherentPartialFit.partial_kernel` has `NaN` on unobserved pairs. Check
+`.converged` and `.partial_error_bound` before using it as a successful fit;
+small ADMM residuals alone do not meet the optimizer-distance requirement.
+`coherent.fit_coherent_partial_reference` supplies an optional CVXPY/SCS
+formulation of the same finite problem and checks the same certificate.
+See the [method and scope note](coherent-completion.md) and
+[runnable coherent example](../examples/coherent_pipeline.py).
+
+### Finite constant-source admissibility diagnostic
+
+This optional diagnostic takes an already fitted grid kernel and a declared
+transport model. It leaves the innovation-kernel fitting target unchanged:
+
+```python
+diagnose_constant_source_admissibility(
+    kernel, evaluation_matrix, *, delta, trace_cap, propagator=None,
+    integration_matrix=None, weights=None, quadrature_order=24,
+    objective_gap_tolerance=1e-10, max_iterations=20_000,
+    initial_source=None, admissibility_tolerance=0.0,
+    grid_error_bound=0.0, source_tail_bound=0.0,
+)
+```
+
+Exactly one of `propagator` or `integration_matrix` is required. The latter
+is the linear map for **normalized** covariance integration in the
+Frobenius-isometric `svec` coordinates of the declared source basis. Use
+`admissibility.covariance_integration_matrix(propagator, delta,
+quadrature_order=24)` to prepare and reuse this map. The evaluation matrix
+has one row per grid node and one column per finite source coordinate.
+The kernel may be indefinite for diagnosis. Positive grid weights retain
+their supplied scale; the default is unweighted discrete Frobenius distance.
+
+The solver minimizes half the squared weighted distance from the input
+kernel to `E @ T_delta(C) @ E.T`, subject to `C >= 0` and
+`trace(C) <= trace_cap`, for a source constant over the interval. Its
+`AdmissibilityDiagnostic` exposes immutable `source_candidate`,
+`projected_innovation`, `projected_innovation_kernel`, source feasibility,
+objective/gap, `fit_distance_bounds`, `converged`, `status` and metadata.
+The source candidate is a feasible optimization witness, not a claim of
+recovering the physical source. The projected kernel is a diagnostic output
+and does not replace the fitted input kernel.
+
+At a feasible candidate with objective `f` and global convex gap `g`, the
+minimum distance lies in
+`[sqrt(2 * max(0, f-g)), sqrt(2*f)]`. This interval remains available at an
+iteration limit, when `converged=False`; report both endpoints and the
+status. `admissibility_status` compares the distance interval with the
+caller-declared tolerance and can be compatible, separated from the
+declared finite class, or unresolved. A positive candidate residual alone
+does not establish separation; its certified lower endpoint must exceed
+the tolerance.
+
+Optional grid/tail bounds must already be in the same weighted kernel norm.
+They widen `reference_distance_bounds` for a perturbation of the input
+kernel against the **same finite source class**. A fixed generating-source
+tail bound does not compare that class with all infinite-dimensional
+sources. The convex certificate concerns the finite numerical integration
+map in floating point; quadrature/map error and interval-arithmetic rigor
+are not supplied automatically. A failed finite cutoff, trace cap or
+constant-source restriction therefore cannot exclude a larger SPDE source
+class. Invalid inputs or nonfinite calculations raise `ValueError`.
+
+`coherent_benchmark.run_coherent_benchmark(config, output=None)` runs the
+configured paired follow-up through the existing partial-benchmark CLI:
+
+```sh
+spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output NEW_DIRECTORY
+```
+
+The study retains fixed and observed-validation-selected partial ridge,
+the historical rank-two comparison, completion diagnostics and finite-source
+distance intervals. Its certificates and held-out observed scores do not
+establish correctness of the completed missing entries. See the
+[coherent-completion protocol](coherent-completion.md) for the declared
+models, evaluation targets and source-cutoff limitations.

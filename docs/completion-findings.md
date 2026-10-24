@@ -1,5 +1,11 @@
 # What the integrated completion study establishes
 
+This note records the historical pairwise/truncated strategy. The
+[PSD-consistent follow-up](coherent-completion.md) and its
+[paired report](../experiments/results/coherent-completion/report.md) add joint
+fragment fitting and finite constant-source diagnostics. Historical raw-output
+indefiniteness below does not describe the new coherent strategy.
+
 The [reference study](../experiments/results/canonical-reference/report.md)
 uses 100 independent replications of each paper control. The
 [SPDE study](../experiments/results/canonical-spde/report.md) uses 20 paired
@@ -124,3 +130,35 @@ transport model, and to test when its canonical restriction is defensible.
 Only then should later forecast studies interpret completed functional risks
 as conditional uncertainty under that structure. Sparse fragments, noisy price
 reconstruction and new forecast models remain subsequent extensions.
+
+## PSD-consistent follow-up
+
+The [new paired report](../experiments/results/coherent-completion/report.md)
+uses clean numerical source `566b07e`, 20 paired replications and base grid 41
+(46 augmented maturity nodes). All 1,440 joint partial-kernel fits meet the
+$10^{-4}$ observed-partial optimizer-distance budget; the maximum iteration
+count is 25,820. All 960 coherent completed outputs are PSD within tolerance,
+whereas all 480 raw rank-two outputs are materially indefinite. The separately
+projected baseline remains available. These counts concern numerical
+feasibility and do not certify recovery of unseen covariance.
+
+Accuracy is mixed. For power-law forcing, three fragments and noise variance
+0.001, the selected coherent strategy has complete weighted kernel error
+0.3751 ± 0.0392 versus raw rank two's 0.3931 ± 0.0426 at N=128. At N=2048 the
+values are 0.1124 ± 0.0122 versus 0.1058 ± 0.00953. These are means ± MCSE;
+they do not establish uniform superiority. The strategies differ in their
+upstream PSD constraints, penalty, eigenvalue floor and completion support.
+Observed-score comparisons and unavailable exposure scores are retained
+separately from simulation errors.
+
+The constant-source diagnostic is nontrivial: the positive-definite
+two-dimensional control lies at distance approximately 0.0721075372 from its
+declared finite source class, while a generated control has residual below
+$7\times10^{-13}$. For the actual weekly population kernels, all 24 recorded
+source-class distance intervals have lower bound zero; twelve solves miss
+the requested gap tolerance. These population diagnostics establish no
+source-class obstruction. Positive distances of empirical fits also include
+basis mismatch and sampling error and cannot reject the generating SPDE.
+The returned source matrices are witnesses, not identified diffusion loadings.
+Representation residuals use the recorded numerical SVD threshold and are
+not certified exact-algebraic span distances.

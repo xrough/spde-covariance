@@ -1,0 +1,71 @@
+{
+  "study": "coherent",
+  "name": "coherent-completion",
+  "profile": "spde",
+  "seed": 20261026,
+  "replications": 20,
+  "training_counts": [
+    128,
+    512,
+    2048
+  ],
+  "covers": [
+    3,
+    9
+  ],
+  "grids": [
+    41
+  ],
+  "models": [
+    "powerlaw",
+    "rotated"
+  ],
+  "noise_variances": [
+    0.0,
+    0.001
+  ],
+  "reference_dimension": 512,
+  "delta": 0.019230769230769232,
+  "validation_count": 128,
+  "test_count": 512,
+  "ranks": [
+    2
+  ],
+  "include_fve": false,
+  "support_rtol": 1e-12,
+  "numerical_error_budget": 0.0001,
+  "trace_cap": 2.0,
+  "candidate_dimensions": [
+    4,
+    8,
+    16
+  ],
+  "relative_regularizations": [
+    0.001,
+    0.01,
+    0.1
+  ],
+  "ridge_comparison": false,
+  "population_checks": false,
+  "refinement_grid": 321,
+  "source_exponent": 3.0,
+  "source_trace": 1.0,
+  "rotation_angle": 0.5235987755982988,
+  "quadrature_order": 24,
+  "partial_regularizations": [
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "eigenvalue_floor": 1e-05,
+  "admm_rho": 0.2,
+  "admm_max_iterations": 100000,
+  "admissibility_dimensions": [
+    4,
+    8,
+    16
+  ],
+  "admissibility_gap": 1e-08,
+  "admissibility_max_iterations": 20000,
+  "workers": 4
+}

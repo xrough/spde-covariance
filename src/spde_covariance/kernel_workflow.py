@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .coherent import CoherentConvergenceError, fit_coherent_partial
 from .completion import complete_kernel, weighted_psd_projection
 from .fragments import FragmentLayout
 from .observation_statistics import summarize_observations
@@ -25,6 +26,7 @@ class KernelCovarianceFit:
     ``kernel`` is the raw method output. ``projected_kernel`` is a separately
     requested weighted PSD repair, never an implicit replacement. Only ridge
     has an ``operator_fit`` and its Hilbert-coordinate numerical certificate.
+    Coherent completion certifies its observed-partial optimization separately.
     """
 
     kernel: np.ndarray
@@ -58,6 +60,9 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
     Canonical options: rank or fve, support_rtol, minimum_pair_count (default1),
     weights (date weights), and psd_projection (defaultFalse). Canonical input
     is dense point fragments only, with validated row-to-grid correspondence.
+    Coherent options: regularization, eigenvalue_floor, numerical_error_budget,
+    rho, max_iterations, support_rtol and the same date/count options. It fits
+    compatible PSD cliques jointly before untruncated supported completion.
     """
     if not isinstance(layout, FragmentLayout):
         raise TypeError("layout must be a FragmentLayout")
@@ -98,7 +103,7 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             "operator": operator_fit.diagnostics,
             "certificate_scope": "H-coordinate ridge optimizer only",
         }
-    elif method == "canonical":
+    elif method in ("canonical", "coherent"):
         if covariance_assumption != "common":
             raise ValueError("canonical completion initially requires a common covariance")
         intervals = interval_diagnostics(observed)
@@ -111,8 +116,20 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             raise ValueError("minimum_pair_count must be a positive integer")
         if not isinstance(repair, bool):
             raise ValueError("psd_projection must be boolean")
-        if not set(options) <= {"rank", "fve", "support_rtol"}:
-            raise ValueError("unknown canonical method options")
+        allowed = (
+            {"rank", "fve", "support_rtol"}
+            if method == "canonical"
+            else {
+                "regularization",
+                "eigenvalue_floor",
+                "numerical_error_budget",
+                "rho",
+                "max_iterations",
+                "support_rtol",
+            }
+        )
+        if not set(options) <= allowed:
+            raise ValueError(f"unknown {method} method options")
         statistics = summarize_observations(
             observed.observations, weights=date_weights, layout=layout
         )
@@ -126,12 +143,26 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             if not any(max(a, c) < min(b, d) for c, d in layout.intervals[:i]):
                 raise ValueError("canonical fragment estimation requires positive-length overlap")
         cliques = layout.cliques
-        completion = complete_kernel(
-            np.where(layout.declared_mask, statistics.partial_kernel, np.nan),
-            cliques=cliques,
-            weights=layout.weights,
-            **options,
-        )
+        partial = np.where(layout.declared_mask, statistics.partial_kernel, np.nan)
+        coherent = None
+        if method == "coherent":
+            support_rtol = options.pop("support_rtol", 1e-12)
+            if options.get("regularization", 0) <= 0:
+                raise ValueError("coherent fitting requires positive regularization")
+            if "numerical_error_budget" not in options:
+                raise ValueError("coherent fitting requires an explicit numerical_error_budget")
+            coherent = fit_coherent_partial(
+                partial,
+                pair_weights=statistics.pair_weight_sums,
+                cliques=cliques,
+                weights=layout.weights,
+                **options,
+            )
+            if not coherent.converged:
+                raise CoherentConvergenceError(coherent)
+            partial = coherent.partial_kernel
+            options = {"population": True, "support_rtol": support_rtol}
+        completion = complete_kernel(partial, cliques=cliques, weights=layout.weights, **options)
         if completion.kernel is None:
             raise ValueError(
                 f"canonical completion unavailable: {completion.diagnostics['reason']}"
@@ -145,6 +176,11 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             "canonical_assumption": "conditional independence of separated fragments given overlaps",
             "certificate_scope": "no H-operator optimization certificate",
         }
+        if coherent is not None:
+            diagnostics["coherent_partial"] = coherent.diagnostics
+            diagnostics["certificate_scope"] = (
+                "weighted observed-partial optimizer distance only; excludes completion amplification"
+            )
         if repair:
             projection = weighted_psd_projection(
                 kernel, weights=layout.weights, observed_mask=layout.declared_mask
@@ -152,8 +188,12 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             projected = projection.kernel
             diagnostics["weighted_psd_projection"] = projection.diagnostics
         estimand = "finite-grid canonical completion of the observed common innovation kernel"
+        if coherent is not None:
+            estimand = (
+                "canonical completion of a regularized compatible PSD partial innovation kernel"
+            )
     else:
-        raise ValueError("method must be ridge or canonical")
+        raise ValueError("method must be ridge, canonical or coherent")
     return KernelCovarianceFit(
         kernel,
         layout.nodes,

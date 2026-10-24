@@ -89,7 +89,9 @@ infinite-dimensional statistical method.
 - Exact exponential transport provides an analytical control; projected
   splines expose representation, boundary and semigroup defects.
 - Source covariance C, finite-interval innovation covariance V and nonunique
-  loading L have separate meanings; C and L are not estimated here.
+  loading L have separate meanings. V remains the estimation target; the
+  [finite source-class diagnostic](coherent-completion.md) returns a feasible
+  source witness without identifying the physical C or its loading L.
 - Optimization reliability and observation identification are different
   questions. Weak information can dominate statistical error.
 - Proxy-based future scores require the stated second-moment/noise identity,
