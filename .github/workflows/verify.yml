@@ -30,6 +30,7 @@ jobs:
       - run: uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/ci-rq2
       - run: uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/ci-rq3
       - run: uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/ci-infinite-transport
+      - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/ci-partial
       - name: Show numerical diagnostics after a failed smoke study
         if: failure()
         shell: bash
@@ -56,6 +57,7 @@ jobs:
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-rq3 --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-infinite-transport --help
+          "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-partial --help
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
@@ -65,3 +67,4 @@ jobs:
             experiments/runs/ci-rq2
             experiments/runs/ci-rq3
             experiments/runs/ci-infinite-transport
+            experiments/runs/ci-partial

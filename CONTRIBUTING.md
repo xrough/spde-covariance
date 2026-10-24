@@ -12,6 +12,9 @@ estimator or infinite-dimensional guarantees. Start with the [API guide](docs/ap
 on future observations. Curve-level forecasting and market calibration remain
 later application work; the [roadmap](docs/research-roadmap.md) carries the same
 three questions into genuinely infinite-dimensional dynamics.
+The [partial-observation protocol](docs/partial-observations.md) studies the
+first statistical step using common full-model innovation observations across
+candidate covariance dimensions.
 
 ## Development and review
 
@@ -27,6 +30,7 @@ uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/contribution-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/contribution-rq3
 uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/contribution-infinite
+uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/contribution-partial
 ```
 
 The `reference` extra installs CVXPY/SCS for independent solver checks. Choose a

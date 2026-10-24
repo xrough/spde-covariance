@@ -373,3 +373,31 @@ its tail-resolution flags must be read separately from software acceptance.
 Full runs use the predeclared configuration, preserve independent-path Monte
 Carlo uncertainty and record their source/environment manifest. Projected true
 innovations and residuals extracted from projected levels are separate targets.
+
+`partial_benchmark.run_partial_benchmark(config, output=None)` accepts an
+experiment-local `partial_config.PartialBenchmarkConfig` or a TOML path:
+
+```sh
+spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output NEW_DIRECTORY
+```
+
+This study fixes the weekly innovation-covariance target and applies point or
+delivery maps to the full forcing-reference innovations before reducing the
+estimation dimension. The same observed values and known fresh-noise corrections
+are used for every candidate dimension. Unresolved curve contributions and
+their covariance cross terms are recorded as model approximation, rather than
+subtracted as if they were independent measurement noise.
+
+Candidates use the existing constrained solver. Joint dimension/ridge selection
+receives only training and validation observations. Exact score ties prefer
+smaller dimensions, then larger relative ridge. The fixed comparator uses the
+largest configured candidate dimension and smallest relative ridge. Both fits
+remain frozen for a disjoint future test block, without validation refitting.
+Relative ridge is scaled by each training design's lifted Gram norm.
+
+Finite-sieve target-range diagnostics, full-H functional-span diagnostics and
+availability of a same-date direct risk proxy are separate outputs. Failure of
+the per-date proxy check does not by itself establish failure of pooled
+identification. Observed validation loss also cannot validate an unobserved
+operator direction. See the [protocol](partial-observations.md) for fixed
+exposures, source families, chronology, approximation bounds and limitations.

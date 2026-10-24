@@ -5,8 +5,8 @@
 
 A Python research toolkit for transport-SPDE covariance. A **four-dimensional
 toy laboratory** develops identification, estimation and forecast evaluation;
-a fixed infinite-rank benchmark then separates forcing truncation, curve
-projection and time resolution. Estimators use established methods. No new
+a fixed infinite-rank benchmark separates forcing truncation, curve projection,
+time resolution and partial-observation error. Estimators use established methods. No new
 estimator or infinite-dimensional statistical guarantee is claimed.
 
 The longer-term application is futures-curve risk and prediction. Three questions
@@ -132,6 +132,8 @@ optimization certificates bound numerical error to the constrained optimizer.
 - [Infinite-rank transport protocol](docs/infinite-transport.md) and [report](experiments/results/infinite-transport/report.md):
   20 coupled path replications. At 256 forcing modes, weekly covariance projection
   error falls from 1.72e-3 to 1.10e-5 at 8→64 coordinates; sampling error remains separate.
+- [Partial-observation protocol](docs/partial-observations.md): fixed weekly innovations,
+  shared observations across dimensions, and observed-data selection of dimension and ridge.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
@@ -152,6 +154,7 @@ uv run spde-covariance benchmark experiments/configs/stage1-smoke.toml --output 
 uv run spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/rq2-smoke
 uv run spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/rq3-smoke
 uv run spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/infinite-smoke
+uv run spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/partial-smoke
 ```
 
 Protocols and the [roadmap](docs/research-roadmap.md) link reproducible evidence and next questions.

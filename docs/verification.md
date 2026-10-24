@@ -1,6 +1,6 @@
 # Software verification
 
-The combined suite passes 329 tests on Python 3.13. Its checks cover
+The suite has 417 passing tests on Python 3.13. Its checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
 vectorization, PSD/trace feasibility, numerical certificates, CVXPY/SCS reference
@@ -33,6 +33,7 @@ uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/verification-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/verification-rq3
 uv run --no-sync spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/verification-infinite
+uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/verification-partial
 ```
 
 The end-to-end example estimates V_delta from 1,024 weekly innovations. Its
@@ -98,7 +99,18 @@ transport example and a reduced coupled benchmark outside the checkout, using
 only declared core dependencies. The wheel's Python sources match the recorded
 numerical implementation.
 
-CI runs the numerical checks, example, notebook, all four seeded smoke suites
+The [partial-observation study](partial-observations.md) adds common parent
+observations across candidate dimensions, covariance omission/cross-term
+checks, full-H contract geometry, exact fresh-noise correction, past-only
+selection and test isolation. Independent replication-level paired summaries
+retain unavailable direct-risk proxies and separate them from finite-sieve
+range checks. Full-study reference-tail acceptance remains separate from the
+smoke run's intentionally coarse forcing approximation.
+A clean wheel passed a reduced two-source partial-observation run outside the
+checkout using only its declared core dependencies; optional reference solves
+were verified separately in the reference-enabled test environment.
+
+CI runs the numerical checks, example, notebook, all five seeded smoke suites
 and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and
 video encoding run separately. Selected full-study evidence records its source
 revision and environment; numerical reports must be interpreted with that

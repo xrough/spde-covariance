@@ -12,13 +12,18 @@ def main(argv=None):
         ("benchmark-rq2", "run local covariance and risk estimation experiments"),
         ("benchmark-rq3", "evaluate frozen covariance forecasts on future observations"),
         ("benchmark-infinite-transport", "audit a fixed infinite-rank transport model"),
+        ("benchmark-partial", "study partial observations and covariance dimension selection"),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)
         benchmark.add_argument("--output", type=Path)
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "benchmark-infinite-transport":
+        if arguments.command == "benchmark-partial":
+            from .partial_benchmark import run_partial_benchmark
+
+            output = run_partial_benchmark(arguments.config, arguments.output)
+        elif arguments.command == "benchmark-infinite-transport":
             from .infinite_benchmark import run_infinite_transport_benchmark
 
             output = run_infinite_transport_benchmark(arguments.config, arguments.output)
