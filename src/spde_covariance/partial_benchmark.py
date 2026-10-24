@@ -20,6 +20,7 @@ from .estimation import CovarianceEstimate, fit_covariance, fit_covariance_refer
 from .geometry import diagnose_design, gram_operator
 from .laguerre import LaguerreTransport
 from .linalg import validate_psd
+from .observation_statistics import covariance_quadratic_score
 from .observations import Observation
 from .partial_config import PartialBenchmarkConfig
 from .partial_design import (
@@ -118,25 +119,7 @@ def fit_candidate(
 def observed_quadratic_score(covariance, observations):
     """Mean corrected Frobenius score, omitting the shared ||yy.T-N||² constant."""
     matrix = validate_psd(covariance, name="candidate covariance")
-    data = tuple(observations)
-    if not data or any(item.dimension != len(matrix) for item in data):
-        raise ValueError("score observations must be nonempty and match the candidate basis")
-    # Grouping identical maps avoids repeating a candidate's predicted covariance.
-    groups = {}
-    for item in data:
-        key = (item.operator.shape, item.operator.tobytes())
-        if key not in groups:
-            groups[key] = [item.operator, 0, np.zeros((item.n_contracts, item.n_contracts))]
-        groups[key][1] += 1
-        groups[key][2] += item.measurement
-    total = 0.0
-    for operator, count, corrected_sum in groups.values():
-        predicted = operator @ matrix @ operator.T
-        total += count * np.sum(predicted**2) - 2 * np.sum(predicted * corrected_sum)
-    value = float(total / len(data))
-    if not np.isfinite(value):
-        raise ValueError("observed score exceeds floating-point range")
-    return value
+    return covariance_quadratic_score(matrix, observations)
 
 
 def choose_candidate(rows):
@@ -499,9 +482,20 @@ def _write_csv(path, rows):
 
 def run_partial_benchmark(config, output=None):
     """Run into a fresh directory, retaining numerical failures and every candidate."""
+    from .fragment_config import FragmentBenchmarkConfig
+
     if isinstance(config, (str, Path)):
         with Path(config).open("rb") as stream:
-            config = PartialBenchmarkConfig(**tomllib.load(stream))
+            values = tomllib.load(stream)
+        config = (
+            FragmentBenchmarkConfig(**values)
+            if values.get("study") == "fragments"
+            else PartialBenchmarkConfig(**values)
+        )
+    if isinstance(config, FragmentBenchmarkConfig):
+        from .fragment_benchmark import run_fragment_benchmark
+
+        return run_fragment_benchmark(config, output)
     if not isinstance(config, PartialBenchmarkConfig):
         raise TypeError("config must be PartialBenchmarkConfig or a TOML path")
     root = _source_root()

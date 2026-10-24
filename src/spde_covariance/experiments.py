@@ -12,7 +12,10 @@ def main(argv=None):
         ("benchmark-rq2", "run local covariance and risk estimation experiments"),
         ("benchmark-rq3", "evaluate frozen covariance forecasts on future observations"),
         ("benchmark-infinite-transport", "audit a fixed infinite-rank transport model"),
-        ("benchmark-partial", "study partial observations and covariance dimension selection"),
+        (
+            "benchmark-partial",
+            "study partial innovations, covariance selection and fragment completion",
+        ),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)

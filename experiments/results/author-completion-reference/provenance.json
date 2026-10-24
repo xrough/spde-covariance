@@ -1,0 +1,6 @@
+{
+  "revision": "0d332d99583315b60e17b6fd83b6c2e0b74e8da0",
+  "url": "https://raw.githubusercontent.com/kgwstat/covcomp/0d332d99583315b60e17b6fd83b6c2e0b74e8da0/R/covcomp.R",
+  "sha256": "a38acc2ed2149a0b727f8d8bf1a760e1f7819d7bc0eddccd3dc5117af5596ebe",
+  "scope": "explicit ranks; unit grid weights"
+}

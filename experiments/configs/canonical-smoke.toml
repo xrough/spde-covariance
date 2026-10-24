@@ -1,0 +1,16 @@
+study = "fragments"
+name = "canonical-smoke"
+profile = "spde"
+seed = 20261026
+replications = 2
+training_counts = [32, 64]
+covers = [3, 9]
+grids = [21]
+models = ["powerlaw", "rotated"]
+noise_variances = [0.0, 0.001]
+reference_dimension = 32
+validation_count = 16
+test_count = 32
+ranks = [1, 2, 4]
+ridge_comparison = false
+population_checks = false

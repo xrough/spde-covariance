@@ -98,6 +98,10 @@ with partial linear observations.
 The fitter receives $y_i=O_i\xi_i+\varepsilon_i$, known maps and fresh noise
 covariances. It fits corrected outer products with PSD/trace-constrained ridge
 and reports observation geometry and numerical convergence diagnostics.
+For dense point fragments, [canonical completion](docs/canonical-completion.md)
+adds an explicit structural rule for unseen kernel entries alongside ridge.
+It does not turn missing pairs into identified data. The [fragment example](examples/canonical_pipeline.py)
+and `fit_covariance_kernel` retain raw and separately PSD-projected kernels.
 The [methods](docs/methods.md) retain the full SPDE setup, Hilbert metric,
 exact/projected distinction, objective and certificate formulas.
 
@@ -132,6 +136,10 @@ optimization certificates bound numerical error to the constrained optimizer.
 - [Partial-observation protocol](docs/partial-observations.md) and [report](experiments/results/partial-observations/report.md):
   20 paired replications, shared data across dimensions, and observed-data selection.
   More coordinates do not remove weak observation directions; selection offers no uniform advantage.
+- [Canonical-completion protocol](docs/canonical-completion.md), [reference controls](experiments/results/canonical-reference/report.md)
+  and [SPDE fragment study](experiments/results/canonical-spde/report.md): structural completion,
+  sampling error, inverse sensitivity and risk ambiguity are reported separately.
+  The [findings](docs/completion-findings.md) summarize measured outcomes and limitations.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
@@ -153,6 +161,7 @@ uv run spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output
 uv run spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/rq3-smoke
 uv run spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/infinite-smoke
 uv run spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/partial-smoke
+uv run spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/canonical-smoke
 ```
 
 Protocols and the [roadmap](docs/research-roadmap.md) link evidence and next questions.

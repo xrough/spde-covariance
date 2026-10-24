@@ -114,3 +114,19 @@ interfaces are in the [API](api.md). The [portfolio note](portfolio.md)
 separates delivered numerical evidence from future ambitions. Public notes
 describe implemented methods and reproducible protocols; later research
 directions remain distinct from validated outcomes.
+## Canonical completion inside the SPDE workflow
+
+Dense point fragments now share corrected observation statistics with the
+partial-innovation ridge benchmark. Canonical completion is an explicit
+structural choice alongside regularization, not a proof that observation data
+determine the generating covariance. The [methods and controls](canonical-completion.md)
+separate finite-grid ambiguity, numerical inverse sensitivity, and sampling.
+
+The next research sequence remains RQ1 identification, RQ2 estimation, and RQ3
+evaluation. Before forecasting completed functional risks, investigate which
+canonical restrictions are defensible for the fixed infinite-dimensional
+transport model and how separator inversion amplifies representation error.
+The [reference study](../experiments/results/canonical-reference/report.md) and
+[SPDE study](../experiments/results/canonical-spde/report.md) provide numerical
+controls, not a theorem or empirical market validation. Existing RQ3 machinery
+is preserved; this increment adds no new forecast model.
