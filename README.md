@@ -143,7 +143,8 @@ optimization certificates bound numerical error to the constrained optimizer.
   sampling error, inverse sensitivity and risk ambiguity are reported separately.
   The [findings](docs/completion-findings.md) summarize measured outcomes and limitations.
 - [PSD-consistent completion](docs/coherent-completion.md): joint fragment fitting,
-  observed-data penalty selection and finite constant-source SPDE diagnostics.
+  observed-data penalty selection and finite constant-source SPDE diagnostics;
+  [paired numerical follow-up](experiments/results/coherent-completion/report.md).
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence

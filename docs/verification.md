@@ -174,3 +174,16 @@ and a clean wheel installation on Linux and macOS. Full Monte Carlo studies and
 video encoding run separately. Selected full-study evidence records its source
 revision and environment; numerical reports must be interpreted with that
 provenance.
+
+The [accepted coherent-completion study](../experiments/results/coherent-completion/report.md)
+records 20 paired replications from clean numerical source
+`566b07e30f30abd2edf60c8af7cf1df2d9ff2edc`. All 1,440 candidates meet the
+$10^{-4}$ partial-distance budget and all 960 coherent outputs pass the PSD
+check; the largest iteration count is 25,820. All twenty audit checkpoints
+are bound to the parent manifest. Tests compare serial and spawned-worker
+scientific outputs exactly, excluding runtime, and check failed-checkpoint
+retention. These are audit records, not an automatic resume interface.
+The clean wheel passes a two-worker reduced benchmark outside the checkout.
+Independent replay and aggregation checks verify the reported means, paired
+MCSEs and observed-validation selections; twelve unfinished population
+source-cone diagnostics retain their valid intervals and explicit status.
