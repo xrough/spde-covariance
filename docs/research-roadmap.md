@@ -96,6 +96,10 @@ specified before such a result can be assessed.
    estimation and future risk evaluation as spatial and temporal resolution
    change. New theoretical conclusions require their own assumptions and
    mathematical validation; finite numerical rank is insufficient.
+   The [partial-observation study](partial-observations.md) begins this step at
+   fixed weekly intervals. It holds observations constant across covariance
+   sieves, separates approximation from fresh noise, and selects dimension and
+   ridge on observed validation data before a disjoint test block.
 4. **Introduce practical observation and dynamics models.** Sparse/noisy price
    levels, stochastic volatility, irregular sampling and futures data require
    explicit additional modelling. They are not consequences of the current

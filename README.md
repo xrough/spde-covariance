@@ -5,12 +5,11 @@
 
 A Python research toolkit for transport-SPDE covariance. A **four-dimensional
 toy laboratory** develops identification, estimation and forecast evaluation;
-a fixed infinite-rank benchmark then separates forcing truncation, curve
-projection and time resolution. Estimators use established methods. No new
-estimator or infinite-dimensional statistical guarantee is claimed.
+a fixed infinite-rank benchmark separates forcing truncation, curve projection,
+time resolution and partial-observation error. Established estimators are used;
+no new estimator or infinite-dimensional statistical guarantee is claimed.
 
-The longer-term application is futures-curve risk and prediction. Three questions
-organize both the finite studies and their continuation:
+The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
 | Question | Current finite study | Later direction |
 | --- | --- | --- |
@@ -72,8 +71,7 @@ fit = spde.fit_innovation_covariance(
 print(fit.covariance)  # normalized innovation covariance V_delta
 ```
 
-The [full example](examples/transport_pipeline.py) also checks analytical truth;
-the [notebook](notebooks/transport_covariance.ipynb) explores partial observations.
+The [full example](examples/transport_pipeline.py) checks analytical truth; the [notebook](notebooks/transport_covariance.ipynb) explores partial observations.
 
 ## What is estimated
 
@@ -83,8 +81,7 @@ For clean curve coefficients and a known transport matrix, the innovation is
 \xi_i=\frac{a_i-M_{\Delta_i}a_{i-1}-d_i}{\sqrt{\Delta_i}}.
 ```
 
-The supplied $d_i$ is the integrated, transported drift. With deterministic
-constant source covariance, the finite model gives
+The supplied $d_i$ is the integrated, transported drift. With constant source covariance, the finite model gives
 
 ```math
 C=LL^\top,\qquad
@@ -132,6 +129,9 @@ optimization certificates bound numerical error to the constrained optimizer.
 - [Infinite-rank transport protocol](docs/infinite-transport.md) and [report](experiments/results/infinite-transport/report.md):
   20 coupled path replications. At 256 forcing modes, weekly covariance projection
   error falls from 1.72e-3 to 1.10e-5 at 8→64 coordinates; sampling error remains separate.
+- [Partial-observation protocol](docs/partial-observations.md) and [report](experiments/results/partial-observations/report.md):
+  20 paired replications, shared data across dimensions, and observed-data selection.
+  More coordinates do not remove weak observation directions; selection offers no uniform advantage.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
@@ -152,8 +152,9 @@ uv run spde-covariance benchmark experiments/configs/stage1-smoke.toml --output 
 uv run spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/rq2-smoke
 uv run spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/rq3-smoke
 uv run spde-covariance benchmark-infinite-transport experiments/configs/infinite-transport-smoke.toml --output experiments/runs/infinite-smoke
+uv run spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/partial-smoke
 ```
 
-Protocols and the [roadmap](docs/research-roadmap.md) link reproducible evidence and next questions.
+Protocols and the [roadmap](docs/research-roadmap.md) link evidence and next questions.
 Runs preserve source/configuration manifests and machine-readable measurements.
 Code, tests and analytical controls are licensed under [MIT](LICENSE).

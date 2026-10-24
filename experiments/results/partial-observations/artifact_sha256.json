@@ -1,0 +1,114 @@
+[
+  {
+    "source_name": "candidate_fits.json",
+    "published_name": "candidate_fits.json.gz",
+    "source_sha256": "fa3882131fbf3462788ad1f810d0afcd1579810785cf901a7ada00368ca696dc",
+    "published_sha256": "0ed319ae9f46573f555e25aa3ee4cef115db278c4a4162677e569691d2c090d3",
+    "gzip": true
+  },
+  {
+    "source_name": "candidates.csv",
+    "published_name": "candidates.csv.gz",
+    "source_sha256": "63a5db7196c9faea2e1850a59924ce5427c1ef0236e33667c09506129faa3020",
+    "published_sha256": "8d53538cf9c5200d41641b68afee68089c9f059b45f00756db9b1eb4dc8ce439",
+    "gzip": true
+  },
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "c032614d1dbc52f7b674022a32900e8fc27d50f421f1b52680e81c3ca1a18fbc",
+    "published_sha256": "c032614d1dbc52f7b674022a32900e8fc27d50f421f1b52680e81c3ca1a18fbc",
+    "gzip": false
+  },
+  {
+    "source_name": "full_h_geometry.json",
+    "published_name": "full_h_geometry.json.gz",
+    "source_sha256": "67cd80dd4e825dbf20faa8a48a143ad77f0401f3f6c9d6efc0bf6244549c0779",
+    "published_sha256": "b5029bbb20c7b803277ae8f20f8a0d732585ead6d06e8e350514782b21058e23",
+    "gzip": true
+  },
+  {
+    "source_name": "geometry.json",
+    "published_name": "geometry.json.gz",
+    "source_sha256": "217fccf105d3654b10e83bea9df73dc9f2fa16fe9d283ad07f4eca08a70763ea",
+    "published_sha256": "80fe3d7622b8edbe4ea513dcaec4ccce913fa68c5b9266e176acf4e12555f53b",
+    "gzip": true
+  },
+  {
+    "source_name": "geometry_observability.png",
+    "published_name": "geometry_observability.png",
+    "source_sha256": "481ceeb37b00f35da7f33ccc81aa40728873114aba5a9aa7d706461c9590abb4",
+    "published_sha256": "481ceeb37b00f35da7f33ccc81aa40728873114aba5a9aa7d706461c9590abb4",
+    "gzip": false
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "708fb824bca929c44bcef2f4f61645bb821711e831d61d1f0c71bd333dc5e0ff",
+    "published_sha256": "708fb824bca929c44bcef2f4f61645bb821711e831d61d1f0c71bd333dc5e0ff",
+    "gzip": false
+  },
+  {
+    "source_name": "observation_approximation.json",
+    "published_name": "observation_approximation.json.gz",
+    "source_sha256": "74ebd34015eff4768c3ad1e7ef90b4b516851131656c72a1ed92337c731ab6ab",
+    "published_sha256": "784e1722dbae396efbc766e0d0aac5ffcce3d9f778dd40c4c47a03b4e82cfaa3",
+    "gzip": true
+  },
+  {
+    "source_name": "observation_approximation.png",
+    "published_name": "observation_approximation.png",
+    "source_sha256": "2dfcf16510276345715d18df3ea92e6a653b12c56fc9dd24891f9b8dedbab173",
+    "published_sha256": "2dfcf16510276345715d18df3ea92e6a653b12c56fc9dd24891f9b8dedbab173",
+    "gzip": false
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "582c4082cc078b60e9bcafd6aa08292bebe2ad9f7746559d0460faf2081477ee",
+    "published_sha256": "7fe8af8e3637dfd2e82b7d0352af78395f641c562a8ac74334b2ab9b3f47549f",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "f773f4ce2b78f22504ff5fe91b75c887765144762ac8baaa0244b68c8a28e39c",
+    "published_sha256": "c1eb35e77a86929a9f94be59d8dc7cb3da90c95b0e86d87ef79a9133a23dbd0c",
+    "gzip": true
+  },
+  {
+    "source_name": "risks.csv",
+    "published_name": "risks.csv.gz",
+    "source_sha256": "b7781476270c0e9dd633486c840730f4c7e0de377acbbf77d7b4d77547e4216c",
+    "published_sha256": "9819886745a4d05c216ee5d8f37eb9a1d144b10dfa1d0b8f986eea03c1dc44f0",
+    "gzip": true
+  },
+  {
+    "source_name": "selected.csv",
+    "published_name": "selected.csv.gz",
+    "source_sha256": "f4dd51c2e706debefecce8364752c40733a75f968a8b3ad143e5c984e351c2b9",
+    "published_sha256": "41409532c73de5a6023eb693c41f7247827f7559d31525908d8f211901ac69ee",
+    "gzip": true
+  },
+  {
+    "source_name": "selected_performance.png",
+    "published_name": "selected_performance.png",
+    "source_sha256": "74798a4af3ca415a02afb8ed3e08d2848cd785e263cea0c257c84a7f6d08720f",
+    "published_sha256": "74798a4af3ca415a02afb8ed3e08d2848cd785e263cea0c257c84a7f6d08720f",
+    "gzip": false
+  },
+  {
+    "source_name": "selection_audit.json",
+    "published_name": "selection_audit.json.gz",
+    "source_sha256": "f094a3aad03e846e315218523be104b3b3ed5a8ac29ce6e3b254619acc921652",
+    "published_sha256": "de0284524dc73b88e05c21f1b7ac89e6443fd5b4270e9ea98c1d464632bc4e94",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "published_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "gzip": false
+  }
+]
