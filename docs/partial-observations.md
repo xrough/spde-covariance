@@ -123,14 +123,14 @@ by the fitter. A generic covariance nullspace witness is not automatically
 the image of a positive source covariance under the SPDE transport bridge;
 no such source-constrained identification theorem is claimed.
 
-This differs from membership of a full-$H$ exposure in the functional span
+This differs from membership of a full-H exposure in the functional span
 of a contract set. A finite truncation can make functionals look dependent
 or make a restricted target appear observable while the full functional
 remains outside that span. Full functional spans use the actual half-line
 Sobolev dual metric, rather than a conveniently small coefficient truncation.
 
 A third question is whether a same-date unbiased scalar risk proxy is
-available. If $a=O_i^*c_i$ as a full-$H$ functional, then
+available. If $a=O_i^*c_i$ as a full-H functional, then
 
 ```math
 z_{a,i}=(c_i^*y_i)^2-c_i^*N_ic_i,
@@ -177,7 +177,7 @@ With corrected outer product $Z_i=y_iy_i^*-N_i$, candidates minimize
 +\frac{\lambda}{2}\|B\|_F^2.
 ```
 
-Weights sum to one and $\lambda=\lambda_{\mathrm{rel}}\|\mathcal G_J\|$,
+Weights sum to one and $\lambda=\lambda_{\mathrm{rel}}\lVert\mathcal G_J\rVert$,
 so an unnormalized sample count does not silently change the penalty scale.
 The solver certificate concerns this finite constrained objective in
 floating point. It does not bound truncation error or statistical recovery of
@@ -198,7 +198,7 @@ because the measurements and dimensions differ. Observed validation selects
 observed-space prediction performance; it cannot validate unseen covariance
 directions or guarantee recovery of an unobserved risk.
 
-Observed-covariance forcing tails use the full-$H$ contract Gram matrix $G$.
+Observed-covariance forcing tails use the full-H contract Gram matrix $G$.
 With $a_\Delta=(1-e^{-\Delta})/\Delta$ and each contract having unit total
 mass, a positive upper-bound matrix for the omitted-source observation
 covariance is
@@ -251,7 +251,7 @@ The 16-contract numerical Gram rank is 10/10 at $J=4$, 44/136 at $J=16$ and
 directions can include very weak positive eigenvalues; these counts are not
 proofs of exact nullspace dimensions.
 
-The off-grid exposure has no same-date full-$H$ proxy in any design, so all
+The off-grid exposure has no same-date full-H proxy in any design, so all
 its operational risk scores are unavailable. Matching point and delivery
 risks have 24/128 future proxy dates in the rotating design, and 128/128 when
 their contracts are jointly observed throughout. Their direct estimates do
@@ -265,7 +265,7 @@ available and unavailable exposure comparisons.
 
 At $M=256$, the full innovation trace-tail bound is $6.38\times10^{-6}$, the
 16-contract observed HS tail bound is $1.27\times10^{-6}$, and each declared
-unit-$H$ spread-risk tail bound is $4.86\times10^{-8}$; all meet the declared
+unit H-norm spread-risk tail bound is $4.86\times10^{-8}$; all meet the declared
 $10^{-5}$ tail budget. Some $J=32$ finite-reference approximation errors are
 smaller than their observed tail bound. They are not resolved measurements of
 the corresponding exact infinite-model errors. The report preserves these
