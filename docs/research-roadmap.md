@@ -114,7 +114,7 @@ interfaces are in the [API](api.md). The [portfolio note](portfolio.md)
 separates delivered numerical evidence from future ambitions. Public notes
 describe implemented methods and reproducible protocols; later research
 directions remain distinct from validated outcomes.
-# Canonical completion inside the SPDE workflow
+## Canonical completion inside the SPDE workflow
 
 Dense point fragments now share corrected observation statistics with the
 partial-innovation ridge benchmark. Canonical completion is an explicit

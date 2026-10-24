@@ -1,0 +1,9 @@
+"name","max_abs_difference"
+"finite_rank-m3",8.33296973090647e-13
+"finite_rank-m9",2.56997548242488e-13
+"brownian-m3",1.66533453693773e-16
+"brownian-m9",8.04911692853238e-16
+"analytic-m3",3.99680288865056e-15
+"analytic-m9",3.77475828372553e-15
+"psd-control-r1",0
+"psd-control-r2",0

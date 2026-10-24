@@ -401,7 +401,7 @@ the per-date proxy check does not by itself establish failure of pooled
 identification. Observed validation loss also cannot validate an unobserved
 operator direction. See the [protocol](partial-observations.md) for fixed
 exposures, source families, chronology, approximation bounds and limitations.
-# Kernel-facing covariance workflow
+## Kernel-facing covariance workflow
 
 `fit_innovation_covariance` continues to return a certified PSD/trace-constrained
 H-coordinate estimate. The additional `fit_covariance_kernel(data, *, layout,

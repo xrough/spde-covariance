@@ -1,0 +1,9 @@
+name,rank,joins
+finite_rank-m3,4,2
+finite_rank-m9,4,8
+brownian-m3,2,2
+brownian-m9,2,8
+analytic-m3,2,2
+analytic-m9,2,8
+psd-control-r1,1,1
+psd-control-r2,2,1

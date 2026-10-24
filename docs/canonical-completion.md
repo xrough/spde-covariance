@@ -239,13 +239,13 @@ with no fallback rank. Every raw estimate and its separately weighted PSD
 projection are retained in measurements; representative matrices use rep0 at
 the declared central resolution/count, never the most favorable replication.
 
-At base grid81 and N512, ridge compares J4/8/16 and relative penalties
+At base grid 81 and N=512, ridge compares J=4/8/16 and relative penalties
 0.001/0.01/0.1, scaled by each observed Gram norm. The trace cap is 2 and
 the numerical covariance-distance budget is 1e-4. Selection uses observations
 2049–2176 only; testing uses 2177–2688. Training ends at the selected prefix,
 with no validation refit. Exact ties choose smaller J then larger relative
 penalty. Canonical policies have no validation tuning. The dense geometry
-cache holds at most32 repeated-design entries.
+cache holds at most 32 repeated-design entries.
 
 All methods report weighted errors on observed, missing and complete regions,
 error to the population finite-grid canonical reference, and that reference's
@@ -264,9 +264,9 @@ Exact attainable identification ranges are supplied for two-block population
 controls; they are not inferred from noisy empirical or recursive blocks.
 Raw/projected risk differences and trace/observed-entry changes are recorded.
 
-Population checks compare256/512 modes, add321-point refinement, vary overlap
-widths0.05/0.2/0.4 and support cutoffs1e-10/1e-12/1e-14. Relative weighted
-differences above1e-4 on common physical targets are flagged as numerical
+Population checks compare 256/512 modes, add a 321-point refinement, vary overlap
+widths 0.05/0.2/0.4 and support cutoffs 1e-10/1e-12/1e-14. Relative weighted
+differences above 1e-4 on common physical targets are flagged as numerical
 reference instability. Agreement does not certify continuum convergence or
 bound inverse-amplified forcing-tail error.
 
@@ -283,3 +283,5 @@ Wall times are machine-specific; they are not portable performance guarantees.
 These controls reproduce the stated kernels and explicit-rank recurrence,
 not the paper's unspecified random draws, sparse-fragment smoothing studies,
 or every published table value.
+
+The [recorded author-R verification](../experiments/results/author-completion-reference/README.md) passed all eight explicit-rank controls, with maximum absolute discrepancy 8.33e-13. Risk/error summaries condition on available estimates; paired differences use the available replication intersection. A policy with frequent unavailable estimates should not be compared as if it ran on the full replication set.

@@ -139,6 +139,7 @@ optimization certificates bound numerical error to the constrained optimizer.
 - [Canonical-completion protocol](docs/canonical-completion.md), [reference controls](experiments/results/canonical-reference/report.md)
   and [SPDE fragment study](experiments/results/canonical-spde/report.md): structural completion,
   sampling error, inverse sensitivity and risk ambiguity are reported separately.
+  The [findings](docs/completion-findings.md) summarize measured outcomes and limitations.
 
 Current experiments assume known observation maps/noise and correct drift.
 Sparse/noisy price-level reconstruction, stochastic volatility, confidence
