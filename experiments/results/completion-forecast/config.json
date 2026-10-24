@@ -1,0 +1,50 @@
+{
+  "study": "completion_forecast",
+  "name": "completion-forecast",
+  "seed": 20261028,
+  "replications": 20,
+  "intervals": 512,
+  "delta": 0.019230769230769232,
+  "reference_dimension": 256,
+  "grid": 21,
+  "covers": [
+    3,
+    9
+  ],
+  "scenarios": [
+    "constant",
+    "scale",
+    "rotating",
+    "abrupt"
+  ],
+  "windows": [
+    16,
+    32,
+    64,
+    128
+  ],
+  "validation_origins": [
+    128,
+    192
+  ],
+  "test_origins": [
+    256,
+    272,
+    304,
+    448
+  ],
+  "horizon": 16,
+  "static_window": 128,
+  "fixed_window": 128,
+  "source_exponent": 3.0,
+  "source_trace": 1.0,
+  "noise_variance": 0.001,
+  "relative_regularization": 0.001,
+  "floor_gamma": 0.02116,
+  "numerical_error_budget": 0.0001,
+  "support_rtol": 1e-12,
+  "quadrature_order": 24,
+  "admm_rho": 0.2,
+  "admm_max_iterations": 100000,
+  "workers": 4
+}

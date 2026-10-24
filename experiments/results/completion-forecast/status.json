@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "acceptance": {
+    "declared_coverage_complete": true,
+    "coherent_issued_fits_available": true,
+    "coherent_test_forecasts_available": true,
+    "coherent_outputs_psd": true,
+    "selection_uses_past_only": true,
+    "coherent_certificates_within_budget": true,
+    "passed": true
+  }
+}

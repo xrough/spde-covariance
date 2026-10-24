@@ -171,5 +171,10 @@ available coherent fits, coherent certificate budgets and PSD coherent forecasts
 Unavailable historical baselines remain descriptive outcomes with explicit
 counts. Summaries using fewer than all replications are labelled conditional
 on available complete pairs. No
-advantage over another strategy is required. Results remain pending until a
-clean committed-source run passes these checks and is published.
+advantage over another strategy is required. The
+[accepted full report](../experiments/results/completion-forecast/report.md)
+records 20 paired replications from clean numerical source
+`c451aa7a55596a16ac726e7a2507ecc308897847`, with 6,772 available fits and
+2,264 certified coherent fits. The [findings](completion-continuation-findings.md)
+describe the measured comparisons and limits; window selection does not
+demonstrate an advantage over the fixed 128-observation rule.

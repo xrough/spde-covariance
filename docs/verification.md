@@ -38,6 +38,8 @@ uv run --no-sync spde-covariance benchmark-infinite-transport experiments/config
 uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/verification-partial
 uv run --no-sync spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/verification-canonical
 uv run --no-sync spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output experiments/runs/verification-coherent
+uv run --no-sync spde-covariance benchmark-partial experiments/configs/completion-research-smoke.toml --output experiments/runs/verification-research
+uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/completion-forecast-smoke.toml --output experiments/runs/verification-completion-forecast
 ```
 
 The end-to-end example estimates V_delta from 1,024 weekly innovations. Its
@@ -187,3 +189,19 @@ The clean wheel passes a two-worker reduced benchmark outside the checkout.
 Independent replay and aggregation checks verify the reported means, paired
 MCSEs and observed-validation selections; twelve unfinished population
 source-cone diagnostics retain their valid intervals and explicit status.
+
+The [continuation studies](completion-continuation-findings.md) add rectangular
+source/output integration and adjoint/coordinate controls, an independent CVXPY
+two-versus-three-mode source-support control, nested feasible witnesses,
+fixed-source tail and numerical-map comparisons, factorial strategy reuse,
+finite separator perturbation bounds, training-only split guards and
+source-level dynamic forecast paths. Forecast tests change future data and
+latent truth while preserving already issued fits and selections. Serial and
+spawned-worker scientific results agree exactly apart from runtime.
+
+Linux/macOS CI runs both additional smoke commands. A fresh installed wheel
+outside the checkout passes all three examples and the projected-source controls
+without optional CVXPY. Full studies remain separate from CI; their clean-source
+manifests, solver diagnostics and independent replication checkpoints accompany
+each published report. The postprocessing test verifies paired availability
+and MCSE in `scripts/completion_contrasts.py`.

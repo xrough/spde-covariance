@@ -138,19 +138,28 @@ predictions. Its finite constant-source diagnostic reports distance to a
 declared transport/source class; it does not identify the true source or
 exclude a larger infinite-dimensional class.
 
-The next evidence gates are now more specific:
+The computational continuation addresses these four gates:
 
-1. Separate the effects of clique PSD constraints, upstream shrinkage,
-   eigenvalue floors and full-support completion through controlled ablations.
-   A comparison of whole strategies does not isolate one mechanism.
-2. Refine one fixed underlying model while controlling forcing support,
-   evaluation-basis mismatch and separator inverse amplification separately.
-   A fixed finite-grid eigenvalue floor needs a resolution-aware replacement
-   before any continuum interpretation.
-3. Compare matched finite source classes with larger forcing supports and
-   explicit integration/tail allowances. A nonzero distance of an estimated
-   kernel can also reflect sampling and representation error; it is not a
-   statistical test rejecting the generating SPDE.
-4. Reuse the existing RQ3 chronology only after those identification and
-   estimation limitations are quantified. Complete covariance feasibility
-   does not make unseen functional risks observed or forecast-validated.
+1. [Controlled ablations](../experiments/results/completion-ablation/report.md)
+   separate clique PSD coherence, shrinkage, eigenvalue floors and support.
+   The [matched-factor postprocessor](../scripts/completion_contrasts.py) computes
+   differences within replication before reporting MCSE.
+2. [Fixed-model refinement](../experiments/results/completion-refinement/report.md)
+   separates forcing, output representation and physical-grid errors. A
+   declining weighted floor is compared with the legacy floor, alongside
+   training-split stability and finite first-join perturbation bounds.
+3. [Larger forcing classes](source-classes.md) retain a fixed output space while
+   increasing source support. Numerical-map comparisons, fixed-generating-source
+   tails and optimizer gaps have separate scopes. No positive lower bound in a
+   small class excludes the unrestricted infinite-dimensional SPDE.
+4. [Completion forecasts](../experiments/results/completion-forecast/report.md)
+   reuse the existing RQ3 chronology with deterministic source-level changes.
+   Complete covariance feasibility does not make unseen functional risks
+   observed or forecast-validated.
+
+The [continuation findings](completion-continuation-findings.md) distinguish the
+measured conclusions from remaining theory. These experiments do not prove
+uniform completion stability, a joint statistical/representation rate or
+convergence of finite source classes to the unrestricted infinite cone.
+Those questions require explicit regularity and observation assumptions;
+substituting measured eigenvalues into a generic bound is insufficient.

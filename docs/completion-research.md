@@ -97,3 +97,12 @@ require any method to win or every ablation to be available.
 
 The subsequent [completion forecast study](completion-forecast.md) uses these
 same strategies with frozen forecasts and the existing RQ3 chronology.
+
+The accepted [ablation](../experiments/results/completion-ablation/report.md)
+and [refinement](../experiments/results/completion-refinement/report.md) each
+record 20 paired replications from clean numerical source
+`c451aa7a55596a16ac726e7a2507ecc308897847`. All 1,520/3,040 estimates are
+available, and all 320/1,200 distinct main coherent solves meet the declared
+budget. Split/candidate diagnostics are retained separately. The
+[findings](completion-continuation-findings.md) explain the mechanism contrasts,
+finite-source uncertainty and the numerical limits of tiny floor comparisons.
