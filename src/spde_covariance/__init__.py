@@ -5,6 +5,7 @@ from .coherent import CoherentConvergenceError, CoherentPartialFit, fit_coherent
 from .fragments import FragmentLayout
 from .kernel_workflow import KernelCovarianceFit, fit_covariance_kernel
 from .laguerre import LaguerreTransport, PowerLawSource
+from .source_classes import projected_covariance_integration_matrix
 from .trajectories import CurveTrajectory, InnovationBatch, extract_innovations, simulate_transport
 from .transport import ExponentialTransport, ProjectedSplineTransport, TransportPropagator
 from .workflow import (
@@ -39,6 +40,7 @@ __all__ = [
     "fit_covariance_kernel",
     "interval_diagnostics",
     "observe_innovations",
+    "projected_covariance_integration_matrix",
     "simulate_transport",
 ]
 

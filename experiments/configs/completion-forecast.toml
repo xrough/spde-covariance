@@ -1,0 +1,15 @@
+study = "completion_forecast"
+name = "completion-forecast"
+seed = 20261028
+replications = 20
+intervals = 512
+reference_dimension = 256
+grid = 21
+covers = [3, 9]
+scenarios = ["constant", "scale", "rotating", "abrupt"]
+windows = [16, 32, 64, 128]
+validation_origins = [128, 192]
+test_origins = [256, 272, 304, 448]
+horizon = 16
+workers = 4
+admm_max_iterations = 100000

@@ -4,12 +4,18 @@ import numpy as np
 import pytest
 
 from spde_covariance.admissibility import (
+    _compressed_problem,
     _problem,
     covariance_integration_matrix,
     diagnose_constant_source_admissibility,
 )
 from spde_covariance.geometry import lifted_matrix, smat, svec
 from spde_covariance.laguerre import LaguerreTransport
+from spde_covariance.source_classes import (
+    embed_source_covariance,
+    evaluate_source_witness,
+    projected_covariance_integration_matrix,
+)
 
 
 class DiagonalTransport:
@@ -362,3 +368,201 @@ def test_small_cvxpy_reference_is_inside_the_certified_distance_interval():
     assert result.objective_lower_bound - 2e-10 <= problem.value <= result.objective + 2e-10
     assert result.fit_distance_lower_bound - 2e-8 <= np.sqrt(2 * problem.value)
     assert np.sqrt(2 * problem.value) <= result.fit_distance_upper_bound + 2e-8
+
+
+def test_larger_forcing_support_strictly_enlarges_a_matched_transport_source_class():
+    vector = np.array([-1.0, -1.0, 1.0]) / np.sqrt(3)
+    source = np.outer(vector, vector)
+    larger_map = projected_covariance_integration_matrix(3, 2, 1.0)
+    kernel = smat(larger_map @ svec(source))
+    matched_map = projected_covariance_integration_matrix(2, 2, 1.0)
+    inverse = smat(np.linalg.solve(matched_map, svec(kernel)))
+    assert np.linalg.eigvalsh(inverse)[0] < -0.078
+    matched = diagnose_constant_source_admissibility(
+        kernel,
+        np.eye(2),
+        delta=1,
+        trace_cap=2,
+        integration_matrix=matched_map,
+        objective_gap_tolerance=1e-11,
+    )
+    larger = diagnose_constant_source_admissibility(
+        kernel,
+        np.eye(2),
+        delta=1,
+        trace_cap=2,
+        integration_matrix=larger_map,
+        initial_source=source,
+        objective_gap_tolerance=1e-11,
+    )
+    largest = diagnose_constant_source_admissibility(
+        kernel,
+        np.eye(2),
+        delta=1,
+        trace_cap=2,
+        integration_matrix=projected_covariance_integration_matrix(4, 2, 1.0),
+        initial_source=embed_source_covariance(source, 4),
+        objective_gap_tolerance=1e-11,
+    )
+    assert matched.converged and matched.fit_distance_lower_bound > 0.039
+    assert larger.converged and largest.converged
+    assert larger.fit_distance_upper_bound < 1e-14
+    assert largest.fit_distance_upper_bound < 1e-14
+    assert largest.fit_distance_lower_bound <= larger.fit_distance_lower_bound
+    assert larger.fit_distance_upper_bound <= matched.fit_distance_lower_bound
+    assert larger.source_candidate.shape == (3, 3)
+    assert larger.projected_innovation.shape == (2, 2)
+    assert larger.source_dimension == 3 and larger.output_dimension == 2
+    assert larger.metadata["source_cutoff_dimension"] == 3
+    assert larger.metadata["output_dimension"] == 2
+
+
+def test_rectangular_normal_factor_has_the_exact_dense_adjoint_and_lipschitz():
+    rng = np.random.default_rng(741)
+    integration = projected_covariance_integration_matrix(6, 3, 0.2)
+    evaluation = rng.normal(size=(5, 3))
+    kernel = rng.normal(size=(5, 5))
+    kernel = (kernel + kernel.T) / 2
+    weights = np.array([0.1, 0.3, 0.2, 0.15, 0.25])
+    hessian, rhs, _, _ = _problem(kernel, evaluation, weights, integration)
+    factor, reduced_rhs, _, _, lipschitz = _compressed_problem(
+        kernel,
+        evaluation,
+        weights,
+        integration,
+    )
+    np.testing.assert_allclose(factor.T @ factor, hessian, atol=2e-14)
+    np.testing.assert_allclose(reduced_rhs, rhs, atol=0)
+    assert lipschitz == pytest.approx(np.linalg.eigvalsh(hessian)[-1], rel=2e-14)
+
+
+def test_independent_source_and_output_rotations_preserve_the_rectangular_problem():
+    rng = np.random.default_rng(962)
+    source_rotation = np.linalg.qr(rng.normal(size=(3, 3)))[0]
+    output_rotation = np.linalg.qr(rng.normal(size=(2, 2)))[0]
+    integration = projected_covariance_integration_matrix(3, 2, 1.0)
+    rotated = lifted_matrix(output_rotation.T) @ integration @ lifted_matrix(source_rotation)
+    evaluation = np.array([[1.0, 0.3], [0.4, 1.0], [1.0, -1.0]])
+    kernel = evaluation @ np.diag([1.0, -0.2]) @ evaluation.T
+    options = dict(delta=1, trace_cap=1.5, weights=[0.2, 0.3, 0.5], objective_gap_tolerance=1e-11)
+    first = diagnose_constant_source_admissibility(
+        kernel, evaluation, integration_matrix=integration, **options
+    )
+    second = diagnose_constant_source_admissibility(
+        kernel, evaluation @ output_rotation, integration_matrix=rotated, **options
+    )
+    assert first.converged and second.converged
+    assert first.objective == pytest.approx(second.objective, abs=2e-12)
+    np.testing.assert_allclose(
+        first.projected_innovation_kernel, second.projected_innovation_kernel, atol=2e-6
+    )
+
+
+def test_embedded_witness_keeps_a_certified_nonincreasing_feasible_upper_envelope():
+    target = np.diag([0.01, 1.01])
+    current_source = np.zeros((2, 2))
+    envelope = np.inf
+    previous_source = None
+    for dimension in (2, 3, 4):
+        integration = projected_covariance_integration_matrix(dimension, 2, 1.0)
+        if previous_source is not None:
+            current_source = embed_source_covariance(previous_source, dimension)
+        embedded = evaluate_source_witness(
+            current_source, integration, np.eye(2), target_kernel=target, trace_cap=4
+        )
+        # Deliberately short solves retain useful intervals but need not be
+        # optimized. The embedded source itself certifies the upper envelope.
+        fit = diagnose_constant_source_admissibility(
+            target,
+            np.eye(2),
+            delta=1,
+            trace_cap=4,
+            integration_matrix=integration,
+            initial_source=current_source,
+            max_iterations=10,
+        )
+        next_envelope = min(envelope, embedded["weighted_distance"], fit.fit_distance_upper_bound)
+        assert next_envelope <= envelope + 1e-14
+        assert fit.fit_distance_lower_bound <= next_envelope + 1e-14
+        previous_source = (
+            fit.source_candidate
+            if fit.fit_distance_upper_bound <= embedded["weighted_distance"]
+            else current_source
+        )
+        envelope = next_envelope
+
+
+def test_large_source_small_output_uses_output_space_normal_factorization():
+    source_dimension, output_dimension = 64, 16
+    integration = projected_covariance_integration_matrix(
+        source_dimension, output_dimension, 1 / 52
+    )
+    source = np.diag(1 / (np.arange(source_dimension) + 1) ** 3)
+    kernel = smat(integration @ svec(source))
+    fit = diagnose_constant_source_admissibility(
+        kernel,
+        np.eye(output_dimension),
+        delta=1 / 52,
+        trace_cap=2,
+        integration_matrix=integration,
+        initial_source=source,
+    )
+    assert fit.converged and fit.iterations == 0
+    assert fit.metadata["normal_equations"] == "output-space factorization"
+    assert fit.fit_distance_upper_bound < 1e-14
+
+
+def test_rectangular_source_problem_matches_an_independent_cvxpy_solve():
+    cp = pytest.importorskip("cvxpy")
+    integration = projected_covariance_integration_matrix(3, 2, 1.0)
+    kernel = np.diag([0.01, 1.01])
+    source = cp.Variable((3, 3), symmetric=True)
+    rows, columns = np.triu_indices(3)
+    coordinates = cp.hstack(
+        [source[a, b] * (1 if a == b else np.sqrt(2)) for a, b in zip(rows, columns, strict=True)]
+    )
+    innovation = integration @ coordinates
+    target = svec(kernel)
+    problem = cp.Problem(
+        cp.Minimize(0.5 * cp.sum_squares(innovation - target)), [source >> 0, cp.trace(source) <= 4]
+    )
+    problem.solve(solver="SCS", eps=1e-10, max_iters=100_000)
+    fit = diagnose_constant_source_admissibility(
+        kernel,
+        np.eye(2),
+        delta=1,
+        trace_cap=4,
+        integration_matrix=integration,
+        objective_gap_tolerance=1e-11,
+    )
+    assert problem.status in ("optimal", "optimal_inaccurate")
+    assert fit.converged
+    assert fit.objective_lower_bound - 2e-9 <= problem.value <= fit.objective + 2e-9
+
+
+def test_independent_cvxpy_confirms_strict_projected_forcing_control():
+    cp = pytest.importorskip("cvxpy")
+    vector = np.array([-1.0, -1.0, 1.0]) / np.sqrt(3)
+    kernel = smat(
+        projected_covariance_integration_matrix(3, 2, 1.0) @ svec(np.outer(vector, vector))
+    )
+    values = []
+    for dimension in (2, 3):
+        source = cp.Variable((dimension, dimension), symmetric=True)
+        rows, columns = np.triu_indices(dimension)
+        coordinates = cp.hstack(
+            [
+                source[a, b] * (1 if a == b else np.sqrt(2))
+                for a, b in zip(rows, columns, strict=True)
+            ]
+        )
+        matrix = projected_covariance_integration_matrix(dimension, 2, 1.0)
+        problem = cp.Problem(
+            cp.Minimize(0.5 * cp.sum_squares(matrix @ coordinates - svec(kernel))),
+            [source >> 0, cp.trace(source) <= 2],
+        )
+        problem.solve(solver="SCS", eps=1e-10, max_iters=100_000)
+        assert problem.status in ("optimal", "optimal_inaccurate")
+        values.append(problem.value)
+    assert values[0] > 0.0007
+    assert values[1] < 1e-14

@@ -1,0 +1,11 @@
+study = "completion_research"
+experiment = "ablation"
+name = "completion-ablation"
+seed = 20261028
+replications = 20
+workers = 4
+grids = [41]
+training_counts = [512]
+population_grids = [21, 41, 81, 161, 321]
+source_dimensions = []
+stability = true

@@ -39,6 +39,8 @@ jobs:
       - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/partial-observations-smoke.toml --output experiments/runs/ci-partial
       - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/canonical-smoke.toml --output experiments/runs/ci-canonical
       - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output experiments/runs/ci-coherent
+      - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/completion-research-smoke.toml --output experiments/runs/ci-completion-research
+      - run: uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/completion-forecast-smoke.toml --output experiments/runs/ci-completion-forecast
       - name: Show numerical diagnostics after a failed smoke study
         if: failure()
         shell: bash
@@ -80,3 +82,5 @@ jobs:
             experiments/runs/ci-partial
             experiments/runs/ci-canonical
             experiments/runs/ci-coherent
+            experiments/runs/ci-completion-research
+            experiments/runs/ci-completion-forecast

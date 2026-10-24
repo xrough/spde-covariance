@@ -443,9 +443,19 @@ def _write_csv(path, rows):
 
 def run_rq3_benchmark(config, output=None):
     """Run into a fresh output directory; preserve provenance on every failure."""
+    from .completion_forecast_config import CompletionForecastConfig
+
     if isinstance(config, (str, Path)):
         with Path(config).open("rb") as stream:
-            config = RQ3Config(**tomllib.load(stream))
+            values = tomllib.load(stream)
+        kind = (
+            CompletionForecastConfig if values.get("study") == "completion_forecast" else RQ3Config
+        )
+        config = kind(**values)
+    if isinstance(config, CompletionForecastConfig):
+        from .completion_forecast import run_completion_forecast
+
+        return run_completion_forecast(config, output)
     if not isinstance(config, RQ3Config):
         raise TypeError("config must be RQ3Config or a TOML path")
     root = _source_root()
