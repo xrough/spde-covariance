@@ -1,0 +1,10 @@
+name = "identified-hedging-smoke"
+seed = 20261029
+replications = 2
+training_counts = [32]
+heldout_count = 64
+source_dimension = 8
+output_dimension = 8
+reference_dimension = 64
+quadrature_order = 12
+solver_tolerance = 0.0000001

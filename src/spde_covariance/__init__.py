@@ -3,6 +3,8 @@
 from .admissibility import AdmissibilityDiagnostic, diagnose_constant_source_admissibility
 from .coherent import CoherentConvergenceError, CoherentPartialFit, fit_coherent_partial
 from .fragments import FragmentLayout
+from .futures import ContractSpec, SettlementChanges, SettlementPanel
+from .hedging import CovarianceAmbiguity, solve_robust_hedge
 from .kernel_workflow import KernelCovarianceFit, fit_covariance_kernel
 from .laguerre import LaguerreTransport, PowerLawSource
 from .source_classes import projected_covariance_integration_matrix
@@ -22,6 +24,8 @@ __all__ = [
     "CoherentConvergenceError",
     "CoherentPartialFit",
     "ConvergenceError",
+    "ContractSpec",
+    "CovarianceAmbiguity",
     "CurveTrajectory",
     "ExponentialTransport",
     "FragmentLayout",
@@ -32,6 +36,8 @@ __all__ = [
     "ObservedInnovationBatch",
     "PowerLawSource",
     "ProjectedSplineTransport",
+    "SettlementChanges",
+    "SettlementPanel",
     "TransportPropagator",
     "extract_innovations",
     "diagnose_constant_source_admissibility",
@@ -42,6 +48,7 @@ __all__ = [
     "observe_innovations",
     "projected_covariance_integration_matrix",
     "simulate_transport",
+    "solve_robust_hedge",
 ]
 
 __version__ = "0.3.0"
