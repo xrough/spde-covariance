@@ -3,7 +3,8 @@
 This pilot accepts no latent covariance, future outcomes, or simulation
 metadata. Missing values are NaN. Gaussian bands require centered independent
 rows, deterministic masks, and the declared known fresh observation noise.
-They are conditional on those assumptions, including a fixed source tail.
+Source-class inclusion additionally assumes a fixed known tail; Gaussian
+entry-band validity itself does not require a particular source tail.
 """
 
 from __future__ import annotations

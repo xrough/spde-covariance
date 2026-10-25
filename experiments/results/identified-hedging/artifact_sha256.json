@@ -1,0 +1,100 @@
+[
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "16cdb2f2f9488a30c02ffd27b4034b757fb4ffce9255e76e1ae86bc00f4b0367",
+    "published_sha256": "16cdb2f2f9488a30c02ffd27b4034b757fb4ffce9255e76e1ae86bc00f4b0367",
+    "gzip": false
+  },
+  {
+    "source_name": "control.json",
+    "published_name": "control.json.gz",
+    "source_sha256": "b8d07e9320358b32510a3ff83a26662d019c52a055f720b450b762a586b5852e",
+    "published_sha256": "48a055924b83e67d61f00c404484ebcda8a7f29d740c77536a1fd3d05d8ac42c",
+    "gzip": true
+  },
+  {
+    "source_name": "estimates.json",
+    "published_name": "estimates.json.gz",
+    "source_sha256": "e7ecb63f09fe3cef3e773c79095ff328e8e31130f044bf35712a29c8f5f4f272",
+    "published_sha256": "6a2a4a1200f68c8ae7e5d15f396af9959afedd7d572159e7ddcf4cc6719efd90",
+    "gzip": true
+  },
+  {
+    "source_name": "fit_audit.json",
+    "published_name": "fit_audit.json.gz",
+    "source_sha256": "775e0aa212032e0a43b6b0f3f4f2a2a7ef9db720d99662395098613a8e8c3139",
+    "published_sha256": "114a9fbd83df520ac554fa2aca85c86cb3d496b069bc8132b0a7750157f39731",
+    "gzip": true
+  },
+  {
+    "source_name": "future-risk.png",
+    "published_name": "future-risk.png",
+    "source_sha256": "26bbf76a2eabc5e74db2b994151597391551e7afa92957ac2360582ea78c9382",
+    "published_sha256": "26bbf76a2eabc5e74db2b994151597391551e7afa92957ac2360582ea78c9382",
+    "gzip": false
+  },
+  {
+    "source_name": "hedge-positions.png",
+    "published_name": "hedge-positions.png",
+    "source_sha256": "eb809bab32dcdcdd8072608bd1b9a4e2fc1dda8380454159b044a266bf8257b4",
+    "published_sha256": "eb809bab32dcdcdd8072608bd1b9a4e2fc1dda8380454159b044a266bf8257b4",
+    "gzip": false
+  },
+  {
+    "source_name": "identification.png",
+    "published_name": "identification.png",
+    "source_sha256": "711badda88c161f82dc67ab45bb7717d907454cc6b99a0ed0b8c7c13f7595c80",
+    "published_sha256": "711badda88c161f82dc67ab45bb7717d907454cc6b99a0ed0b8c7c13f7595c80",
+    "gzip": false
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "768f7a0990e5601adaba9ce2063be0aac87c1e85d7317160e19de964bbf323bf",
+    "published_sha256": "768f7a0990e5601adaba9ce2063be0aac87c1e85d7317160e19de964bbf323bf",
+    "gzip": false
+  },
+  {
+    "source_name": "paired.csv",
+    "published_name": "paired.csv.gz",
+    "source_sha256": "de67d0f0ee8ee4c470ac24179595026ee635cafd597cafb3c18fc8459811ba5a",
+    "published_sha256": "c4a9e7f99daca2eb6a8ca9121c453d32d8fb4fd2a6db5c7cb16e1c0f072fd249",
+    "gzip": true
+  },
+  {
+    "source_name": "population.json",
+    "published_name": "population.json.gz",
+    "source_sha256": "480267e3233c7eef5b6e1240cef57475b9ee22483e8360bf6a9abac7a67cb60a",
+    "published_sha256": "113e1b40d62b1ee377ea83a2af88cea4bfde26ea2ffad068ec9a71b7bc1f49c6",
+    "gzip": true
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "5e4c458a128e186082ce1f82687135daf640ba64a9aaefcfbb7a7f0b91052fd2",
+    "published_sha256": "0ae2853ec1452fca6d39245c91cd7bf5f201a05ed068859a61e786a0fc696aff",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "21cb6b8162185151cb816520d57688d7e6882dae088d35463f31364e04fa63ec",
+    "published_sha256": "b30efe258abafdad9e5a3f56de3ae2c91672f3f79fd147587c0240100432b25f",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "ad305f885c706b881e73c445d73be979d48a4237a80c18979b40003534f21c45",
+    "published_sha256": "ad305f885c706b881e73c445d73be979d48a4237a80c18979b40003534f21c45",
+    "gzip": false
+  },
+  {
+    "source_name": "summary.csv",
+    "published_name": "summary.csv.gz",
+    "source_sha256": "2232c15a7bfc4b7b9c3053fd0d9c3e6466957ed12aebb8856685edaf0a97da03",
+    "published_sha256": "d7fc65d7710cf886ef79a29546a2edc8c185e5b9cdb6e82e860819b9fc97b5c5",
+    "gzip": true
+  }
+]

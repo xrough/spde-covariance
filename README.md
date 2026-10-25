@@ -133,7 +133,7 @@ optimization certificates bound numerical error to the constrained optimizer.
   shrinkage, floors, forcing support and overlap amplification are tested separately.
 - [Completion forecasts](experiments/results/completion-forecast/report.md): three frozen forecast rules
   on future weekly innovations; [findings and limits](docs/completion-continuation-findings.md).
-- [Identification-aware hedging](docs/identified-hedging.md): source ambiguity, added observations and past-only risk evaluation.
+- [Identification-aware hedging](docs/hedging-findings.md): source ambiguity, added observations and [20-replication evidence](experiments/results/identified-hedging/report.md).
 - [Futures-price interface](docs/futures-data.md): contract-level CSV, availability checks, no-roll changes and P&L units; [offline example](examples/futures_pipeline.py).
 
 The [research protocol](docs/completion-research.md) and [source-class note](docs/source-classes.md)

@@ -13,6 +13,10 @@ In orthonormal coordinates a residual exposure is $a-Bh$, with variance
 $$R_V(h)=(a-Bh)^\top V(a-Bh),\qquad
 V=T_\Delta(C)=\Delta^{-1}\int_0^\Delta S_r C S_r^*\,dr.$$
 
+The grid kernel is $K=EVE^\top$. Numerical grid exposures $a_g,B_g$ use
+$R_K(h)$, equivalently H-coordinate exposures $E^\top a_g,E^\top B_g$ with V.
+Grid kernels are never treated as H-coordinate covariance matrices.
+
 Use the existing weighted-Sobolev Laguerre transport family, weekly intervals,
 output projection J=8, unknown source block M=16, and seven fixed maturity
 nodes 0, 0.5, ..., 3 years. The underlying baseline source has eigenvalues
@@ -73,9 +77,10 @@ contrast is computed only where all required quoted nodes are observed.
 Chi-square intervals for scalar Gaussian variances, polarization for cross
 covariances and a Bonferroni correction supply simultaneous coverage of at least
 95% under the declared experiment. Known noise is subtracted explicitly;
-indefinite corrected moments are retained. The guarantee does not transfer to
-dependent, non-Gaussian market returns, unknown means/noise, informative masks,
-or unknown source tails.
+indefinite corrected moments are retained. The entry-band guarantee does not
+transfer to dependent, non-Gaussian market returns, unknown means/noise or
+informative masks. Source-class inclusion additionally requires the declared
+fixed known tail; entry-band validity alone does not require a particular source tail.
 
 The robust SDP imports optional CVXPY/SCS. Original-entry, PSD and trace
 residuals, dual/support consistency and solver status are checked. Inaccurate
