@@ -57,7 +57,7 @@ def write_hedging_report(output, config, control, population, results):
     summaries = results["summary"]
     methods = sorted({row["method"] for row in summaries})
     for metric, filename, ylabel in (
-        ("complete_audit_score", "future-risk.png", "Future complete-audit quadratic score"),
+        ("complete_audit_score", "future-risk.png", "Future audit score"),
         ("position", "hedge-positions.png", "Issued hedge position"),
     ):
         figure, axes = plt.subplots(2, 3, figsize=(12, 6), sharex=True, layout="constrained")
@@ -87,6 +87,7 @@ def write_hedging_report(output, config, control, population, results):
                         yerr=error,
                         marker="o",
                         capsize=2,
+                        color=f"C{index}",
                         label=method.replace("_", " "),
                     )
                 axis.set_title(f"World {'−' if world == 0 else '+'}; {design}")
@@ -107,7 +108,9 @@ def write_hedging_report(output, config, control, population, results):
         "",
         "The fixed-source population control establishes material decision ambiguity. "
         "The sampling study compares predeclared hedge rules; it does not require any rule to win. "
-        "There is no empirical futures hedging-performance claim.",
+        "There is no empirical futures hedging-performance claim. "
+        f"Observations evaluate the J={config.output_dimension} projected curve, "
+        "not the full curve's point values.",
         "",
         f"Run: {config.replications} paired replications; training prefixes {config.training_counts}; "
         f"{config.heldout_count} complete future audit observations; seed {config.seed}.",

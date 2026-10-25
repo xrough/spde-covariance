@@ -27,9 +27,17 @@ infinite rank, while optimization is over a declared **finite unknown source
 block with a fixed common tail**. This is not optimization over every
 infinite-dimensional source.
 
+Here the data at a maturity are evaluations of the **projected** innovation,
+$(P_J\xi_i)(x)$, with J=8; they are not full-curve point evaluations
+$\xi_i(x)$. Equality under this observation map need not persist when the
+projection changes. The [true-point annex](../experiments/results/hedging-true-points/report.md)
+constructs a different source pair for direct point evaluations and checks
+integration and omitted-tail error. It is separate from this sampling study
+and its population added-maturity comparisons.
+
 The native fragments are nodes {0,1,2,3} and {3,4,5,6}, alternated across dates.
 The target is the spread at nodes 0 and 1; the sole hedge is the spread at nodes
-5 and 6. The exposure cannot be cancelled using its identical instruments.
+5 and 6. The target is outside the span of the sole hedge instrument.
 The additional-observation design adds maturity 3 years (node 6) to the first
 fragment. A complete-panel control observes all nodes.
 
@@ -114,6 +122,13 @@ uv sync --locked --extra reference
 uv run spde-covariance benchmark-hedging experiments/configs/identified-hedging-smoke.toml --output /tmp/hedging-smoke-new
 uv run spde-covariance benchmark-hedging experiments/configs/identified-hedging.toml --output experiments/runs/identified-hedging-new
 ```
+
+Reproduce the separate deterministic true-point control from clean, committed
+source with `uv run python examples/true_point_identification.py --output /tmp/true-point-annex-new`.
+It records its own source manifest and does not rerun the sample study.
+`scripts/render_hedging_evidence.py RAW_RUN NEW_DIRECTORY` regenerates the
+pilot figures/report with a separate rendering manifest while checking that
+all numerical artifacts remain byte-identical.
 
 The [futures interface](futures-data.md) retains contract identity, availability,
 units and irregular intervals for a subsequent empirical study. Its six-date

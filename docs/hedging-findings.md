@@ -1,10 +1,15 @@
 # What the identification-to-hedging pilot establishes
 
 The identification question is consequential in the declared transport model.
-The current conservative hedge rule does **not** demonstrate a finite-sample
-performance advantage. Both findings are retained in the
+The current conservative hedge rule does **not** demonstrate a consistent
+finite-sample performance advantage. Both findings are retained in the
 [full 20-replication report](../experiments/results/identified-hedging/report.md),
 with endpoint witnesses, failures and a clean-source manifest.
+
+The 20-replication study observes **evaluations of the J=8 projected curve**,
+not evaluations of the full curve. The separate
+[true-point control](../experiments/results/hedging-true-points/report.md)
+below checks whether the identification issue survives that distinction.
 
 ## Covariance ambiguity can change the decision
 
@@ -31,6 +36,26 @@ source restriction act together; the comparison does not isolate transport
 alone. Minimax variance and minimax regret are different objectives. The
 generating sources are PSD, but numerical endpoint witnesses have tiny negative
 eigenvalues within the declared tolerance; exact PSD is not claimed for them.
+
+## The ambiguity survives true point observations
+
+For the full curve's point evaluations, a separately constructed source pair
+has optimal hedges **0.81678 and 6.07917**. Using the other world's hedge adds
+0.00613651 variance, or **31.73%** of unhedged variance. Its 19 observed pairs
+agree within about `2e-15` in the finite numerical map. Both sources are PSD,
+trace one and share the same infinite power-law tail. Quadrature refinement
+and an independent semigroup block calculation agree within `4.5e-15`;
+the omitted fixed tail changes each optimal hedge by less than `9e-6`
+under the stated analytic bound evaluated in floating point.
+
+This is a deterministic control, separate from the sample comparison and
+population added-maturity ranges above. The original J=8 perturbation is
+**not** observationally equivalent under true point observations: its largest
+observed-entry discrepancy is about `9.55e-5`. The new control demonstrates
+the phenomenon under a different observation map; it does not validate
+reusing the original pair as spatial resolution changes. See the
+[reproducible annex](../experiments/results/hedging-true-points/report.md)
+for the construction, numerical residuals and fixed-tail scope.
 
 ## Sampling does not establish useful robust hedging yet
 
@@ -80,9 +105,9 @@ hedges. Latent risk and regret do not manufacture operational observations.
 
 The [contract-price interface](futures-data.md) reads auditable CSV panels,
 preserves identity and publication/metadata availability, retains irregular
-intervals, and maps signed contract positions into currency P&L. It forbids
-implicit rolls and automatic reinterpretation of differenced noisy levels as
-fresh innovation noise. The [offline example](../examples/futures_pipeline.py)
+intervals, and maps signed contract positions into currency P&L. It performs
+no implicit rolling or automatic reinterpretation of differenced noisy levels
+as fresh innovation noise. The [offline example](../examples/futures_pipeline.py)
 fits past data and evaluates subsequent synthetic P&L. A curve/SPDE
 interpretation still requires caller-supplied observation maps.
 

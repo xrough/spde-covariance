@@ -2,7 +2,7 @@
 
 The [hedging pilot](hedging-findings.md) adds decision identification, numerical
 source-class ranges and a contract-level CSV/PnL bridge. Twenty paired
-synthetic replications show no advantage for the current robust uncertainty
+synthetic replications show no consistent advantage for the current robust uncertainty
 sets; that negative finding is retained. The SHFE sample is a six-date data
 audit, not an empirical forecasting or trading result.
 

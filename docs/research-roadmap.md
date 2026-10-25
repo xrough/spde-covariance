@@ -1,7 +1,7 @@
 # Three questions, from a toy model to curve dynamics
 
 The [hedging pilot](hedging-findings.md) finds material population decision
-ambiguity and narrowing after one added maturity, but no advantage for the
+ambiguity and narrowing after one added maturity, but no consistent advantage for the
 current finite-sample robust rule. The [contract-price interface](futures-data.md)
 prepares a later empirical study; the exchange audit is feasibility evidence
 only. Next compare matched trace assumptions, separate sampling width from
