@@ -1,5 +1,8 @@
 # Statistical completion: findings and limits
 
+For a guided explanation, read the executed **[current findings notebook](../notebooks/current_findings.ipynb)**.
+It connects the SPDE target, a three-maturity identification example, and the numerical evidence below.
+
 The [full report](../experiments/results/statistical-completion/report.md)
 comes from clean numerical source `f24286a`, without post-run tuning. It
 contains 20 paired point-study replications and 500 independent uncertainty

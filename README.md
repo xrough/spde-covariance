@@ -9,6 +9,9 @@ a fixed infinite-rank benchmark separates forcing truncation, curve projection,
 time resolution and partial-observation error. Established estimators are used;
 no new estimator or infinite-dimensional statistical guarantee is claimed.
 
+Start with the **[current findings notebook](notebooks/current_findings.ipynb)**:
+a worked identification example, saved figures, numerical results and the remaining research questions.
+
 The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
 | Question | Toy foundation | Fixed-model continuation |
