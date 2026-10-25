@@ -266,7 +266,7 @@ def test_committed_profiles_lock_full_and_smoke_precision():
     )
     assert full.coverage_replications == 500
     assert full.coverage_precision_required
-    assert full.training_counts == (128, 512)
+    assert full.training_counts == (128, 512, 2048)
     assert smoke.replications == 2 and smoke.coverage_replications == 20
     assert not smoke.coverage_precision_required
 

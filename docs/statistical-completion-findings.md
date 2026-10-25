@@ -72,8 +72,9 @@ to native fitting or selection.
 
 The separate three-node Gaussian experiment has native cliques {0,1} and
 {1,2}. Its two worlds share those marginals but have missing covariance
-0.16 versus 0.65. Their spread variances are 0.84 versus 0.35. Even exact
-native covariance leaves the all-PSD variance range [0, 1.68].
+0.16 versus 0.65. For the normalized spread $(X_0-X_2)/\sqrt{2}$, their
+variances are 0.84 versus 0.35. Even exact native covariance leaves the
+all-PSD variance range [0, 1.68] for this exposure.
 
 All 3,000 interval solves were available. Mean interval widths and their
 replication MCSE are:
