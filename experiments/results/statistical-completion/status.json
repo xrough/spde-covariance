@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "acceptance": {
+    "passed": true,
+    "failures": [],
+    "statistical_superiority_gate": null,
+    "nominal_coverage_pass_fail_gate": null
+  },
+  "completed_replications": 20,
+  "coverage_replications": 500
+}

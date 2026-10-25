@@ -146,6 +146,8 @@ The [published numerical report](../experiments/results/statistical-completion/r
 retains the clean-source manifest, selections, conditional-model diagnostics,
 failed candidates, all point-study rows and coverage strata. The report does
 not turn a successful numerical fit into empirical calibration evidence.
+The [audited findings](statistical-completion-findings.md) distinguish gains in
+likelihood from missing-entry accuracy and permanent identification ambiguity.
 
 The fixed seven-maturity study uses the verified true-point SPDE source pair,
 which shares native fragment laws but has different missing covariance, and
