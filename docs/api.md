@@ -5,6 +5,58 @@ in a declared orthonormal Hilbert basis. It differs from instantaneous diffusion
 covariance `C`, observed covariance `O @ V_delta @ O.T`, and an exposure variance.
 Matching dimensions alone does not establish matching bases. Interfaces are evolving.
 
+The [statistical completion model](statistical-completion.md) adds an
+observed-likelihood alternative and an uncertainty companion. Its runnable
+[example](../examples/statistical_completion.py) requires no market data.
+
+```python
+fit = fit_covariance_kernel(
+    observed,
+    layout=layout,
+    method="gaussian",
+    covariance_assumption="common",
+    method_options={"reference_kernel": prior_kernel, "regularization": 0.01},
+)
+```
+
+It returns the existing `KernelCovarianceFit`: physical `.kernel` values and
+method diagnostics, with no H-coordinate `.covariance` alias. A fixed
+`model_cliques` option can differ from the observation catalogue. The grid
+model does not impose the declared finite evaluation basis's rank/image or
+an SPDE source cone. Positive definiteness is a statistical model restriction.
+Known noise enters the raw vector likelihood, not a corrected outer product.
+Failed local convergence raises `GaussianCompletionConvergenceError` with
+the attempted fit preserved. No global likelihood certificate is asserted.
+
+`select_gaussian_completion(training, validation, *, training_layout,
+validation_layout, reference_kernel, regularizations, covariance_assumption,
+fit_options=None)` enforces chronology and compatible units/intervals. It
+returns a training-only selected fit and candidate audit. Validation does not
+silently become training data. Ties choose the larger penalty. A supplied
+reference or initializer must be external or based only on training data.
+
+Low-level interfaces accept observed vectors and their row-to-node maps:
+
+```python
+fit_gaussian_completion(
+    values, rows, noise_covariances=noises, cliques=graph, reference_kernel=T, regularization=0.01
+)
+gaussian_kernel_score(K, values, rows, noise_covariances=noises)
+condition_gaussian_kernel(K, values, observed_nodes, noise_covariance=N, target_nodes=None)
+gaussian_completion_region(
+    values, rows, noise_covariances=noises, size=len(K), confidence_level=0.95
+)
+completion_risk_interval(region, exposure)
+```
+
+Noise matrices are supplied in each observed vector's row order; a common
+scalar variance is also supported. Conditional outputs describe latent values
+at a fixed fitted kernel and exclude parameter uncertainty. Regions instead
+use independent centered Gaussian assumptions and known fresh Gaussian noise
+to bound observed moments, then admit all PSD completions without the canonical
+graph. Risk intervals expose repaired dual outer endpoints separately from
+primal witnesses; the optional `reference` extra is needed for these SDPs.
+
 ## End-to-end example
 
 ```python

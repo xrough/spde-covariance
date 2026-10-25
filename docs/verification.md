@@ -1,5 +1,17 @@
 # Software verification
 
+The [statistical completion model](statistical-completion.md) adds independent
+convex full/noiseless graphical-likelihood checks, precision-gradient finite
+differences, EM monotonicity/local-stationarity checks, singular/heterogeneous
+known-noise conditioning, units/permutation tests and bounded-group-cache
+fallback. Workflow checks enforce observed-only chronological selection and
+preserve the distinction between the declared graph and bridge observations.
+Uncertainty tests check exact Gaussian probe intervals, global allocation,
+heterogeneous-noise grouping and primal/dual PSD risk bounds. Equal-observed-law
+controls must not become distinguishable through truth metadata or future data.
+The example and `benchmark-statistical-completion` smoke run execute on both
+CI platforms; the example also runs from a core-only clean wheel.
+
 The suite runs on Python 3.13. Its checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric

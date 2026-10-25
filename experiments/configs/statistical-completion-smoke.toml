@@ -1,0 +1,12 @@
+study = "statistical_completion"
+name = "statistical-completion-smoke"
+seed = 20261030
+replications = 2
+training_counts = [32]
+validation_count = 32
+test_count = 64
+source_dimension = 8
+reference_dimension = 32
+coverage_replications = 20
+coverage_training_count = 64
+coverage_precision_required = false

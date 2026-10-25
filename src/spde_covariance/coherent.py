@@ -77,7 +77,16 @@ def _integer(value, name):
     return int(value)
 
 
-def _problem(partial_kernel, pair_weights, cliques, weights, regularization, floor, budget):
+def _problem(
+    partial_kernel,
+    pair_weights,
+    cliques,
+    weights,
+    regularization,
+    floor,
+    budget,
+    reference_kernel=None,
+):
     partial, groups, mask, quadrature, _ = _inputs(partial_kernel, cliques, weights, 1e-12)
     coverage = _symmetric_matrix(pair_weights)
     if coverage.shape != partial.shape or np.any(coverage < 0) or np.any(coverage[mask] <= 0):
@@ -93,8 +102,16 @@ def _problem(partial_kernel, pair_weights, cliques, weights, regularization, flo
         target[mask] = (root[:, None] * partial * root[None, :])[mask]
     if not np.all(np.isfinite(target)):
         raise ValueError("weighted observed kernel exceeds floating-point range")
+    reference = np.zeros_like(target)
+    if reference_kernel is not None:
+        raw_reference = _symmetric_matrix(reference_kernel)
+        if raw_reference.shape != partial.shape:
+            raise ValueError("reference_kernel must match the partial kernel")
+        reference[mask] = (root[:, None] * raw_reference * root[None, :])[mask]
+        if not np.all(np.isfinite(reference)):
+            raise ValueError("weighted reference kernel exceeds floating-point range")
     hessian = np.where(mask, coverage + regularization, 0.0)
-    rhs = coverage * target
+    rhs = coverage * target + regularization * reference
     indices = tuple(np.ix_(group, group) for group in groups)
     multiplicity = np.zeros_like(target)
     for index in indices:
@@ -108,6 +125,8 @@ def _problem(partial_kernel, pair_weights, cliques, weights, regularization, flo
         "coverage": coverage,
         "hessian": hessian,
         "rhs": rhs,
+        "reference": reference,
+        "reference_supplied": reference_kernel is not None,
         "multiplicity": multiplicity,
         "regularization": regularization,
         "floor": floor,
@@ -120,7 +139,7 @@ def _objective(matrix, problem):
     mask = problem["mask"]
     return float(
         np.sum(problem["coverage"][mask] * (matrix[mask] - problem["target"][mask]) ** 2) / 2
-        + problem["regularization"] * np.sum(matrix[mask] ** 2) / 2
+        + problem["regularization"] * np.sum((matrix[mask] - problem["reference"][mask]) ** 2) / 2
     )
 
 
@@ -173,7 +192,10 @@ def _certificate(matrix, duals, problem):
     stationary[mask] = (rhs[mask] - total_dual[mask]) / hessian[mask]
     square = float(np.sum(hessian[mask] * (feasible[mask] - stationary[mask]) ** 2) / 2)
     objective = _objective(feasible, problem)
-    constant = float(np.sum(problem["coverage"][mask] * problem["target"][mask] ** 2) / 2)
+    constant = float(
+        np.sum(problem["coverage"][mask] * problem["target"][mask] ** 2) / 2
+        + problem["regularization"] * np.sum(problem["reference"][mask] ** 2) / 2
+    )
     dual_objective = float(
         constant
         - np.sum((rhs[mask] - total_dual[mask]) ** 2 / hessian[mask]) / 2
@@ -217,6 +239,10 @@ def _result(matrix, certificate, problem, *, converged, iterations, status, **ex
             "iterations": int(iterations),
             "status": status,
             "regularization": problem["regularization"],
+            "regularization_reference": "supplied finite-grid kernel"
+            if problem["reference_supplied"]
+            else "zero",
+            "weighted_reference_kernel": problem["reference"],
             "eigenvalue_floor": problem["floor"],
             "numerical_error_budget": problem["budget"],
             "weights": problem["weights"],
@@ -236,6 +262,7 @@ def fit_coherent_partial(
     cliques,
     weights=None,
     regularization=0.0,
+    reference_kernel=None,
     eigenvalue_floor=0.0,
     numerical_error_budget=1e-5,
     rho=1.0,
@@ -247,7 +274,8 @@ def fit_coherent_partial(
 ):
     """Fit jointly consistent PSD cliques by NumPy consensus ADMM.
 
-    The objective is .5 sum_Omega c*(A-T)^2 + .5 lambda sum_Omega A^2,
+    The objective is .5 sum_Omega c*(A-T)^2 + .5 lambda sum_Omega (A-R)^2,
+    with R=sqrt(W) reference_kernel sqrt(W), or zero by default.
     where c is supplied pair coverage, T is the corrected weighted kernel and
     every clique of A is constrained to >= eigenvalue_floor I. Positive date
     coverage must exist on each declared observed pair. No unobserved value,
@@ -267,6 +295,7 @@ def fit_coherent_partial(
         regularization,
         eigenvalue_floor,
         numerical_error_budget,
+        reference_kernel,
     )
     rho = _scalar(rho, "rho", positive=True)
     count = _integer(max_iterations, "max_iterations")
@@ -364,6 +393,7 @@ def fit_coherent_partial_reference(
     cliques,
     weights=None,
     regularization=0.0,
+    reference_kernel=None,
     eigenvalue_floor=0.0,
     numerical_error_budget=1e-5,
     solver_tolerance=1e-10,
@@ -380,6 +410,7 @@ def fit_coherent_partial_reference(
         regularization,
         eigenvalue_floor,
         numerical_error_budget,
+        reference_kernel,
     )
     tolerance = _scalar(solver_tolerance, "solver_tolerance", positive=True)
     count = _integer(max_iterations, "max_iterations")
@@ -392,7 +423,9 @@ def fit_coherent_partial_reference(
             )
         )
         / 2
-        + problem["regularization"] * cp.sum_squares(variable[mask]) / 2
+        + problem["regularization"]
+        * cp.sum_squares(variable[mask] - problem["reference"][mask])
+        / 2
     )
     constraints = [
         variable[np.ix_(group, group)] >> problem["floor"] * np.eye(len(group))
