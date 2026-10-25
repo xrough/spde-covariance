@@ -1,0 +1,37 @@
+[
+  {
+    "source_name": "config.json",
+    "published_name": "config.json",
+    "source_sha256": "3f5bd4d915a8f0ad2cac37bfd9505dbcee371e50166d0331d338803256543137",
+    "published_sha256": "3f5bd4d915a8f0ad2cac37bfd9505dbcee371e50166d0331d338803256543137",
+    "gzip": false
+  },
+  {
+    "source_name": "manifest.json",
+    "published_name": "manifest.json",
+    "source_sha256": "f30e09dc1cbe0e55a8535d6c82e9e49ed47dc3589f02a9a467f090e1196ead0c",
+    "published_sha256": "f30e09dc1cbe0e55a8535d6c82e9e49ed47dc3589f02a9a467f090e1196ead0c",
+    "gzip": false
+  },
+  {
+    "source_name": "report.md",
+    "published_name": "report.md",
+    "source_sha256": "f0592fc4def54fe10dbb27d51566ebd3f8db6963057874245bcf123cfbe69ba4",
+    "published_sha256": "2a33d8d02d7617054d587600cbd4372215c37fb869e1d9bd390e70b7053ba32c",
+    "gzip": false
+  },
+  {
+    "source_name": "results.json",
+    "published_name": "results.json.gz",
+    "source_sha256": "ce33dfa62c78370e74cead8534dc74d7e0d7b4520903cd540f101d22f962aee5",
+    "published_sha256": "b3d3ba6ca8e952ed0277be7c6f5e86c4ace60c2f36b681914e8961fc3109b6df",
+    "gzip": true
+  },
+  {
+    "source_name": "status.json",
+    "published_name": "status.json",
+    "source_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "published_sha256": "c53e9111a25e1bc7a3e3d99467432279ee5267848114b84deb069d59b0f8429d",
+    "gzip": false
+  }
+]

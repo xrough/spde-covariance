@@ -1,6 +1,6 @@
 # Identification-to-hedging pilot
 
-The fixed-source population control establishes material decision ambiguity. The sampling study compares predeclared hedge rules; it does not require any rule to win. There is no empirical futures hedging-performance claim.
+The fixed-source population control establishes material decision ambiguity. The sampling study compares predeclared hedge rules; it does not require any rule to win. There is no empirical futures hedging-performance claim. Observations evaluate the J=8 projected curve, not the full curve's point values.
 
 Run: 20 paired replications; training prefixes (128, 512); 2048 complete future audit observations; seed 20261029.
 
@@ -132,3 +132,5 @@ A successful optimizer check is not an exact numerical certificate. Failed or in
 This evidence bundle retains the complete accepted run. CSV files and measurement/audit JSON files are compressed with gzip; artifact links point to those archives. Use `gzip -dc FILE.gz > FILE` to read an uncompressed copy. [Bundle checksums](artifact_sha256.json) record original and published bytes. The unchanged [manifest](manifest.json) retains the originating clean revision and source hashes.
 
 [Configuration](config.json), [manifest](manifest.json), [control and numerical checks](control.json.gz), [population endpoint witnesses](population.json.gz), [all estimates](estimates.json.gz), [fit and band diagnostics](fit_audit.json.gz), [results](results.json.gz), [summary](summary.csv.gz), [paired differences](paired.csv.gz), [status](status.json).
+
+Figures and presentation were re-rendered from unchanged numerical artifacts. The [rendering manifest](rendering_manifest.json.gz) records that separate source revision; the original numerical manifest is unchanged.

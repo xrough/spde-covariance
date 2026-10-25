@@ -30,15 +30,15 @@
   {
     "source_name": "future-risk.png",
     "published_name": "future-risk.png",
-    "source_sha256": "26bbf76a2eabc5e74db2b994151597391551e7afa92957ac2360582ea78c9382",
-    "published_sha256": "26bbf76a2eabc5e74db2b994151597391551e7afa92957ac2360582ea78c9382",
+    "source_sha256": "dd1dbe04eb1edfe0a2cfbb761dc6a31456361683f0d1beb240395a85da35dc95",
+    "published_sha256": "dd1dbe04eb1edfe0a2cfbb761dc6a31456361683f0d1beb240395a85da35dc95",
     "gzip": false
   },
   {
     "source_name": "hedge-positions.png",
     "published_name": "hedge-positions.png",
-    "source_sha256": "eb809bab32dcdcdd8072608bd1b9a4e2fc1dda8380454159b044a266bf8257b4",
-    "published_sha256": "eb809bab32dcdcdd8072608bd1b9a4e2fc1dda8380454159b044a266bf8257b4",
+    "source_sha256": "0737d16660b54a9efa72a092eb5000ff1e6498bc60b87a850280048a314b8691",
+    "published_sha256": "0737d16660b54a9efa72a092eb5000ff1e6498bc60b87a850280048a314b8691",
     "gzip": false
   },
   {
@@ -70,10 +70,17 @@
     "gzip": true
   },
   {
+    "source_name": "rendering_manifest.json",
+    "published_name": "rendering_manifest.json.gz",
+    "source_sha256": "7d0ab445cb578ca5074dd638ff39351bcb104b74517909629169c4357dc73f34",
+    "published_sha256": "a8dedf7a14cecd27370448d2727e0df7d1b68ffe3137e502aea4f8a3a30e90ab",
+    "gzip": true
+  },
+  {
     "source_name": "report.md",
     "published_name": "report.md",
-    "source_sha256": "5e4c458a128e186082ce1f82687135daf640ba64a9aaefcfbb7a7f0b91052fd2",
-    "published_sha256": "0ae2853ec1452fca6d39245c91cd7bf5f201a05ed068859a61e786a0fc696aff",
+    "source_sha256": "6ba2367b502db1576c06fd778aec5f2fa5eda4c0428a368a576432b9641972a9",
+    "published_sha256": "19ebe84d891824e0617e574171b2d65964b2b7303a6e4cea391d88a4e75564b2",
     "gzip": false
   },
   {
