@@ -22,6 +22,7 @@ import numpy as np
 
 from .empirical_calibration import fit_cross_section, fit_source_covariance, source_risk_error_bound
 from .empirical_data import public_data_provenance, public_data_validation
+from .empirical_diagnostics import reconstruction_risk_decomposition
 from .laguerre import LaguerreTransport
 from .provenance import _git, _jsonable, _source_root
 
@@ -824,6 +825,7 @@ def run_empirical_study(panel, config, output, *, data_validation=None):
         "reconstruction": reconstruction,
         "numerical_diagnostics": numerical,
         "calendar_interval_diagnostics": interval_groups,
+        "reconstruction_risk_decomposition": reconstruction_risk_decomposition(daily, config),
         "representation_sensitivity": {
             name: {
                 "rmse_quantiles_cny_per_tonne": np.quantile(
@@ -967,7 +969,9 @@ def render_empirical_figures(summary, destination=None):
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), layout="constrained")
     for ax, exposure in zip(axes, exposures, strict=True):
         rows = [
-            r for r in summary["paired_qlike"] if r["year"] == "all" and r["exposure"] == exposure
+            r
+            for r in summary["paired_qlike"]
+            if r["year"] == "all" and r["exposure"] == exposure and r["method"] in methods
         ]
         means = np.array([r["mean"] for r in rows])
         # Show bootstrap SE, not a coverage guarantee for a fitted latent operator.
@@ -1002,6 +1006,9 @@ def render_empirical_figures(summary, destination=None):
 
 
 def write_empirical_report(summary, path):
+    def share(value):
+        return "unavailable" if value is None else f"{value:.3f}"
+
     lines = [
         "# First SHFE copper calibration and risk study",
         "",
@@ -1065,6 +1072,19 @@ def write_empirical_report(summary, path):
             for r in summary["calendar_interval_diagnostics"]
         ],
         "",
+        "## Reconstruction risk diagnostic",
+        "",
+        "Actual P&L Y equals the reconstructed-curve change S plus residual change U. "
+        "These are post hoc uncentered second-moment shares; the cross term is retained. "
+        "The diagnostic never enters forecast fitting or validation selection.",
+        "",
+        "| Exposure | N | Curve share | Residual share | Cross share |",
+        "| --- | ---: | ---: | ---: | ---: |",
+        *[
+            f"| {r['exposure']} | {r['count']} | {share(r['modeled_share'])} | {share(r['residual_share'])} | {share(r['cross_share'])} |"
+            for r in summary["reconstruction_risk_decomposition"]["exposures"]
+        ],
+        "",
         "## Numerical verification",
         "",
         f"Convergence and feasibility summary: `{json.dumps(summary['numerical_diagnostics'], sort_keys=True)}`. "
@@ -1084,5 +1104,6 @@ def write_empirical_report(summary, path):
         "See [the empirical protocol](../../../docs/shfe-empirical.md) and [the executed notebook](../../../notebooks/shfe_empirical.ipynb). "
         "`summary.json`, `manifest.json` and `evidence-sha256.json` retain configuration, archive hashes, numerical source and environment provenance.",
         "",
+        "[Interpretation and next targets](../../../docs/shfe-findings.md).",
     ]
     Path(path).write_text("\n".join(lines))

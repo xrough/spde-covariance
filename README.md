@@ -15,6 +15,8 @@ a worked identification example, saved figures, numerical results and the remain
 The **[first SHFE copper study](notebooks/shfe_empirical.ipynb)** connects reconstructed
 settlement curves to past-only covariance calibration and next-session portfolio-risk evaluation.
 Raw exchange files stay local; the notebook reads [aggregate evidence](experiments/results/shfe-cu/report.md).
+The [empirical findings](docs/shfe-findings.md) report substantial underprediction
+of spread and butterfly risk by the small local model and better direct-covariance scores.
 
 The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
