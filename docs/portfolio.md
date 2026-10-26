@@ -10,8 +10,11 @@ establish a market-calibrated probability model or hedge outperformance.
 The [hedging pilot](hedging-findings.md) adds decision identification, numerical
 source-class ranges and a contract-level CSV/PnL bridge. Twenty paired
 synthetic replications show no consistent advantage for the current robust uncertainty
-sets; that negative finding is retained. The SHFE sample is a six-date data
-audit, not an empirical forecasting or trading result.
+sets; that negative finding is retained. The original six-date SHFE audit is
+now followed by a [four-year empirical study](shfe-findings.md): effective
+finite-model calibration and 484 next-session risk-evaluation origins, with
+validation-selected windows and direct covariance comparisons. It exposes
+substantial spread/butterfly risk omitted by smooth curve reconstruction.
 
 An additional supported description is: "Investigated how partially observed
 SPDE covariance affects hedge decisions, and implemented past-only risk
@@ -32,6 +35,12 @@ A supported CV bullet is:
 > Developed and benchmarked a transport-SPDE covariance research
 > toolkit with PSD-constrained optimization, observation-geometry diagnostics,
 > analytical controls and reproducible synthetic validation.
+
+With the first empirical study, an additional supported item is:
+
+> Built a reproducible SHFE copper covariance-calibration and risk-evaluation
+> pipeline using four years of contract settlements, PSD-constrained estimation
+> and 484 out-of-sample forecast origins; diagnosed reconstruction and calendar-time risk misspecification.
 
 The four-mode control and fixed infinite-rank benchmark should be distinguished
 in a technical discussion. Numerical refinement of a specified infinite model
@@ -107,7 +116,8 @@ infinite-dimensional statistical method.
 - Exact exponential transport provides an analytical control; projected
   splines expose representation, boundary and semigroup defects.
 - Source covariance C, finite-interval innovation covariance V and nonunique
-  loading L have separate meanings. V remains the estimation target; the
+  loading L have separate meanings. The clean-innovation API targets V;
+  empirical calibration fits an effective finite C conditional on reconstruction. The
   [finite source-class diagnostic](coherent-completion.md) returns a feasible
   source witness without identifying the physical C or its loading L.
 - Optimization reliability and observation identification are different
@@ -117,9 +127,10 @@ infinite-dimensional statistical method.
 - The [three-question roadmap](research-roadmap.md) explains how identification,
   estimation and forecast evaluation continue toward richer curve dynamics.
 
-The delivered evidence concerns synthetic covariance computations and
-numerical/software reliability. It does not validate empirical futures
-forecasting, curve calibration, confidence intervals, outlier robustness,
+The delivered evidence includes synthetic covariance computations,
+numerical/software reliability and the first empirical calibration/risk baseline.
+It does not establish market outperformance, a physically identified SPDE,
+confidence intervals, outlier robustness,
 or infinite-dimensional statistical guarantees. Timing results apply to the
 reported environment, not to all hardware.
 

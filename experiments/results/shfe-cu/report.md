@@ -92,6 +92,16 @@ Negative differences favor the listed method. Blocks contain 20 consecutive scor
 | butterfly_3m_6m_9m | 2–3 days | 93 | 3.104 |
 | butterfly_3m_6m_9m | 4+ days | 11 | 2.688 |
 
+## Reconstruction risk diagnostic
+
+Actual P&L Y equals the reconstructed-curve change S plus residual change U. These are post hoc uncentered second-moment shares; the cross term is retained. The diagnostic never enters forecast fitting or validation selection.
+
+| Exposure | N | Curve share | Residual share | Cross share |
+| --- | ---: | ---: | ---: | ---: |
+| outright_3m | 484 | 0.991 | 0.002 | 0.007 |
+| spread_3m_6m | 484 | 0.383 | 0.619 | -0.002 |
+| butterfly_3m_6m_9m | 484 | 0.114 | 0.778 | 0.108 |
+
 ## Numerical verification
 
 Convergence and feasibility summary: `{"all_converged": true, "available": true, "maximum_relative_risk_bound": 0.00647020476009218, "maximum_relative_trace_violation": 0.0, "minimum_source_eigenvalue": 4116288.714366688, "objective_gap_bound_scaled": 3.1999106240154385e-11, "relative_covariance_error_bound": 8.056297356695254e-06}`. The risk bound propagates numerical distance to the constrained optimizer; it excludes sampling, reconstruction and model error. Detailed attempted/issued/scored availability is retained by method and exposure in `summary.json`.
@@ -107,3 +117,5 @@ Convergence and feasibility summary: `{"all_converged": true, "available": true,
 - Raw quotes, daily curves and forecast-level outcomes stay local. This report contains aggregate numerical findings only.
 
 See [the empirical protocol](../../../docs/shfe-empirical.md) and [the executed notebook](../../../notebooks/shfe_empirical.ipynb). `summary.json`, `manifest.json` and `evidence-sha256.json` retain configuration, archive hashes, numerical source and environment provenance.
+
+[Interpretation and next targets](../../../docs/shfe-findings.md).

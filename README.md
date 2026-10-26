@@ -96,7 +96,7 @@ V_\Delta=\mathrm{Cov}(\xi_i)
 =\frac{1}{\Delta}\int_0^\Delta M_r C M_r^\top dr.
 ```
 
-**The fitted target is $V_\Delta$, not $C$ or $L$.** The simulator accepts $C$; a loading $L$ is nonunique.
+**The clean-innovation fitter targets $V_\Delta$.** The simulator accepts $C$; a loading $L$ is nonunique.
 The default exact exponential model has four Gaussian Brownian channels and no explicit spatial mollifier.
 After transport adjustment, its covariance-fitting core is a generic problem
 with partial linear observations.

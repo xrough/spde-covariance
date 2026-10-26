@@ -32,6 +32,12 @@ better conditional forecasts. QLIKE comparisons use paired observations;
 bootstrap uncertainty concerns time-series score differences, not a latent
 operator or future coverage guarantee.
 
+The secondary quadratic proxy loss ranks the local SPDE method ahead of
+direct covariance on these three exposures. Estimator rankings therefore
+depend on the loss: the primary QLIKE comparison and the risk-calibration
+failure do not imply dominance under every criterion. The notebook retains
+both scores; the selection protocol was not changed after seeing test results.
+
 The local SPDE forecast's RMS risks are approximately CNY 3,202, 334 and 402,
 against realized RMS P&Ls of CNY 3,487, 504 and 1,058, respectively. These are
 one-session risks for fixed actual contracts, using five-tonne multipliers.
@@ -50,6 +56,17 @@ spread or butterfly, where common level movements cancel. The reconstruction
 diagnostic decomposes actual P&L into fitted-curve and residual changes and
 retains their cross term. It is a subsequent model diagnostic, not a forecast
 input or a known measurement-noise correction.
+
+| Portfolio | Fitted-curve second-moment share | Residual share | Cross share |
+| --- | ---: | ---: | ---: |
+| One near contract | 99.1% | 0.2% | 0.7% |
+| Near–middle spread | 38.3% | 61.9% | −0.2% |
+| Butterfly | 11.4% | 77.8% | 10.8% |
+
+These shares explain why accurate level reconstruction can miss most of the
+financial risk after common movements cancel. They concern realized sample
+second moments, not independent variance components. The signed cross term
+precludes treating reconstruction residuals as automatically independent noise.
 
 Increasing the basis from three to four modes slightly lowers median level-fit
 RMSE (48.58 to 44.22), while raising median design condition number from about
@@ -76,7 +93,8 @@ an undesirable effect on the financial risk target.
 ## Next implementation targets
 
 1. **Represent residual contract risk explicitly.** Keep the transport-factor
-   covariance and add a separately calibrated residual covariance, rather than
+   covariance and calibrate joint factor/residual covariance, retaining their
+   cross-covariances unless an independence approximation is validated, rather than
    treating the smooth reconstruction as clean observed truth. Select all
    settings on validation data and compare with direct risk forecasts.
 2. **Separate clocks.** Keep physical time for maturity transport and compare

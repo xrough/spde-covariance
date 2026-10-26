@@ -1,5 +1,5 @@
 {
-  "git_revision": "1c9fe5fdb0f5ae8cb449b65268c6f2a8b71c1499",
+  "git_revision": "d284718c0e465d39886500ab2d85904183266747",
   "git_dirty": false,
   "python": "3.13.12 (main, Feb  3 2026, 17:53:27) [Clang 17.0.0 (clang-1700.6.3.2)]",
   "platform": "macOS-15.0.1-arm64-arm-64bit-Mach-O",
@@ -44,6 +44,7 @@
     "admissibility.py": "bf24f29890c59a8ac2476d9b1bcb4629d57ffc0dccd6f26930cb090f029ede01",
     "infinite_config.py": "2ee16307ce050da5a6aa51e48240d52d80a96552c173ed764801be850523a7ea",
     "__init__.py": "963213f6f58591ed78028f2e62300e2cabb8c17beec390341839b9e006ea237f",
+    "empirical_diagnostics.py": "60eecc83518bc3860274b0e791b10da1bfdb7537e7d999b5ee0ae1b4b0ff0d9a",
     "hedging_workflow.py": "01fce5ae1cd23a2f45d43e80b64e8274f1b291ac537bb1e78ade26b87a765efc",
     "spaces.py": "9d550e79fea9fbbf2d4d5f6ef0dcdccf0ba8726888021a5083a7c6f4cd3bdc15",
     "hedging_reporting.py": "26d88f1c1543ef7c351e5956cff823cbd429a9259691df865ff8798db7219881",
@@ -76,7 +77,7 @@
     "coherent.py": "8bd1d53868558ee04a1509aeca97fd68dfb7a243c04e04ba14bb7356a1baff74",
     "fragment_reference.py": "3b024ba1afd086fa94904e9dfdb5b56d4d483d31e7111a1c819d2310d85485bd",
     "hedging_true_points.py": "cdddee4a4c56a61b24a9282eb49ca57eca1db96041187150b5d2ec7b17eeb6ca",
-    "empirical_study.py": "6a2ab2de8aeecf3108a7cb2737653641ec5aa8b1fe11a297e820f977cc603609",
+    "empirical_study.py": "e2441673009761d58040ecb7c9e84441d55fb16402aac034ee0393059b3ed824",
     "source_classes.py": "3a1c4f2d9693d44b1695af6e65ebf1736f9566b65b188695c2f4217d5fe6ac45",
     "rq2_reporting.py": "d29aedd450a9d6dd6f3cca4a7f2e0ed806398c8f362f4d35d55fbc4387a52b3a"
   },
