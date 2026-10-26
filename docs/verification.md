@@ -1,5 +1,14 @@
 # Software verification
 
+The empirical research suite adds tests for matched-window chronology, future
+price isolation, joint factor/residual cross terms, diffusion-clock separation,
+independent convex hedge references, paired score identities and public/local
+data boundaries. The published bundle is audited with
+`python scripts/check_empirical_research.py`; optional `--verify-current-source`
+also matches its recorded numerical-source hashes to the current checkout.
+CI executes all six research notebooks and a synthetic suite example on Linux
+and macOS, then repeats notebook/example execution from a clean core-only wheel.
+
 The [statistical completion model](statistical-completion.md) adds independent
 convex full/noiseless graphical-likelihood checks, precision-gradient finite
 differences, EM monotonicity/local-stationarity checks, singular/heterogeneous

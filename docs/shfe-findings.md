@@ -1,5 +1,9 @@
 # What the first SHFE experiment found
 
+This page preserves the first benchmark. The [expanded research suite](empirical-research-findings.md)
+adds matched attribution, paired quadratic uncertainty, joint residual risk and
+hedging, without replacing these historical results.
+
 The small transport model is a useful **empirical baseline, but its local
 three-mode calibration does not adequately forecast calendar-spread and
 butterfly risk in this sample**. Direct same-contract covariance has lower

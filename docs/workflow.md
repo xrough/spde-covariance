@@ -1,5 +1,12 @@
 # Transport and innovation workflow
 
+This page describes the clean-coefficient/innovation interface. The separate
+[empirical workflow](empirical-research-protocol.md) reconstructs actual futures
+settlement curves, fits effective source covariance or joint factor/residual
+second moments, and evaluates subsequent contract risk and bounded hedges.
+It records reconstruction and sampling assumptions rather than treating fitted
+market coefficients as clean latent truth.
+
 `CurveTrajectory` stores clean coefficients at interval endpoints, in an
 identified orthonormal Hilbert basis. Times are numeric years. `curve_unit`
 records the units of the curves; extracted innovations have units

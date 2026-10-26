@@ -1,5 +1,16 @@
 # Portfolio evidence and CV wording
 
+The [six-notebook empirical research suite](empirical-research-findings.md)
+includes matched transport ablations, dependence-sensitive score analysis,
+joint residual risk and constrained hedge evaluation. A supported description is:
+
+> Built a reproducible futures-curve risk research pipeline using SHFE copper
+> settlements, transport-adjusted covariance models and constrained hedge
+> evaluation; diagnosed representation risk through paired empirical benchmarks.
+
+The revised-model evidence is exploratory on inspected years. Do not claim
+SPDE outperformance or interpret settlement hedge-risk reductions as trading returns.
+
 The [statistical completion upgrade](statistical-completion.md) fits a declared
 Gaussian Markov model to noisy fragments, with observed-only chronological
 selection, conditional predictions and a separate identification-inclusive

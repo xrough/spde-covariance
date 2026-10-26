@@ -22,16 +22,36 @@ def main(argv=None):
             "study partial innovations, covariance selection and fragment completion",
         ),
         ("empirical-shfe", "calibrate local SHFE copper curves and evaluate subsequent risk"),
+        ("empirical-research", "run the exploratory futures risk research notebook suite"),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)
         benchmark.add_argument("--output", type=Path)
-        if command == "empirical-shfe":
+        if command in ("empirical-shfe", "empirical-research"):
             benchmark.add_argument("--data", required=True, type=Path)
             benchmark.add_argument("--export", type=Path, help="export aggregate evidence only")
+        if command == "empirical-research":
+            benchmark.add_argument("--baseline-run", required=True, type=Path)
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "empirical-shfe":
+        if arguments.command == "empirical-research":
+            from .empirical_data import load_shfe_cu_archives
+            from .empirical_research import (
+                export_research_evidence,
+                load_research_config,
+                run_research_suite,
+            )
+
+            config = load_research_config(arguments.config)
+            paths = sorted(arguments.data.glob("shfe-futures-*.zip"))
+            if not paths:
+                raise ValueError("no shfe-futures-YYYY.zip archives in --data directory")
+            panel = load_shfe_cu_archives(paths)
+            output = arguments.output or arguments.data / "runs" / config.name
+            run_research_suite(panel, config, output, baseline_run=arguments.baseline_run)
+            if arguments.export is not None:
+                export_research_evidence(output, arguments.export)
+        elif arguments.command == "empirical-shfe":
             from .empirical_data import audit_shfe_daily_samples, load_shfe_cu_archives
             from .empirical_study import (
                 export_empirical_evidence,

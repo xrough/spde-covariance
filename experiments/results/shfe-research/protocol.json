@@ -1,0 +1,63 @@
+{
+  "schema": "shfe-research-suite-v1",
+  "config": {
+    "name": "shfe-cu-research-suite",
+    "empirical": {
+      "name": "shfe-cu-first-study",
+      "training_end": "2022-12-31",
+      "validation_end": "2023-12-31",
+      "test_end": "2025-12-31",
+      "dimension": 3,
+      "smoothing": 1e-06,
+      "relative_regularization": 0.001,
+      "windows": [
+        63,
+        126,
+        252
+      ],
+      "min_tenor_days": 30,
+      "max_tenor_days": 365,
+      "target_tenors_days": [
+        90,
+        180,
+        270
+      ],
+      "min_direct_count": 20,
+      "shrinkage": 0.1,
+      "pnl_variance_floor": 25.0,
+      "multiplier": 5.0,
+      "origin_stride": 1,
+      "bootstrap_block": 20,
+      "bootstrap_replications": 1000,
+      "seed": 20261026,
+      "sensitivities": true
+    },
+    "score_blocks": [
+      5,
+      10,
+      20,
+      40
+    ],
+    "representation_dimensions": [
+      2,
+      3,
+      4
+    ],
+    "representation_smoothing": [
+      1e-06,
+      0.0001
+    ]
+  },
+  "status": "exploratory development on inspected 2024\u20132025 data",
+  "selection": "2023 validation, then frozen choices; no future outcomes at issuance",
+  "holdout": "no final untouched holdout evaluated; reserve an uninspected period for revised-model confirmation",
+  "baseline_summary_sha256": "feef9025c21995a5630905b904862786db6c7b8cd47665adb2f8b5f8d78bbd79",
+  "baseline_predictions_sha256": "eef8c45ab95a58f561c51d92f997eb66904d2b56ac5a9f425a92da50d601fa7a",
+  "baseline_source_revision": "d284718c0e465d39886500ab2d85904183266747",
+  "baseline_data_verification": {
+    "panel_content_sha256": "d96e41a6b913c1e477b8d5849bf310e6b81ef580704d0c7f982ed44ed515dd15",
+    "archive_identity_verified": true,
+    "same_contract_proxies_checked": 13068,
+    "unique_scored_targets_checked": 1452
+  }
+}

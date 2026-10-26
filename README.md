@@ -1,175 +1,134 @@
-# Transport-SPDE covariance laboratory
+# Futures-curve covariance and risk laboratory
 
 [![Verification](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml/badge.svg)](https://github.com/xrough/spde-covariance/actions/workflows/verify.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A Python research toolkit for transport-SPDE covariance. Its **four-dimensional toy laboratory**
-develops identification, estimation and forecast evaluation;
-a fixed infinite-rank benchmark separates forcing truncation, curve projection,
-time resolution and partial-observation error. Established estimators are used;
-no new estimator or infinite-dimensional statistical guarantee is claimed.
+A Python financial research pipeline for asking **when a transport-SPDE curve
+representation helps estimate futures risk, and when it removes risk that
+matters for spreads and hedges**. It combines numerical controls with an
+empirical SHFE copper settlement study. Established methods are implemented;
+no new estimator, physical market-forcing identification or trading alpha is claimed.
 
-Start with the **[current findings notebook](notebooks/current_findings.ipynb)**:
-a worked identification example, saved figures, numerical results and the remaining research questions.
+**Workflow:** actual-contract data → curve reconstruction → transport-adjusted
+innovations → covariance/risk forecasts → diagnostics → constrained hedges.
 
-The **[first SHFE copper study](notebooks/shfe_empirical.ipynb)** connects reconstructed
-settlement curves to past-only covariance calibration and next-session portfolio-risk evaluation.
-Raw exchange files stay local; the notebook reads [aggregate evidence](experiments/results/shfe-cu/report.md).
-The [empirical findings](docs/shfe-findings.md) report substantial underprediction
-of spread and butterfly risk by the small local model and better direct-covariance scores.
+## Research roadmap
 
-The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
-
-| Question | Toy foundation | Fixed-model continuation |
+| Question | Numerical foundation | Empirical investigation |
 | --- | --- | --- |
-| **1. Identification** | Which covariance entries and exposure risks do partial observations reveal? | Observation geometry as spatial resolution increases |
-| **2. Current-risk estimation** | How do sampling error, changing covariance and maturity-pair coverage interact? | Kernel/risk estimation with representation diagnostics |
-| **3. Forecast evaluation** | How do estimates score on strictly subsequent observations? | Completed-kernel forecasts under declared source paths |
+| **RQ1 · Identification** | Observation geometry, missing pairs and completion ambiguity | Data coverage, curve representation and residual risk |
+| **RQ2 · Estimation** | PSD/ridge fitting, source integration and spatial error | Matched mechanism comparisons, joint residual risk and diffusion clocks |
+| **RQ3 · Evaluation** | Past-only synthetic forecasts and risk decisions | Paired forecast scores, calibration and bounded hedging |
 
-The [roadmap](docs/research-roadmap.md) distinguishes numerical evidence from future research.
+Start with the [executive empirical notebook](notebooks/shfe_empirical.ipynb).
+The focused notebooks below are implemented and execute from public aggregate
+evidence; exchange files remain local.
 
-## See the toy model
+| Notebook | Investigation |
+| --- | --- |
+| [01 · Data and risk targets](notebooks/01_data_and_risk_targets.ipynb) | Contract identity, units, maturity convention, quality and effective history |
+| [02 · Representation and identification](notebooks/02_representation_and_identification.ipynb) | Dimension, smoothing, conditioning and fitted/residual/cross risk |
+| [03 · Performance attribution](notebooks/03_performance_attribution.ipynb) | Matched windows, transport ablation, maturity masking and short samples |
+| [04 · Forecast scores and model risk](notebooks/04_forecast_scores_and_model_risk.ipynb) | QLIKE/quadratic loss, block uncertainty, calibration and influence |
+| [05 · Joint residual risk and clocks](notebooks/05_joint_residual_risk_and_clocks.ipynb) | PSD factor/residual second moments, cross-covariances and diffusion time |
+| [06 · Hedging decisions](notebooks/06_hedging_decisions.ipynb) | Past-only minimum-risk hedges, realized risk and position instability |
 
-![Transport-adjusted innovations and covariance estimation](assets/transport-spde-poster.png)
+The [research protocol](docs/empirical-research-protocol.md) states assumptions,
+chronology and evaluation rules. The [suite findings](docs/empirical-research-findings.md)
+and [generated report](experiments/results/shfe-research/report.md) connect conclusions to evidence.
 
-One seeded four-mode transport trajectory, its normalized innovations and estimated covariance
-against analytical truth, using clean coefficients, four Brownian sources and zero additional drift.
+## Current evidence
 
-<details>
-<summary>Show the animated Matplotlib figure</summary>
+The frozen first study uses official copper settlements from 2022–2025:
+969 sessions, 11,628 contract observations and 484 evaluation origins.
+The three-mode local source model materially underpredicts spread and butterfly
+risk under the primary QLIKE criterion. Its spread forecast performs favorably
+under secondary quadratic loss; score choice matters. Adjusted and unadjusted
+coefficient forecasts are close, so an SPDE transport advantage is not established.
 
-![Animated transport-adjusted innovations and covariance estimation](assets/transport-spde-preview.gif)
+![Frozen first-study risk calibration](experiments/results/shfe-cu/risk-calibration.png)
 
-[Full-resolution MP4](assets/transport-spde.mp4) ·
-[Rendering instructions](docs/visualizations.md)
+A good fit to large price levels does not ensure accurate spread risk. The
+[representation analysis](notebooks/02_representation_and_identification.ipynb)
+retains reconstruction-residual changes and their signed cross term.
+The new suite tests specific explanations and revised risk models while
+preserving the original benchmark, including unfavorable results.
+Joint residual modeling improves on factor-only curvature risk, while direct
+covariance gives lower realized hedge RMS: CNY 501 versus 533 for joint and 685
+for factor-only. These are development-sample settlement risks, excluding costs.
 
-</details>
+**Research boundary:** 2024–2025 has informed model development. New analyses on
+these years are exploratory even when issuance is past-only. A revised policy
+needs an uninspected confirmation period. No execution, transaction-cost,
+market-capacity or profitability backtest is implemented.
 
-## Quick start
+## Run the software
 
-Use Python 3.13 and [uv](https://docs.astral.sh/uv/). No market data or GPU is needed.
+Python 3.13, NumPy, SciPy and Matplotlib; `uv.lock` fixes the environment.
+This public repository is the development home for code, notebooks, issues and
+aggregate results. Keep unpublished drafts and raw data outside committed content.
 
 ```sh
 git clone https://github.com/xrough/spde-covariance.git
 cd spde-covariance
-uv sync --locked --extra reference
-uv run python examples/transport_pipeline.py
+uv sync --locked --extra reference --extra empirical
+uv run python examples/empirical_research_pipeline.py  # synthetic, no exchange data
+uv run python scripts/check_notebook.py notebooks/04_forecast_scores_and_model_risk.ipynb
 uv run pytest
 ```
 
-A small executable example:
+The notebooks read checksummed aggregate results without a Jupyter installation.
+For interactive use: `uv sync --locked --extra notebooks --extra empirical --extra reference`.
+To reproduce the historical analysis, follow the
+[local-data commands](docs/empirical-research-protocol.md#reproduction-and-data-boundary).
+Raw quotes, reconstructed daily curves and individual P&Ls are Git-ignored.
+MIT covers project code, not exchange data.
 
-```python
-import numpy as np
-import spde_covariance as spde
+## Mathematical targets
 
-model = spde.ExponentialTransport()
-times = np.arange(513) / 52
-source_C = np.diag([0.4, 0.3, 0.2, 0.1])
-simulation = spde.simulate_transport(model, times, source_C, seed=1729)
-innovations = spde.extract_innovations(simulation.trajectory, model)
-fit = spde.fit_innovation_covariance(
-    innovations,
-    covariance_assumption="common",
-    regularization=1e-3,
-    trace_cap=2.0,
-    numerical_error_budget=1e-5,
-)
-print(fit.covariance)  # normalized innovation covariance V_delta
-```
-
-The [full example](examples/transport_pipeline.py) checks analytical truth; the [notebook](notebooks/transport_covariance.ipynb) explores partial observations.
-
-## What is estimated
-
-For clean curve coefficients and a known transport matrix, the innovation is
+In a finite transport representation with known propagation matrix,
 
 ```math
-\xi_i=\frac{a_i-M_{\Delta_i}a_{i-1}-d_i}{\sqrt{\Delta_i}}.
-```
-
-The supplied $d_i$ is the integrated, transported drift. With constant source covariance, the finite model gives
-
-```math
+\xi_i=\frac{a_i-M_{\Delta_i}a_{i-1}-d_i}{\sqrt{\Delta_i}},\qquad
 C=LL^\top,\qquad
-V_\Delta=\mathrm{Cov}(\xi_i)
-=\frac{1}{\Delta}\int_0^\Delta M_r C M_r^\top dr.
+V_\Delta=\frac1\Delta\int_0^\Delta M_s C M_s^\top ds.
 ```
 
-**The clean-innovation fitter targets $V_\Delta$.** The simulator accepts $C$; a loading $L$ is nonunique.
-The default exact exponential model has four Gaussian Brownian channels and no explicit spatial mollifier.
-After transport adjustment, its covariance-fitting core is a generic problem
-with partial linear observations.
+The clean-innovation API estimates $V_\Delta$; a loading $L$ is nonunique.
+The original empirical fitter estimates an effective finite $C$ through
+interval-specific maps. The joint factor/residual model directly estimates
+an empirical innovation second moment. These targets remain distinct.
+Portfolio evaluation targets the conditional second moment of same-contract
+settlement P&L; interpreting it as variance requires a negligible conditional mean.
 
-The separate [empirical calibration](docs/shfe-empirical.md) fits an effective finite-model
-$C$ through interval-specific integration maps. That extra model assumption does not identify the market's physical forcing.
+## Numerical foundations and next phase
 
-The fitter receives $y_i=O_i\xi_i+\varepsilon_i$, known maps and fresh noise
-covariances. It fits corrected outer products with PSD/trace-constrained ridge
-and reports observation geometry and numerical convergence diagnostics.
-For dense point fragments, [canonical completion](docs/canonical-completion.md)
-adds an explicit structural rule for unseen kernel entries alongside ridge.
-It does not turn missing pairs into identified data. The [coherent strategy](docs/coherent-completion.md)
-fits compatible PSD fragments before completion; the [runnable example](examples/coherent_pipeline.py)
-also checks distance to a declared finite constant-source SPDE class. Historical
-raw and separately PSD-projected completion remain available.
-The [Gaussian completion model](docs/statistical-completion.md) fits observed likelihood with known noise and keeps conditional predictions separate from confidence ranges over alternative completions.
-The [methods](docs/methods.md) retain the SPDE setup, metric, approximations, objective and certificates.
+The [numerical findings notebook](notebooks/current_findings.ipynb) covers the
+finite toy model, partial identification and canonical completion. The
+[transport example](notebooks/transport_covariance.ipynb) validates the
+SPDE-to-innovation connection. A [fixed infinite-rank model](docs/infinite-transport.md)
+separates noise truncation, curve projection and time discretization.
 
-## What the numerical evidence says
+<details>
+<summary>Matplotlib transport illustration from the four-mode numerical control</summary>
 
-The [Stage 1 report](experiments/results/stage1/report.md) uses 20 paired synthetic replications; relative Hilbert–Schmidt errors are means ± MCSE:
+![Transport-adjusted innovations and covariance estimation](assets/transport-spde-poster.png)
+![Animated numerical control](assets/transport-spde-preview.gif)
 
-| Information setting | Constrained ridge error | Numerical Gram rank |
-| --- | ---: | ---: |
-| Full noiseless coefficients | 0.1201 ± 0.0097 | 10/10 |
-| Dense point/delivery observations | 0.3133 ± 0.0411 | 10/10 |
-| Rotating sparse subsets | 0.8068 ± 0.1228 | 10/10 |
-| Missing coordinate pairs | 0.1666 ± 0.0095 | 6/10 |
+[Full-resolution MP4](assets/transport-spde.mp4) · [Rendering instructions](docs/visualizations.md)
 
-Full rank can coexist with weak information; modest error at one truth does not
-identify missing directions. The full-data empirical baseline scores 0.1189 ±
-0.0098, so ridge does not win every comparison. MCSE measures simulation precision;
-optimization certificates bound numerical error to the constrained optimizer.
+</details>
 
-## Current studies
+[Stage 1](experiments/results/stage1/report.md) · [RQ2](docs/research-question-2.md) ·
+[RQ3](docs/research-question-3.md) · [Partial observations](docs/partial-observations.md) ·
+[Canonical completion](docs/canonical-completion.md) · [Coherent completion](docs/coherent-completion.md) ·
+[Statistical completion](docs/statistical-completion-findings.md) · [Hedging controls](docs/hedging-findings.md)
 
-- [Statistical completion](docs/statistical-completion-findings.md): likelihood fitting, observed-data selection, conditional predictions and identification-inclusive uncertainty; [report](experiments/results/statistical-completion/report.md) and [example](examples/statistical_completion.py).
-- Finite [RQ2](docs/research-question-2.md) and [RQ3](docs/research-question-3.md):
-  estimation under changing coverage and 20-replication past-only forecast evaluation.
-- [Fixed infinite-rank transport](docs/infinite-transport.md) and [evidence](experiments/results/infinite-transport/report.md):
-  forcing, curve projection and time-discretization errors remain distinct.
-- [Partial observations](docs/partial-observations.md): shared data across dimensions; more coordinates do not remove weak information.
-- [Canonical completion](docs/canonical-completion.md), [paper controls](experiments/results/canonical-reference/report.md)
-  and [SPDE fragments](experiments/results/canonical-spde/report.md): structural completion and risk ambiguity.
-- [Coherent fitting](docs/coherent-completion.md), [ablations](experiments/results/completion-ablation/report.md)
-  and [joint refinement](experiments/results/completion-refinement/report.md): PSD coherence,
-  shrinkage, floors, forcing support and overlap amplification are tested separately.
-- [Completion forecasts](experiments/results/completion-forecast/report.md): three frozen forecast rules
-  on future weekly innovations; [findings and limits](docs/completion-continuation-findings.md).
-- [Identification-aware hedging](docs/hedging-findings.md): projected and true-point controls, added observations and [20-replication evidence](experiments/results/identified-hedging/report.md).
-- [Futures-price interface](docs/futures-data.md): contract-level CSV, availability checks, no-roll changes and P&L units; [offline example](examples/futures_pipeline.py).
+Next gates are an uninspected empirical confirmation period, defensible
+point-in-time security metadata and delivery maps, and execution-aware risk
+evaluation. Infinite-dimensional identification and statistical guarantees
+remain separate research tasks; nonlinear dynamics are not a prerequisite.
+See the [longer research roadmap](docs/research-roadmap.md).
 
-The [research protocol](docs/completion-research.md) and [source-class note](docs/source-classes.md)
-distinguish output dimension from forcing support. No finite-class diagnostic
-excludes every infinite-dimensional SPDE; numerical grid stability is not a continuum guarantee.
-
-Current experiments assume known observation maps/noise and correct drift. Gaussian sampling bands have a narrow declared scope;
-sparse/noisy level reconstruction, stochastic volatility and empirical futures forecasting are not validated outcomes.
-The spline backend is a projected approximation, with separate boundary and
-quadrature diagnostics; dense computation targets moderate dimensions.
-
-## Find details and reproduce
-
-[API](docs/api.md) · [Workflow](docs/workflow.md) · [Methods](docs/methods.md) · [Verification](docs/verification.md) ·
-[CV evidence](docs/portfolio.md) · [Contributing](CONTRIBUTING.md)
-
-Reproduce the smoke studies:
-
-```sh
-uv run spde-covariance benchmark-partial experiments/configs/completion-research-smoke.toml --output experiments/runs/research-smoke
-uv run spde-covariance benchmark-rq3 experiments/configs/completion-forecast-smoke.toml --output experiments/runs/forecast-smoke
-```
-
-Protocols and the [roadmap](docs/research-roadmap.md) link evidence and next questions; runs retain source/configuration manifests and measurements.
-Code, tests and analytical controls are licensed under [MIT](LICENSE).
+[Methods](docs/methods.md) · [API](docs/api.md) · [Verification](docs/verification.md) ·
+[Portfolio evidence](docs/portfolio.md) · [Contributing](CONTRIBUTING.md)
