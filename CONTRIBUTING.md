@@ -9,19 +9,27 @@ estimator or infinite-dimensional guarantees. Start with the [API guide](docs/ap
 [workflow](docs/workflow.md), and [methods](docs/methods.md). The
 [RQ2 protocol](docs/research-question-2.md) studies local estimation, and the
 [RQ3 protocol](docs/research-question-3.md) evaluates frozen covariance forecasts
-on future observations. Curve-level forecasting and market calibration remain
-later application work; the [roadmap](docs/research-roadmap.md) carries the same
-three questions into genuinely infinite-dimensional dynamics.
+on future observations. The [empirical research suite](docs/empirical-research-protocol.md)
+adds futures-curve reconstruction, covariance calibration and subsequent risk/hedge
+evaluation. Curve-level prediction and execution-aware backtesting remain later
+work; the [roadmap](docs/research-roadmap.md) also carries the three questions
+into genuinely infinite-dimensional dynamics.
 The [partial-observation protocol](docs/partial-observations.md) studies the
 first statistical step using common full-model innovation observations across
 candidate covariance dimensions.
 
 ## Development and review
 
+Use this public repository as the sole active development home: code, issues,
+notebooks and reviewed aggregate evidence belong here. The original private
+repository is legacy storage, not a parallel codebase to synchronize. Keep
+unpublished drafts outside the checkout and raw exchange data in ignored
+`data/local/`. Do not import the legacy private Git history into public history.
+
 Use Python 3.13 and the repository's locked uv environment:
 
 ```sh
-uv sync --locked --extra reference
+uv sync --locked --extra reference --extra empirical
 uv run --no-sync ruff check .
 uv run --no-sync ruff format --check .
 uv run --no-sync pytest
@@ -50,7 +58,9 @@ Use orthonormal Hilbert coordinates and preserve basis identifiers. Distinguish
 instantaneous diffusion covariance `C`, normalized innovation covariance `V`,
 observed covariance, and exposure risks. A projected spline shift remains a
 numerical mild recursion, not an exact semigroup. Irregular intervals retain
-interval-specific targets and must not be silently pooled.
+interval-specific targets. Any empirical pooling approximation must state its
+changed target and assumptions explicitly; the clean-innovation API still rejects
+unequal-interval common-covariance pooling.
 
 Keep observed-data tuning separate from latent truth and evaluation outcomes.
 Baselines receive the same information within each comparison; full-coordinate
@@ -76,8 +86,10 @@ definition; traced allocations are not process RSS.
 
 The public project documents implemented methods, supported assumptions and
 measured behavior. Keep simulation inputs, fitted targets and evaluation truth
-distinct. The current fitted covariance is V_delta; diffusion covariance C and
-loading L are different objects. Update the operational documentation when
+distinct. The clean-innovation fitter targets V_delta; the original empirical
+calibration targets effective finite-model C through interval-specific maps.
+The joint factor/residual study targets an empirical innovation second moment.
+Loading L is nonunique. Update the operational documentation when
 changing these meanings. Cite primary sources for background methods and retain
 configuration/source provenance for numerical results.
 

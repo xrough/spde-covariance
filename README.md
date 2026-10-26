@@ -65,13 +65,12 @@ market-capacity or profitability backtest is implemented.
 ## Run the software
 
 Python 3.13, NumPy, SciPy and Matplotlib; `uv.lock` fixes the environment.
-This implementation is under review in [PR #11](https://github.com/xrough/spde-covariance/pull/11);
-check out its branch until the changes reach the default branch.
+This public repository is the development home for code, notebooks, issues and
+aggregate results. Keep unpublished drafts and raw data outside committed content.
 
 ```sh
 git clone https://github.com/xrough/spde-covariance.git
 cd spde-covariance
-git switch codex/shfe-research-suite
 uv sync --locked --extra reference --extra empirical
 uv run python examples/empirical_research_pipeline.py  # synthetic, no exchange data
 uv run python scripts/check_notebook.py notebooks/04_forecast_scores_and_model_risk.ipynb
