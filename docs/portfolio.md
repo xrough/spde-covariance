@@ -1,5 +1,12 @@
 # Portfolio evidence and CV wording
 
+The [statistical completion upgrade](statistical-completion.md) fits a declared
+Gaussian Markov model to noisy fragments, with observed-only chronological
+selection, conditional predictions and a separate identification-inclusive
+uncertainty region. Local likelihood convergence and moment-solver global
+certificates have different scopes. It prepares empirical work; it does not
+establish a market-calibrated probability model or hedge outperformance.
+
 The [hedging pilot](hedging-findings.md) adds decision identification, numerical
 source-class ranges and a contract-level CSV/PnL bridge. Twenty paired
 synthetic replications show no consistent advantage for the current robust uncertainty

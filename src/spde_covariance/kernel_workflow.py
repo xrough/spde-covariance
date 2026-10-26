@@ -60,7 +60,7 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
     Canonical options: rank or fve, support_rtol, minimum_pair_count (default1),
     weights (date weights), and psd_projection (defaultFalse). Canonical input
     is dense point fragments only, with validated row-to-grid correspondence.
-    Coherent options: regularization, eigenvalue_floor, numerical_error_budget,
+    Coherent options: regularization, reference_kernel, eigenvalue_floor, numerical_error_budget,
     rho, max_iterations, support_rtol and the same date/count options. It fits
     compatible PSD cliques jointly before untruncated supported completion.
     """
@@ -103,6 +103,56 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             "operator": operator_fit.diagnostics,
             "certificate_scope": "H-coordinate ridge optimizer only",
         }
+    elif method == "gaussian":
+        from .gaussian_completion import fit_gaussian_completion
+        from .gaussian_workflow import GaussianCompletionConvergenceError
+
+        if covariance_assumption != "common":
+            raise ValueError("Gaussian completion requires a common covariance")
+        if not interval_diagnostics(observed)["equal_intervals"]:
+            raise ValueError("Gaussian completion requires equal innovation intervals")
+        allowed = {
+            "reference_kernel",
+            "regularization",
+            "model_cliques",
+            "weights",
+            "max_iterations",
+            "stationarity_tolerance",
+            "relative_tolerance",
+            "initial_kernels",
+        }
+        if not set(options) <= allowed:
+            raise ValueError("unknown gaussian method options")
+        if "reference_kernel" not in options or "regularization" not in options:
+            raise ValueError(
+                "Gaussian completion requires explicit reference_kernel and regularization"
+            )
+        model_cliques = options.pop("model_cliques", layout.cliques)
+        fit = fit_gaussian_completion(
+            tuple(item.y for item in observed.observations),
+            layout.row_to_nodes,
+            noise_covariances=tuple(item.noise_covariance for item in observed.observations),
+            cliques=model_cliques,
+            **options,
+        )
+        if not fit.converged:
+            raise GaussianCompletionConvergenceError(fit)
+        kernel = fit.kernel
+        diagnostics = {
+            "layout_validation": validation,
+            "gaussian_model": fit.diagnostics,
+            "precision": fit.precision,
+            "evaluation_rank": int(np.linalg.matrix_rank(layout.evaluation_matrix)),
+            "finite_basis_image_constraint_imposed": False,
+            "canonical_assumption": "Gaussian conditional independence outside the declared precision graph",
+            "sampling_assumption": "independent centered Gaussian innovations and independent fresh Gaussian noise with known covariance",
+            "certificate_scope": "local stationarity of penalized observed likelihood; no global or statistical error certificate",
+        }
+        metadata["structural_model"] = "finite-grid Gaussian Markov innovation covariance"
+        metadata["basis_interpretation"] = (
+            "validated point-map provenance; grid-model kernel is not constrained to the finite basis image"
+        )
+        estimand = "regularized finite-grid Gaussian Markov model for common innovation covariance"
     elif method in ("canonical", "coherent"):
         if covariance_assumption != "common":
             raise ValueError("canonical completion initially requires a common covariance")
@@ -121,6 +171,7 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
             if method == "canonical"
             else {
                 "regularization",
+                "reference_kernel",
                 "eigenvalue_floor",
                 "numerical_error_budget",
                 "rho",
@@ -193,7 +244,7 @@ def fit_covariance_kernel(data, *, layout, method, method_options, covariance_as
                 "canonical completion of a regularized compatible PSD partial innovation kernel"
             )
     else:
-        raise ValueError("method must be ridge, canonical or coherent")
+        raise ValueError("method must be ridge, canonical, coherent or gaussian")
     return KernelCovarianceFit(
         kernel,
         layout.nodes,

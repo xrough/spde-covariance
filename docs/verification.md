@@ -1,5 +1,24 @@
 # Software verification
 
+The [statistical completion model](statistical-completion.md) adds independent
+convex full/noiseless graphical-likelihood checks, precision-gradient finite
+differences, EM monotonicity/local-stationarity checks, singular/heterogeneous
+known-noise conditioning, units/permutation tests and bounded-group-cache
+fallback. Workflow checks enforce observed-only chronological selection and
+preserve the distinction between the declared graph and bridge observations.
+Uncertainty tests check exact Gaussian probe intervals, global allocation,
+heterogeneous-noise grouping and primal/dual PSD risk bounds. Equal-observed-law
+controls must not become distinguishable through truth metadata or future data.
+The example and `benchmark-statistical-completion` smoke run execute on both
+CI platforms; the example also runs from a core-only clean wheel.
+
+The executed [current findings notebook](../notebooks/current_findings.ipynb) reconstructs
+five figures and paired numerical tables from checksummed committed evidence. Its nine
+code cells run without Jupyter or optional convex solvers through `check_notebook.py`.
+CI checks both notebooks from the checkout and from a core-only wheel outside it.
+The runner resolves relative data from the notebook's directory and restores the caller's
+working directory. The report does not rerun or silently retune the Monte Carlo studies.
+
 The suite runs on Python 3.13. Its checks cover
 transport and analytical covariance agreement, deterministic/drift cancellation,
 coordinate invariance, irregular-time handling, observation adjoints, symmetric
@@ -31,6 +50,7 @@ uv run --no-sync python examples/transport_pipeline.py
 uv run --no-sync python examples/canonical_pipeline.py
 uv run --no-sync python examples/coherent_pipeline.py
 uv run --no-sync python scripts/check_notebook.py
+uv run --no-sync python scripts/check_notebook.py notebooks/current_findings.ipynb
 uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/verification
 uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/verification-rq2
 uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/verification-rq3
@@ -44,7 +64,7 @@ uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/completion-fo
 
 The end-to-end example estimates V_delta from 1,024 weekly innovations. Its
 seeded relative HS error is 0.058214 and its numerical certificate is 2.31e-8.
-The notebook uses six executable code cells and an inspected three-panel kernel
+The transport notebook uses six executable code cells and an inspected three-panel kernel
 comparison. The animation renderers use the same installed package and standard
 scientific plotting tools; their parameters and output formats are recorded in
 [visualization metadata](visualizations.md).

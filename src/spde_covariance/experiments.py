@@ -12,6 +12,10 @@ def main(argv=None):
         ("benchmark-rq2", "run local covariance and risk estimation experiments"),
         ("benchmark-rq3", "evaluate frozen covariance forecasts on future observations"),
         ("benchmark-hedging", "audit partial identification and finite-instrument hedging"),
+        (
+            "benchmark-statistical-completion",
+            "evaluate Gaussian completion and uncertainty under partial observations",
+        ),
         ("benchmark-infinite-transport", "audit a fixed infinite-rank transport model"),
         (
             "benchmark-partial",
@@ -23,7 +27,16 @@ def main(argv=None):
         benchmark.add_argument("--output", type=Path)
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "benchmark-hedging":
+        if arguments.command == "benchmark-statistical-completion":
+            from .statistical_completion_benchmark import (
+                load_statistical_completion_config,
+                run_statistical_completion,
+            )
+
+            config = load_statistical_completion_config(arguments.config)
+            output = arguments.output or Path("experiments/runs") / config.name
+            run_statistical_completion(config, output)
+        elif arguments.command == "benchmark-hedging":
             from .hedging_pilot import run_hedging_pilot
 
             output = run_hedging_pilot(arguments.config, arguments.output)

@@ -1,0 +1,13 @@
+study = "statistical_completion"
+name = "statistical-completion"
+seed = 20261030
+replications = 20
+training_counts = [128, 512, 2048]
+validation_count = 128
+test_count = 512
+source_dimension = 16
+reference_dimension = 512
+coverage_replications = 500
+coverage_training_count = 512
+coverage_training_counts = [128, 512, 2048]
+coverage_precision_required = true

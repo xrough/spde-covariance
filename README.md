@@ -9,6 +9,9 @@ a fixed infinite-rank benchmark separates forcing truncation, curve projection,
 time resolution and partial-observation error. Established estimators are used;
 no new estimator or infinite-dimensional statistical guarantee is claimed.
 
+Start with the **[current findings notebook](notebooks/current_findings.ipynb)**:
+a worked identification example, saved figures, numerical results and the remaining research questions.
+
 The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
 | Question | Toy foundation | Fixed-model continuation |
@@ -101,6 +104,7 @@ It does not turn missing pairs into identified data. The [coherent strategy](doc
 fits compatible PSD fragments before completion; the [runnable example](examples/coherent_pipeline.py)
 also checks distance to a declared finite constant-source SPDE class. Historical
 raw and separately PSD-projected completion remain available.
+The [Gaussian completion model](docs/statistical-completion.md) fits observed likelihood with known noise and keeps conditional predictions separate from confidence ranges over alternative completions.
 The [methods](docs/methods.md) retain the SPDE setup, metric, approximations, objective and certificates.
 
 ## What the numerical evidence says
@@ -121,6 +125,7 @@ optimization certificates bound numerical error to the constrained optimizer.
 
 ## Current studies
 
+- [Statistical completion](docs/statistical-completion-findings.md): likelihood fitting, observed-data selection, conditional predictions and identification-inclusive uncertainty; [report](experiments/results/statistical-completion/report.md) and [example](examples/statistical_completion.py).
 - Finite [RQ2](docs/research-question-2.md) and [RQ3](docs/research-question-3.md):
   estimation under changing coverage and 20-replication past-only forecast evaluation.
 - [Fixed infinite-rank transport](docs/infinite-transport.md) and [evidence](experiments/results/infinite-transport/report.md):

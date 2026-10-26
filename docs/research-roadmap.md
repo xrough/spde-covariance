@@ -1,5 +1,12 @@
 # Three questions, from a toy model to curve dynamics
 
+The [statistical completion model](statistical-completion.md) now separates
+observed likelihood fitting, a declared conditional-independence graph and
+uncertainty over alternative PSD completions. Native validation cannot test
+never-observed cross blocks; separately declared bridge data can audit their
+consequences. The next empirical phase still needs a defensible contract/curve
+observation map, drift, dependence and price-noise assumptions.
+
 The [hedging pilot](hedging-findings.md) finds material population decision
 ambiguity and narrowing after one added maturity, but no consistent advantage for the
 current finite-sample robust rule. The [contract-price interface](futures-data.md)

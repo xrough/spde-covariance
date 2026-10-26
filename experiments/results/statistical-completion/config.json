@@ -1,0 +1,44 @@
+{
+  "name": "statistical-completion",
+  "study": "statistical_completion",
+  "seed": 20261030,
+  "replications": 20,
+  "training_counts": [
+    128,
+    512,
+    2048
+  ],
+  "validation_count": 128,
+  "test_count": 512,
+  "source_dimension": 16,
+  "reference_dimension": 512,
+  "quadrature_order": 24,
+  "delta": 0.019230769230769232,
+  "noise_variance": 0.001,
+  "prior_counts": [
+    0.5,
+    2.0,
+    8.0
+  ],
+  "reference_variance_floor": 1e-06,
+  "moment_eigenvalue_floor": 1e-09,
+  "numerical_error_budget": 1e-05,
+  "moment_max_iterations": 100000,
+  "em_max_iterations": 2000,
+  "stationarity_tolerance": 1e-06,
+  "relative_tolerance": 1e-08,
+  "confidence_level": 0.95,
+  "coverage_replications": 500,
+  "coverage_training_count": 512,
+  "coverage_training_counts": [
+    128,
+    512,
+    2048
+  ],
+  "coverage_noise_variance": 0.001,
+  "coverage_mcse_target": 0.01,
+  "interval_solver": "CLARABEL",
+  "interval_solver_tolerance": 1e-08,
+  "interval_max_iterations": 100000,
+  "coverage_precision_required": true
+}

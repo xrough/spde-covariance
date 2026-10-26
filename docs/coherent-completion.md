@@ -63,6 +63,17 @@ integral-operator interpretation.
 
 ## Consensus optimization and a feasible returned result
 
+The formulas above and below use the historical zero shrinkage reference.
+The optional `reference_kernel` instead supplies a finite-grid covariance
+target R. In weighted coordinates, replace the ridge term by
+$\lambda\sum_\Omega(A-\widetilde R)^2/2$. The shared-update right-hand side
+becomes $c\widetilde T+\lambda\widetilde R$; the dual constant also gains
+$\lambda\sum_\Omega\widetilde R^2/2$. The same primal-dual certificate and
+strong-convexity argument apply. The default is unchanged. The
+[statistical completion study](statistical-completion.md) uses a common
+training-only reference for its moment and likelihood fits, with explicitly
+different Frobenius and KL penalties.
+
 The solver separates the shared variable from local PSD clique copies and
 uses consensus ADMM, a standard splitting method described by
 [Boyd, Parikh, Chu, Peleato and Eckstein (2011)](https://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf).
