@@ -8,12 +8,17 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 
 def markdown(source):
+    # GitHub's notebook renderer uses Jupyter math, unlike its README renderer.
+    source = re.sub(
+        r"```math\n(.*?)\n```", lambda m: "$$\n" + m.group(1) + "\n$$", source, flags=re.S
+    )
     return {"cell_type": "markdown", "metadata": {}, "source": source.strip().splitlines(True)}
 
 
@@ -339,7 +344,9 @@ Calibration bins are based on forecast risk, and realized-outcome strata are
 explicitly ex post. Neither is used to tune a policy on the evaluation outcomes."""),
             code("""sensitivity=[r for r in scores["block_sensitivity"] if r["method"]=="spde_local" and r["exposure"]=="spread_3m_6m"]
 table(sensitivity,["loss","requested_block_length","mean","bootstrap_standard_error","bootstrap_percentile_95"])
-table([r for r in scores["method_summaries"] if r["method"] in ("spde_local","direct") and r["stratum"]=="year"],["group","exposure","method","count","mean_qlike","risk_ratio"])"""),
+table([r for r in scores["method_summaries"] if r["method"] in ("spde_local","direct") and r["stratum"]=="year"],["group","exposure","method","count","mean_qlike","risk_ratio"])
+table([r for r in scores["method_summaries"] if r["method"] in ("spde_local","direct") and r["stratum"]=="calendar_gap"],["group","exposure","method","count","mean_qlike","risk_ratio"])
+table([r for r in scores["realized_outcome_strata"] if r["method"] in ("spde_local","direct")],["realized_squared_pnl_third","exposure","method","count","mean_qlike","risk_ratio"])"""),
             code("""rows=[r for r in scores["calibration_bins"] if r["method"]=="spde_local"]
 table(rows,["exposure","forecast_variance_quintile","count","predicted_rms_cny","realized_rms_cny","risk_ratio"])
 fig,ax=plt.subplots(figsize=(5,4))
