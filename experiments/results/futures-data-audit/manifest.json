@@ -1,0 +1,23 @@
+{
+  "retrieved_date": "2026-10-25",
+  "code_revision": "d97abe06897a1d553b550ab77909b867757aa61f",
+  "audit_script_sha256": "83ab14e4b01b31e2ec3389f8e03d7131e66940726532557842ed33b1bbcfce46",
+  "metadata_reports": [
+    {
+      "asof_date": "20251014",
+      "source_url": "https://www.shfe.com.cn/data/busiparamdata/future/ContractBaseInfo20251014.dat",
+      "sha256": "a4f8eeba4c385974de6cd158c1951f917a2faf189e0107327fa8d4fb9facddc7",
+      "bytes": 79337,
+      "metadata_schedule_unadjusted_for_statutory_holidays": true
+    },
+    {
+      "asof_date": "20251016",
+      "source_url": "https://www.shfe.com.cn/data/busiparamdata/future/ContractBaseInfo20251016.dat",
+      "sha256": "c81450d0fd05237ec10df0b07f4e451375f067d002805c1ce406b474fdd5d0a6",
+      "bytes": 79887,
+      "metadata_schedule_unadjusted_for_statutory_holidays": true
+    }
+  ],
+  "scope": "six-date source and contract-coverage feasibility audit; no covariance or hedging-performance estimate",
+  "raw_exchange_reports_redistributed": false
+}

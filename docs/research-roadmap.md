@@ -1,5 +1,12 @@
 # Three questions, from a toy model to curve dynamics
 
+The [hedging pilot](hedging-findings.md) finds material population decision
+ambiguity and narrowing after one added maturity, but no consistent advantage for the
+current finite-sample robust rule. The [contract-price interface](futures-data.md)
+prepares a later empirical study; the exchange audit is feasibility evidence
+only. Next compare matched trace assumptions, separate sampling width from
+permanent ambiguity, and establish dependence-aware market inference.
+
 The public project begins with a finite-dimensional introductory laboratory.
 It develops intuition, working software and numerical validation before
 studying an infinite-dimensional statistical problem. Its current estimators

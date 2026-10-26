@@ -576,3 +576,27 @@ interfaces selected by the TOML `study` marker through the existing
 `benchmark-partial` and `benchmark-rq3` commands. They retain unavailable fits
 and method-specific diagnostics; they do not convert completed kernels to
 H-coordinate covariance matrices.
+
+## Identification-aware hedging and contract prices
+
+`CovarianceAmbiguity(factors, entry_pairs, lower, upper, trace_cap, ...)` describes
+an explicit finite PSD source class with output kernel
+`K = offset_covariance + sum(F @ Q @ F.T)`. Optional `trace_lower` records a
+known lower/equal source trace. Constraints and units must already refer to
+the caller's output coordinates. `solve_covariance_functional` and
+`covariance_functional_interval` return numerical support witnesses;
+`solve_robust_hedge` minimizes worst-case residual variance with optional position
+constraints and costs. They import CVXPY lazily and expose unavailable statuses,
+original-constraint residuals and support/dual checks. These are not exact
+certificates or statistical calibration. See the [pilot protocol](identified-hedging.md).
+
+`ContractSpec`, `SettlementPanel` and `SettlementChanges` preserve contract IDs,
+metadata and quote availability dates, supplied valuation calendars, units and
+multipliers. `SettlementPanel.from_csv` reads the documented two-file schema.
+`asof` and `normalized_changes` exclude future information and require matching
+observed endpoint settlements of the same contract. ACT/365.25 interval lengths
+are retained. Caller-supplied observation maps and explicit drift/noise
+assumptions are required to bridge into `ObservedInnovationBatch`; existing
+common-covariance fitting still rejects unequal intervals. Physical delivery
+windows are metadata, not an automatic delivery-average observation map.
+See [futures data conventions](futures-data.md) and the [offline example](../examples/futures_pipeline.py).

@@ -1,0 +1,10 @@
+{
+  "name": "true-point-identification-annex",
+  "source_dimension": 16,
+  "reference_dimension": 512,
+  "quadrature_order": 24,
+  "delta": 0.019230769230769232,
+  "safety": 0.95,
+  "rank_rtol": 1e-12,
+  "numerical_error_budget": 1e-10
+}

@@ -31,6 +31,7 @@ jobs:
       - run: uv run --no-sync python examples/transport_pipeline.py
       - run: uv run --no-sync python examples/canonical_pipeline.py
       - run: uv run --no-sync python examples/coherent_pipeline.py
+      - run: uv run --no-sync python examples/futures_pipeline.py
       - run: uv run --no-sync python scripts/check_notebook.py
       - run: uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/ci-stage1
       - run: uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/ci-rq2
@@ -41,6 +42,7 @@ jobs:
       - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/coherent-smoke.toml --output experiments/runs/ci-coherent
       - run: uv run --no-sync spde-covariance benchmark-partial experiments/configs/completion-research-smoke.toml --output experiments/runs/ci-completion-research
       - run: uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/completion-forecast-smoke.toml --output experiments/runs/ci-completion-forecast
+      - run: uv run --no-sync spde-covariance benchmark-hedging experiments/configs/identified-hedging-smoke.toml --output experiments/runs/ci-identified-hedging
       - name: Show numerical diagnostics after a failed smoke study
         if: failure()
         shell: bash
@@ -65,11 +67,13 @@ jobs:
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/transport_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/canonical_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/coherent_pipeline.py"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/futures_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py"
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-rq3 --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-infinite-transport --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-partial --help
+          "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-hedging --help
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
@@ -84,3 +88,4 @@ jobs:
             experiments/runs/ci-coherent
             experiments/runs/ci-completion-research
             experiments/runs/ci-completion-forecast
+            experiments/runs/ci-identified-hedging

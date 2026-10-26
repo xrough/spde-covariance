@@ -1,5 +1,16 @@
 # Portfolio evidence and CV wording
 
+The [hedging pilot](hedging-findings.md) adds decision identification, numerical
+source-class ranges and a contract-level CSV/PnL bridge. Twenty paired
+synthetic replications show no consistent advantage for the current robust uncertainty
+sets; that negative finding is retained. The SHFE sample is a six-date data
+audit, not an empirical forecasting or trading result.
+
+An additional supported description is: "Investigated how partially observed
+SPDE covariance affects hedge decisions, and implemented past-only risk
+evaluation with an auditable futures-price interface." This is not validated
+market outperformance or a new robust-optimization method.
+
 ## What has been delivered
 
 The project combines a finite-dimensional introductory laboratory with a fixed

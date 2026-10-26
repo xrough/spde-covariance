@@ -133,14 +133,15 @@ optimization certificates bound numerical error to the constrained optimizer.
   shrinkage, floors, forcing support and overlap amplification are tested separately.
 - [Completion forecasts](experiments/results/completion-forecast/report.md): three frozen forecast rules
   on future weekly innovations; [findings and limits](docs/completion-continuation-findings.md).
+- [Identification-aware hedging](docs/hedging-findings.md): projected and true-point controls, added observations and [20-replication evidence](experiments/results/identified-hedging/report.md).
+- [Futures-price interface](docs/futures-data.md): contract-level CSV, availability checks, no-roll changes and P&L units; [offline example](examples/futures_pipeline.py).
 
 The [research protocol](docs/completion-research.md) and [source-class note](docs/source-classes.md)
 distinguish output dimension from forcing support. No finite-class diagnostic
 excludes every infinite-dimensional SPDE; numerical grid stability is not a continuum guarantee.
 
-Current experiments assume known observation maps/noise and correct drift.
-Sparse/noisy price-level reconstruction, stochastic volatility, confidence
-intervals and empirical futures forecasting are not validated outcomes.
+Current experiments assume known observation maps/noise and correct drift. Gaussian sampling bands have a narrow declared scope;
+sparse/noisy level reconstruction, stochastic volatility and empirical futures forecasting are not validated outcomes.
 The spline backend is a projected approximation, with separate boundary and
 quadrature diagnostics; dense computation targets moderate dimensions.
 

@@ -1,0 +1,114 @@
+{
+  "product": "cu_f",
+  "reports": [
+    {
+      "valuation_date": "20251014",
+      "source_url": "https://www.shfe.com.cn/data/tradedata/future/dailydata/kx20251014.dat",
+      "sha256": "90fbb3f5c60e6d99756701da485df83f81a11080bc8f958fb67468103303a484",
+      "bytes": 122086,
+      "exchange_update_date": "20251014 15:21:01",
+      "contract_count": 12,
+      "delivery_month_codes": [
+        "2510",
+        "2511",
+        "2512",
+        "2601",
+        "2602",
+        "2603",
+        "2604",
+        "2605",
+        "2606",
+        "2607",
+        "2608",
+        "2609"
+      ],
+      "missing_fields": {
+        "SETTLEMENTPRICE": 0,
+        "VOLUME": 0,
+        "OPENINTEREST": 0
+      },
+      "zero_volume_contracts": 0
+    },
+    {
+      "valuation_date": "20251015",
+      "source_url": "https://www.shfe.com.cn/data/tradedata/future/dailydata/kx20251015.dat",
+      "sha256": "fb05c15f71cf88acf7a96444e61747f3a4347f1acfc2601d1f4936f1c660d05f",
+      "bytes": 121188,
+      "exchange_update_date": "20251015 15:50:02",
+      "contract_count": 12,
+      "delivery_month_codes": [
+        "2510",
+        "2511",
+        "2512",
+        "2601",
+        "2602",
+        "2603",
+        "2604",
+        "2605",
+        "2606",
+        "2607",
+        "2608",
+        "2609"
+      ],
+      "missing_fields": {
+        "SETTLEMENTPRICE": 0,
+        "VOLUME": 0,
+        "OPENINTEREST": 0
+      },
+      "zero_volume_contracts": 0
+    },
+    {
+      "valuation_date": "20251016",
+      "source_url": "https://www.shfe.com.cn/data/tradedata/future/dailydata/kx20251016.dat",
+      "sha256": "58fd106508f80ab2f9e4ebf0579aab11a60058c248b9572606a5789381f17e09",
+      "bytes": 121384,
+      "exchange_update_date": "20251016 15:34:02",
+      "contract_count": 12,
+      "delivery_month_codes": [
+        "2511",
+        "2512",
+        "2601",
+        "2602",
+        "2603",
+        "2604",
+        "2605",
+        "2606",
+        "2607",
+        "2608",
+        "2609",
+        "2610"
+      ],
+      "missing_fields": {
+        "SETTLEMENTPRICE": 0,
+        "VOLUME": 0,
+        "OPENINTEREST": 0
+      },
+      "zero_volume_contracts": 0
+    }
+  ],
+  "audit_calendar": [
+    "20251014",
+    "20251015",
+    "20251016"
+  ],
+  "union_contract_count": 13,
+  "intersection_contract_count": 11,
+  "observed_settlement_cells": 36,
+  "possible_union_cells": 39,
+  "pair_level_count_histogram": {
+    "0": 1,
+    "1": 11,
+    "2": 11,
+    "3": 55
+  },
+  "pair_increment_count_histogram": {
+    "0": 12,
+    "1": 11,
+    "2": 55
+  },
+  "interval_calendar_days": [
+    1,
+    1
+  ],
+  "interpretation": "tiny feasibility audit of supplied report dates; no hedge performance, statistical identification, full-history coverage, or license conclusion"
+}
