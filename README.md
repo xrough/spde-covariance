@@ -12,6 +12,10 @@ no new estimator or infinite-dimensional statistical guarantee is claimed.
 Start with the **[current findings notebook](notebooks/current_findings.ipynb)**:
 a worked identification example, saved figures, numerical results and the remaining research questions.
 
+The **[first SHFE copper study](notebooks/shfe_empirical.ipynb)** connects reconstructed
+settlement curves to past-only covariance calibration and next-session portfolio-risk evaluation.
+Raw exchange files stay local; the notebook reads [aggregate evidence](experiments/results/shfe-cu/report.md).
+
 The longer-term application is futures-curve risk and prediction. Three questions guide the studies:
 
 | Question | Toy foundation | Fixed-model continuation |
@@ -94,6 +98,9 @@ V_\Delta=\mathrm{Cov}(\xi_i)
 The default exact exponential model has four Gaussian Brownian channels and no explicit spatial mollifier.
 After transport adjustment, its covariance-fitting core is a generic problem
 with partial linear observations.
+
+The separate [empirical calibration](docs/shfe-empirical.md) fits an effective finite-model
+$C$ through interval-specific integration maps. That extra model assumption does not identify the market's physical forcing.
 
 The fitter receives $y_i=O_i\xi_i+\varepsilon_i$, known maps and fresh noise
 covariances. It fits corrected outer products with PSD/trace-constrained ridge

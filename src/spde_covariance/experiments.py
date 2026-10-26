@@ -21,13 +21,36 @@ def main(argv=None):
             "benchmark-partial",
             "study partial innovations, covariance selection and fragment completion",
         ),
+        ("empirical-shfe", "calibrate local SHFE copper curves and evaluate subsequent risk"),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)
         benchmark.add_argument("--output", type=Path)
+        if command == "empirical-shfe":
+            benchmark.add_argument("--data", required=True, type=Path)
+            benchmark.add_argument("--export", type=Path, help="export aggregate evidence only")
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "benchmark-statistical-completion":
+        if arguments.command == "empirical-shfe":
+            from .empirical_data import audit_shfe_daily_samples, load_shfe_cu_archives
+            from .empirical_study import (
+                export_empirical_evidence,
+                load_empirical_config,
+                run_empirical_study,
+            )
+
+            config = load_empirical_config(arguments.config)
+            paths = sorted(arguments.data.glob("shfe-futures-*.zip"))
+            if not paths:
+                raise ValueError("no shfe-futures-YYYY.zip archives in --data directory")
+            panel = load_shfe_cu_archives(paths)
+            output = arguments.output or arguments.data / "runs" / config.name
+            samples = sorted((arguments.data / "daily_samples").glob("kx*.dat"))
+            checks = audit_shfe_daily_samples(panel, samples) if samples else None
+            run_empirical_study(panel, config, output, data_validation=checks)
+            if arguments.export is not None:
+                export_empirical_evidence(output, arguments.export)
+        elif arguments.command == "benchmark-statistical-completion":
             from .statistical_completion_benchmark import (
                 load_statistical_completion_config,
                 run_statistical_completion,
