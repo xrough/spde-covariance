@@ -7,6 +7,12 @@ an SPDE, recover instantaneous covariance from daily settlements, or establish
 empirical hedging gains. The [offline example](../examples/futures_pipeline.py)
 uses synthetic CSVs throughout.
 
+The separate [first SHFE empirical study](shfe-empirical.md) now implements
+archive ingestion, finite-model curve reconstruction, interval-aware source
+calibration and next-session risk evaluation. Its [findings](shfe-findings.md)
+retain retrospective-vintage and maturity-coordinate limitations. The generic
+CSV adapter below continues to enforce its original input boundary.
+
 ## CSV boundary
 
 `SettlementPanel.from_csv(prices_path, contracts_path, valuation_dates=...)`

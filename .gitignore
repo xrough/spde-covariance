@@ -10,6 +10,7 @@ build/
 .private-research/
 .public-release/
 experiments/runs/
+/data/local/
 theory/*.aux
 theory/*.bbl
 theory/*.blg

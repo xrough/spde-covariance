@@ -24,7 +24,7 @@ jobs:
         with:
           version: "0.13.5"
           enable-cache: true
-      - run: uv sync --locked --extra reference
+      - run: uv sync --locked --extra reference --extra empirical
       - run: uv run --no-sync ruff check .
       - run: uv run --no-sync ruff format --check .
       - run: uv run --no-sync pytest
@@ -32,9 +32,11 @@ jobs:
       - run: uv run --no-sync python examples/canonical_pipeline.py
       - run: uv run --no-sync python examples/coherent_pipeline.py
       - run: uv run --no-sync python examples/futures_pipeline.py
+      - run: uv run --no-sync python examples/empirical_pipeline.py
       - run: uv run --no-sync python examples/statistical_completion.py
       - run: uv run --no-sync python scripts/check_notebook.py
       - run: uv run --no-sync python scripts/check_notebook.py notebooks/current_findings.ipynb
+      - run: uv run --no-sync python scripts/check_notebook.py notebooks/shfe_empirical.ipynb
       - run: uv run --no-sync spde-covariance benchmark experiments/configs/stage1-smoke.toml --output experiments/runs/ci-stage1
       - run: uv run --no-sync spde-covariance benchmark-rq2 experiments/configs/rq2-smoke.toml --output experiments/runs/ci-rq2
       - run: uv run --no-sync spde-covariance benchmark-rq3 experiments/configs/rq3-smoke.toml --output experiments/runs/ci-rq3
@@ -71,9 +73,11 @@ jobs:
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/canonical_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/coherent_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/futures_pipeline.py"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/empirical_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/statistical_completion.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py" "$GITHUB_WORKSPACE/notebooks/current_findings.ipynb"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py" "$GITHUB_WORKSPACE/notebooks/shfe_empirical.ipynb"
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-rq3 --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-infinite-transport --help

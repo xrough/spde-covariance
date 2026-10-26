@@ -1,5 +1,12 @@
 # Three questions, from a toy model to curve dynamics
 
+The [first SHFE copper study](shfe-findings.md) now supplies an empirical
+baseline: four years of settlements, a declared finite transport model and
+484 subsequent risk-evaluation origins. Smooth reconstruction misses much of
+spread and butterfly risk; joint factor/residual modeling and clock sensitivity
+are the next empirical targets. This complements the fixed infinite-model
+research below without establishing its statistical guarantees.
+
 The [statistical completion model](statistical-completion.md) now separates
 observed likelihood fitting, a declared conditional-independence graph and
 uncertainty over alternative PSD completions. Native validation cannot test
@@ -10,8 +17,8 @@ observation map, drift, dependence and price-noise assumptions.
 The [hedging pilot](hedging-findings.md) finds material population decision
 ambiguity and narrowing after one added maturity, but no consistent advantage for the
 current finite-sample robust rule. The [contract-price interface](futures-data.md)
-prepares a later empirical study; the exchange audit is feasibility evidence
-only. Next compare matched trace assumptions, separate sampling width from
+underpins the first empirical study; the original six-date exchange audit
+remains feasibility evidence only. Next compare matched trace assumptions, separate sampling width from
 permanent ambiguity, and establish dependence-aware market inference.
 
 The public project begins with a finite-dimensional introductory laboratory.
