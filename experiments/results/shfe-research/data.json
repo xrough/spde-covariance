@@ -1,0 +1,131 @@
+{
+  "sessions": 969,
+  "rows": 11628,
+  "distinct_contracts": 60,
+  "sessions_by_year": {
+    "2022": 242,
+    "2023": 242,
+    "2024": 242,
+    "2025": 243
+  },
+  "quality": {
+    "settlement": {
+      "missing": 0,
+      "nonpositive": 0
+    },
+    "volume": {
+      "missing": 0,
+      "nonpositive": 10
+    },
+    "open_interest": {
+      "missing": 0,
+      "nonpositive": 2
+    }
+  },
+  "tenor_coverage": [
+    {
+      "lower_days": -10000,
+      "upper_days": 0,
+      "rows": 15,
+      "positive_volume_rows": 15,
+      "positive_open_interest_rows": 15
+    },
+    {
+      "lower_days": 0,
+      "upper_days": 30,
+      "rows": 954,
+      "positive_volume_rows": 954,
+      "positive_open_interest_rows": 954
+    },
+    {
+      "lower_days": 30,
+      "upper_days": 90,
+      "rows": 1910,
+      "positive_volume_rows": 1910,
+      "positive_open_interest_rows": 1910
+    },
+    {
+      "lower_days": 90,
+      "upper_days": 180,
+      "rows": 2863,
+      "positive_volume_rows": 2863,
+      "positive_open_interest_rows": 2863
+    },
+    {
+      "lower_days": 180,
+      "upper_days": 270,
+      "rows": 2862,
+      "positive_volume_rows": 2862,
+      "positive_open_interest_rows": 2862
+    },
+    {
+      "lower_days": 270,
+      "upper_days": 365,
+      "rows": 3018,
+      "positive_volume_rows": 3008,
+      "positive_open_interest_rows": 3016
+    },
+    {
+      "lower_days": 365,
+      "upper_days": 450,
+      "rows": 6,
+      "positive_volume_rows": 6,
+      "positive_open_interest_rows": 6
+    },
+    {
+      "lower_days": 450,
+      "upper_days": 10000,
+      "rows": 0,
+      "positive_volume_rows": 0,
+      "positive_open_interest_rows": 0
+    }
+  ],
+  "outside_tenor_bins_count": 0,
+  "selected_origins": 484,
+  "same_contract_history": [
+    {
+      "window": 63,
+      "count": 484,
+      "joint_count_quantiles": [
+        49.0,
+        57.0,
+        62.0,
+        63.0,
+        63.0
+      ],
+      "sufficient_count": 484
+    },
+    {
+      "window": 126,
+      "count": 484,
+      "joint_count_quantiles": [
+        49.0,
+        57.0,
+        62.0,
+        67.0,
+        77.0
+      ],
+      "sufficient_count": 484
+    },
+    {
+      "window": 252,
+      "count": 484,
+      "joint_count_quantiles": [
+        49.0,
+        57.0,
+        62.0,
+        67.0,
+        77.0
+      ],
+      "sufficient_count": 484
+    }
+  ],
+  "units": {
+    "price": "CNY/tonne",
+    "pnl": "CNY",
+    "tonnes_per_contract": 5.0
+  },
+  "maturity_convention": "15th of contract month; coordinate, not expiry/delivery average",
+  "vintage_scope": "retrospective annual archives; original release vintages not reconstructed",
+  "risk_target": "next-session second moment of fixed actual-contract settlement P&L"
+}

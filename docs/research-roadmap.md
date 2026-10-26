@@ -1,10 +1,19 @@
 # Three questions, from a toy model to curve dynamics
 
+The [empirical research suite](empirical-research-findings.md) implements the
+six notebook investigations in the [root roadmap](../README.md): data and
+targets, representation, matched attribution, forecast evaluation, joint residual
+risk/clocks, and bounded hedging. The [protocol](empirical-research-protocol.md)
+keeps the original benchmark frozen. Revised policies evaluated on inspected
+2024–2025 data remain exploratory; an uninspected confirmation period is the
+next empirical evidence gate. Residual modeling repairs factor-only curvature
+risk without establishing an advantage over direct covariance.
+
 The [first SHFE copper study](shfe-findings.md) now supplies an empirical
 baseline: four years of settlements, a declared finite transport model and
 484 subsequent risk-evaluation origins. Smooth reconstruction misses much of
 spread and butterfly risk; joint factor/residual modeling and clock sensitivity
-are the next empirical targets. This complements the fixed infinite-model
+are implemented in the new suite. This complements the fixed infinite-model
 research below without establishing its statistical guarantees.
 
 The [statistical completion model](statistical-completion.md) now separates

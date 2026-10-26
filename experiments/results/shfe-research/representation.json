@@ -1,0 +1,491 @@
+{
+  "scope": "post hoc representation diagnostic, not a forecast input",
+  "fits": [
+    {
+      "dimension": 2,
+      "smoothing": 1e-06,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        13.88490088817149,
+        48.411112566376154,
+        74.18106450880815,
+        115.57345257285614,
+        1063.127484121412
+      ],
+      "condition_quantiles": [
+        6.654004030248974,
+        7.372528000111614,
+        8.171101877227319
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 2,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 2.000888343900442e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12016444.757355915,
+            "residual_second_moment": 32161.730351888495,
+            "twice_cross_moment": 111243.71890376875,
+            "modeled_share": 0.9882066434356508,
+            "residual_share": 0.0026449117222185434,
+            "cross_share": 0.009148444842131629,
+            "max_identity_error": 4.470348358154297e-08,
+            "identity_relative_error": 9.837024399538847e-16
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 94470.87249293766,
+            "residual_second_moment": 243964.00222790215,
+            "twice_cross_moment": -84152.84992745124,
+            "modeled_share": 0.37152005758054685,
+            "residual_share": 0.9594229180223421,
+            "cross_share": -0.33094297560288793,
+            "max_identity_error": 1.1641532182693481e-09,
+            "identity_relative_error": 6.54269807692788e-16
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 4969.530116404833,
+            "residual_second_moment": 1163645.6079227105,
+            "twice_cross_moment": -49090.344650686144,
+            "modeled_share": 0.004438963876238699,
+            "residual_share": 1.0394103058680295,
+            "cross_share": -0.04384926974426888,
+            "max_identity_error": 3.4924596548080444e-09,
+            "identity_relative_error": 4.839861322189589e-16
+          }
+        ]
+      }
+    },
+    {
+      "dimension": 2,
+      "smoothing": 0.0001,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        13.88822910492701,
+        48.43489797882453,
+        74.18600026502449,
+        115.64686354059035,
+        1063.1275418021353
+      ],
+      "condition_quantiles": [
+        6.654004030248974,
+        7.372528000111614,
+        8.171101877227319
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 2,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 1.9554136088117957e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12014623.59814363,
+            "residual_second_moment": 32074.572442782057,
+            "twice_cross_moment": 113152.03602515647,
+            "modeled_share": 0.9880568752081363,
+            "residual_share": 0.00263774404271382,
+            "cross_share": 0.00930538074915046,
+            "max_identity_error": 4.377216100692749e-08,
+            "identity_relative_error": 6.246869509196204e-16
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 93599.21915238997,
+            "residual_second_moment": 243578.42724076723,
+            "twice_cross_moment": -82895.62159976887,
+            "modeled_share": 0.3680921576286885,
+            "residual_share": 0.9579065898923919,
+            "cross_share": -0.3259987475210803,
+            "max_identity_error": 9.313225746154785e-10,
+            "identity_relative_error": 6.928274821149488e-17
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 4923.6804005851,
+            "residual_second_moment": 1163427.2384031094,
+            "twice_cross_moment": -48826.125415264534,
+            "modeled_share": 0.004398009253267857,
+            "residual_share": 1.0392152503222385,
+            "cross_share": -0.0436132595755062,
+            "max_identity_error": 2.7939677238464355e-09,
+            "identity_relative_error": 7.771051009681145e-17
+          }
+        ]
+      }
+    },
+    {
+      "dimension": 3,
+      "smoothing": 1e-06,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        9.68504838519093,
+        34.05964326574484,
+        48.577529217246976,
+        72.69188430343655,
+        968.4540482647277
+      ],
+      "condition_quantiles": [
+        58.43154319219497,
+        70.04439462151569,
+        85.65768107841406
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 3,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 3.387867764104158e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12046936.24197396,
+            "residual_second_moment": 26295.844945419067,
+            "twice_cross_moment": 86618.11969219091,
+            "modeled_share": 0.990714197731136,
+            "residual_share": 0.00216251388780443,
+            "cross_share": 0.00712328838106039,
+            "max_identity_error": 2.60770320892334e-08,
+            "identity_relative_error": 8.305224979659319e-16
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 97390.57631564028,
+            "residual_second_moment": 157500.90740974474,
+            "twice_cross_moment": -609.4589319964771,
+            "modeled_share": 0.3830022055030159,
+            "residual_share": 0.6193945778814641,
+            "cross_share": -0.002396783384479027,
+            "max_identity_error": 6.984919309616089e-10,
+            "identity_relative_error": 9.50427355953069e-16
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 127616.11975761618,
+            "residual_second_moment": 870902.478550525,
+            "twice_cross_moment": 121006.1950802891,
+            "modeled_share": 0.1139913296349289,
+            "residual_share": 0.7779215643046121,
+            "cross_share": 0.10808710606045939,
+            "max_identity_error": 1.862645149230957e-09,
+            "identity_relative_error": 4.679386747975711e-16
+          }
+        ]
+      }
+    },
+    {
+      "dimension": 3,
+      "smoothing": 0.0001,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        12.329139186611954,
+        37.58790536610938,
+        52.93184628909359,
+        78.25847990348902,
+        979.6828724135114
+      ],
+      "condition_quantiles": [
+        58.43154319219497,
+        70.04439462151569,
+        85.65768107841406
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 3,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 3.456079866737127e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12030646.804832062,
+            "residual_second_moment": 26546.069928823847,
+            "twice_cross_moment": 102657.33185067768,
+            "modeled_share": 0.9893745893589011,
+            "residual_share": 0.0021830918537458794,
+            "cross_share": 0.008442318787353218,
+            "max_identity_error": 1.0244548320770264e-08,
+            "identity_relative_error": 2.1660601171733975e-16
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 88258.55765060562,
+            "residual_second_moment": 175298.58545097252,
+            "twice_cross_moment": -9275.118308189767,
+            "modeled_share": 0.3470892514809819,
+            "residual_share": 0.689386462111932,
+            "cross_share": -0.036475713592913524,
+            "max_identity_error": 8.149072527885437e-10,
+            "identity_relative_error": 3.0001775719853705e-16
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 58653.546843228534,
+            "residual_second_moment": 939728.6592501434,
+            "twice_cross_moment": 121142.58729505827,
+            "modeled_share": 0.05239146751337567,
+            "residual_share": 0.8393995959713378,
+            "cross_share": 0.10820893651528689,
+            "max_identity_error": 1.862645149230957e-09,
+            "identity_relative_error": 4.939352678418806e-16
+          }
+        ]
+      }
+    },
+    {
+      "dimension": 4,
+      "smoothing": 1e-06,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        9.53043316960799,
+        31.18830652846574,
+        44.22223610953317,
+        65.84705337914602,
+        961.0400089006795
+      ],
+      "condition_quantiles": [
+        1226.377477195249,
+        1611.2643295261805,
+        2191.0202310948894
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 4,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 3.228706191293895e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12080553.749248069,
+            "residual_second_moment": 22124.125136693594,
+            "twice_cross_moment": 57172.332226802864,
+            "modeled_share": 0.9934788294250223,
+            "residual_share": 0.0018194405984264716,
+            "cross_share": 0.00470172997655161,
+            "max_identity_error": 5.587935447692871e-08,
+            "identity_relative_error": 3.7636790433758746e-16
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 109368.91144400064,
+            "residual_second_moment": 150949.2342746064,
+            "twice_cross_moment": -6036.120925218682,
+            "modeled_share": 0.4301087012849852,
+            "residual_share": 0.5936291973341692,
+            "cross_share": -0.023737898619154103,
+            "max_identity_error": 4.656612873077393e-10,
+            "identity_relative_error": 2.1853474189435032e-16
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 125814.84111252088,
+            "residual_second_moment": 838575.6141445009,
+            "twice_cross_moment": 155134.33813140795,
+            "modeled_share": 0.11238236245909404,
+            "residual_share": 0.7490460408709761,
+            "cross_share": 0.13857159666992977,
+            "max_identity_error": 3.725290298461914e-09,
+            "identity_relative_error": 2.5996593044309517e-17
+          }
+        ]
+      }
+    },
+    {
+      "dimension": 4,
+      "smoothing": 0.0001,
+      "available_sessions": 969,
+      "sessions": 969,
+      "rmse_quantiles": [
+        10.602168258166932,
+        34.57060039405545,
+        48.880962761755775,
+        72.7683168052268,
+        967.6095233823027
+      ],
+      "condition_quantiles": [
+        1226.377477195249,
+        1611.2643295261805,
+        2191.0202310948894
+      ],
+      "decomposition": {
+        "scope": {
+          "purpose": "post_hoc_reconstruction_diagnostic_no_forecast_refit",
+          "candidate_origin_count": 484,
+          "dimension": 4,
+          "origin_schedule": "frozen_test_origins_independent_of_covariance_fit_availability",
+          "portfolio_selection": "origin_eligible_contracts_held_by_same_id_to_next_session",
+          "interval_convention": "ACT/365.25",
+          "moments": "uncentered_cash_second_moments",
+          "units": "CNY_squared",
+          "multiplier": 5.0,
+          "residual_interpretation": "endpoint_reconstruction_error_change_not_fresh_noise",
+          "basis_identity_max_abs_error": 1.1102230246251565e-16,
+          "reconstruction_change_max_abs_error_cny_per_tonne": 3.171862772433087e-11
+        },
+        "exposures": [
+          {
+            "exposure": "outright_3m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 12159850.20661156,
+            "modeled_second_moment": 12045515.872359224,
+            "residual_second_moment": 26430.11279653521,
+            "twice_cross_moment": 87904.22145581404,
+            "modeled_share": 0.9905973895804925,
+            "residual_share": 0.0021735557878965165,
+            "cross_share": 0.0072290546316120495,
+            "max_identity_error": 5.448237061500549e-08,
+            "identity_relative_error": 1.0076368058895021e-15
+          },
+          {
+            "exposure": "spread_3m_6m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 254282.0247933883,
+            "modeled_second_moment": 90870.34113214556,
+            "residual_second_moment": 164099.43956528194,
+            "twice_cross_moment": -687.7559040391749,
+            "modeled_share": 0.3573604591436631,
+            "residual_share": 0.6453442381490301,
+            "cross_share": -0.002704697292693013,
+            "max_identity_error": 4.656612873077393e-10,
+            "identity_relative_error": 1.8632263158982437e-16
+          },
+          {
+            "exposure": "butterfly_3m_6m_9m",
+            "count": 484,
+            "unavailable_count": 0,
+            "unavailable_reasons": {},
+            "actual_second_moment": 1119524.7933884298,
+            "modeled_second_moment": 96304.39559640369,
+            "residual_second_moment": 888833.5425064303,
+            "twice_cross_moment": 134386.85528559628,
+            "modeled_share": 0.08602256615052022,
+            "residual_share": 0.7939382385773042,
+            "cross_share": 0.12003919527217606,
+            "max_identity_error": 5.587935447692871e-09,
+            "identity_relative_error": 3.639523026203331e-16
+          }
+        ]
+      }
+    }
+  ]
+}

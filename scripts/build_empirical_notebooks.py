@@ -149,6 +149,8 @@ fig.tight_layout(); plt.show()"""),
             markdown("""## Interpretation and next decision
 
 Read the history counts before interpreting differences between nominal windows.
+In this sample the nominal 252-session window contains only 49–77 joint changes
+(median 62), the same range as the 126-session window.
 This audit supports target definitions and reproducibility; it cannot certify
 point-in-time data vintages, exchange execution, bid/ask costs or an exact
 financial delivery map. Proceed to representation diagnostics before choosing
@@ -214,6 +216,11 @@ completion chooses a matrix; the observations do not identify the choice."""),
 print("This is an analytical identification illustration, not a market confidence interval.")"""),
             markdown("""## Interpretation and next decision
 
+The three-mode fitted curve accounts for 99.1% of outright second moment but
+only 38.3% of spread and 11.4% of butterfly second moment. Four modes reduce
+median level RMSE from 48.58 to 44.22 CNY/tonne while raising median conditioning
+from about 70 to 1,611.
+
 Separate missing-pair ambiguity, basis restriction, conditioning, sampling and
 numerical error. The market decomposition measures representation losses; it
 does not observe the true SPDE covariance. Carry material residual risk forward
@@ -272,6 +279,12 @@ print("Numerical diagnostics:")
 for row in study["numerical_diagnostics"]:
     print(row["mask"],row["window"],row["unavailable_reasons"],row["relative_covariance_error_bound_max"])"""),
             markdown("""## Interpretation and next decision
+
+At 252 intervals with all nodes, adjusted minus A=0 QLIKE is approximately
+−0.000142 (outright), +0.00530 (spread) and +0.0323 (butterfly). The last difference
+favors A=0; no favorable transport effect is established. Some masked estimates
+improve under this fixed misspecified estimator, which does not make less
+information intrinsically preferable.
 
 Distinguish practical policy comparison from mechanism attribution. Neither a
 masked curve model beating a baseline under one loss nor more coordinates alone
@@ -345,6 +358,10 @@ No dates or individual market outcomes are exported; small cells are suppressed.
 table([r for r in scores["availability"] if r["method"] in ("direct","spde_local")],list(scores["availability"][0].keys()))"""),
             markdown("""## Interpretation and next decision
 
+The spread difference is +0.953 under primary QLIKE (bootstrap range
+[0.188, 1.839]) but −0.391×10¹² CNY⁴ under quadratic loss (range
+[−0.665, −0.177]×10¹²). Outright and butterfly quadratic ranges include zero.
+
 Read score ranking, calibration and uncertainty together. Favorable quadratic
 loss on one exposure does not remove a QLIKE or underprediction failure. The
 matched-window experiment addresses attribution; the joint model addresses
@@ -403,9 +420,17 @@ below sum to a joint-model forecast; factor/direct controls can use a different
 kernel. Numerical PSD/rank diagnostics establish matrix feasibility, not a
 statistical or market-model guarantee. Availability is reported separately."""),
             code("""table(joint["risk_components"],["method","exposure","count","components_cny2","cross_over_total"])
+table([r for r in joint["clock_gap_summary"] if r["method"] in ("joint_calendar","joint_session")],["method","gap_group","exposure","count","qlike","realized_over_predicted_second_moment"])
 print(json.dumps(joint["numerical_diagnostics"],indent=2))
 print(json.dumps(joint["availability"],indent=2))"""),
             markdown("""## Interpretation and next decision
+
+Validation selects 63 intervals, calendar diffusion and zero shrinkage for the
+joint model. Joint spread/butterfly QLIKE is 13.710/15.069, versus factor-only
+15.172/23.760 and direct 13.637/15.066. Residual risk repairs the weak factor
+model but does not establish superiority over direct covariance. Session scaling
+improves curvature scores while worsening outright scores in this development
+sample; the selected calendar policy remains unchanged.
 
 Compare the selected practical policies and the fixed-clock companions separately.
 Residual risk and a different clock can improve a weak factor forecast without
@@ -461,6 +486,11 @@ hits help detect unstable optimization even when average risk is small."""),
 table([r for r in joint["hedge_summary"] if r["method"]!="unhedged"],["method","mean_hedge_positions","bound_hit_fraction","mean_position_change_proxy"])
 print(json.dumps(joint["availability"],indent=2))"""),
             markdown("""## Interpretation and next decision
+
+Realized RMS is CNY 3,487 unhedged, 501 with direct covariance, 533 with joint
+factor/residual, 624 with the original source model and 685 with factor-only.
+Joint minus direct squared P&L averages +32,657 CNY², with descriptive bootstrap
+range [17,545, 47,609]; direct has lower realized risk in this sample.
 
 This closes the pipeline from data and curve reconstruction to model risk and
 a constrained decision. It does not establish an executable backtest: contract
