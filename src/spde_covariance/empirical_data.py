@@ -35,6 +35,7 @@ _ALIASES = {
 _MISSING = {"", "-", "--", "—", "NA", "N/A", "NAN", "NULL", "NONE"}
 _MAX_MEMBER_BYTES = 128 * 1024 * 1024
 _MAX_ARCHIVE_UNCOMPRESSED_BYTES = 768 * 1024 * 1024
+_COUNTING_FACTORS = {"single-sided": 1.0, "double-sided": 0.5}
 
 
 def _header_text(value: Any) -> str:
@@ -214,6 +215,161 @@ class ShfeCuPanel:
     def provenance(self) -> dict[str, Any]:
         return json.loads(self._provenance_json)
 
+    def single_sided_counts(self) -> ShfeSingleSidedCounts:
+        """Return an explicit normalized view; leave archived integer counts unchanged.
+
+        Normalization requires an unambiguous declaration in every table covering
+        a row date. No convention is guessed from the filename or calendar year.
+        Half-contract values are valid here when an archived odd double-sided
+        count is halved; the raw panel still requires integer archived counts.
+        """
+        factors = {name: np.full(self.dates.size, np.nan) for name in ("volume", "open_interest")}
+        unknown = {name: np.zeros(self.dates.size, dtype=bool) for name in factors}
+        declarations = []
+        tables = self.provenance.get("tables", [])
+        if not isinstance(tables, (list, tuple)):
+            raise ValueError("counting tables must be a sequence of mappings")
+        for table in tables:
+            if not isinstance(table, Mapping):
+                raise ValueError("counting tables must contain mappings")
+            counting = table.get("counting", {})
+            if not isinstance(counting, Mapping):
+                raise ValueError("counting declarations must be mappings")
+            if counting.get("first_copper_session") is None:
+                continue
+            if counting.get("last_copper_session") is None:
+                raise ValueError("counting declaration requires both session bounds")
+            first = _day(counting["first_copper_session"], "counting first session")
+            last = _day(counting["last_copper_session"], "counting last session")
+            if first > last:
+                raise ValueError("counting declaration has an invalid date scope")
+            selected = (self.dates >= first) & (self.dates <= last)
+            declarations.append(
+                {
+                    key: counting[key]
+                    for key in (
+                        "first_copper_session",
+                        "last_copper_session",
+                        "volume_convention",
+                        "open_interest_convention",
+                        "declaration_source",
+                    )
+                    if key in counting
+                }
+            )
+            for name, values in factors.items():
+                convention = counting.get(name + "_convention", "unknown")
+                if not isinstance(convention, str):
+                    raise ValueError("counting conventions must be strings")
+                factor = _COUNTING_FACTORS.get(convention)
+                if factor is None:
+                    unknown[name] |= selected
+                    continue
+                conflict = selected & np.isfinite(values) & (values != factor)
+                if np.any(conflict):
+                    raise ValueError(f"conflicting {name} counting declarations on the same dates")
+                values[selected] = factor
+        for name, values in factors.items():
+            if np.any(~np.isfinite(values) | unknown[name]):
+                raise ValueError(
+                    f"single-sided {name} normalization unavailable: unknown declaration"
+                )
+        return ShfeSingleSidedCounts(
+            self.volume * factors["volume"],
+            self.open_interest * factors["open_interest"],
+            {
+                "raw_scope": "archived integer contract counts; retained without modification",
+                "normalized_scope": "single-sided equivalent contract counts; floating point",
+                "source": "explicit per-workbook counting notes; no year fallback",
+                "price_and_multiplier_transformation": "none",
+                "declarations": declarations,
+            },
+        )
+
+
+@dataclass(frozen=True, slots=True, init=False)
+class ShfeSingleSidedCounts:
+    """Read-only single-sided equivalent counts, aligned with a panel's rows."""
+
+    volume: NDArray[np.float64]
+    open_interest: NDArray[np.float64]
+    _provenance_json: str
+
+    def __init__(self, volume, open_interest, provenance):
+        object.__setattr__(self, "volume", _readonly(volume, dtype=float))
+        object.__setattr__(self, "open_interest", _readonly(open_interest, dtype=float))
+        object.__setattr__(
+            self, "_provenance_json", json.dumps(provenance, allow_nan=False, sort_keys=True)
+        )
+
+    @property
+    def provenance(self) -> dict[str, Any]:
+        return json.loads(self._provenance_json)
+
+
+def _metadata_note(row: Sequence[Any], columns: Mapping[str, int]) -> str | None:
+    """Recognize documented unit/counting footers without terminating parsing.
+
+    Restrict recognition to text-only rows in the contract/date cells. A dated
+    row or any copper contract label must pass through ordinary data validation.
+    """
+    contract = row[columns["contract"]] if len(row) > columns["contract"] else ""
+    raw_day = row[columns["date"]] if len(row) > columns["date"] else ""
+    # Almost all archive rows are dated quotes (including millions of option
+    # rows). Leave even a syntactically dated but invalid date to the ordinary
+    # validator, instead of scanning every numeric cell for a possible footer.
+    if re.match(r"cu\d", str(contract).strip().lower()) or re.fullmatch(
+        r"\d{8}|\d{4}-\d{2}-\d{2}", str(raw_day).strip()
+    ):
+        return None
+    nonempty = [(i, str(value).strip()) for i, value in enumerate(row) if str(value).strip()]
+    if any(i not in {columns["contract"], columns["date"]} for i, _ in nonempty):
+        return None
+    if not nonempty or any(re.match(r"cu\d", value.lower()) for _, value in nonempty):
+        return None
+    if str(raw_day).strip():
+        try:
+            _day(raw_day, "trade date")
+        except ValueError:
+            pass
+        else:
+            return None
+    text = " ".join(value for _, value in nonempty)
+    body = re.sub(r"^注\s*[:：]\s*", "", text)
+    body = re.sub(r"^\d+\s*[、.．]\s*", "", body)
+    if not re.match(r"(?:合约单位\s*[:：]|报价单位\s*[:：]|成交量[、，,]|涨跌1\s*=)", body):
+        return None
+    return body
+
+
+def _counting_note(text: str, *, source: str, row_number: int) -> dict[str, str]:
+    """Read only volume/OI declarations, excluding the separate turnover units."""
+    result = {}
+    for clause in re.split(r"[；;。]", text):
+        fields = [
+            name
+            for name, chinese in (("volume", "成交量"), ("open_interest", "持仓量"))
+            if chinese in clause
+        ]
+        if not fields:
+            continue
+        conventions = {
+            name
+            for word, name in (("单边", "single-sided"), ("双边", "double-sided"))
+            if word in clause
+        }
+        if len(conventions) > 1:
+            raise ValueError(f"{source}, row {row_number}: conflicting counting declaration")
+        if conventions:
+            convention = conventions.pop()
+            for field in fields:
+                if field in result and result[field] != convention:
+                    raise ValueError(
+                        f"{source}, row {row_number}: conflicting counting declaration"
+                    )
+                result[field] = convention
+    return result
+
 
 def _row_records(
     rows: Iterable[Sequence[Any]],
@@ -224,6 +380,8 @@ def _row_records(
     columns = None
     records, sessions = [], set()
     counts: Counter[str] = Counter()
+    conventions: dict[str, str] = {}
+    declaration_count = 0
     vertical: dict[tuple[int, int], int] = {}
     last_end: dict[int, int] = {}
     for (start_row, start_col), (end_row, end_col) in sorted(merged_cell_ranges):
@@ -251,6 +409,19 @@ def _row_records(
             continue
         if columns is None:
             counts["preamble_rows"] += 1
+            continue
+        note = _metadata_note(row, columns)
+        if note is not None:
+            counts["footer_rows"] += 1
+            counts["recognized_metadata_rows"] += 1
+            declaration = _counting_note(note, source=source, row_number=number)
+            if declaration:
+                declaration_count += 1
+            for field, convention in declaration.items():
+                if field in conventions and conventions[field] != convention:
+                    raise ValueError(f"{source}, row {number}: conflicting {field} counting notes")
+                conventions[field] = convention
+            active_merge = None
             continue
         if len(row) <= max(columns.values()):
             raise ValueError(f"{source}, row {number}: truncated SHFE data row")
@@ -306,7 +477,22 @@ def _row_records(
         counts["copper_rows"] += 1
     if columns is None:
         raise ValueError(f"{source}: no recognized SHFE header")
-    return records, sessions, {"source": source, "counts": dict(sorted(counts.items()))}
+    copper_dates = [record[0] for record in records]
+    counting = {
+        "volume_convention": conventions.get("volume", "unknown"),
+        "open_interest_convention": conventions.get("open_interest", "unknown"),
+        "declaration_source": "explicit workbook notes" if conventions else "unavailable",
+        "declaration_count": declaration_count,
+        "first_copper_session": str(min(copper_dates)) if copper_dates else None,
+        "last_copper_session": str(max(copper_dates)) if copper_dates else None,
+        "raw_counts": "archived integer contract counts; no normalization applied",
+        "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+    }
+    return (
+        records,
+        sessions,
+        {"source": source, "counts": dict(sorted(counts.items())), "counting": counting},
+    )
 
 
 def _panel(
@@ -342,6 +528,7 @@ def _units() -> dict[str, Any]:
         "price_unit": "CNY/tonne",
         "volume_unit": "contracts",
         "open_interest_unit": "contracts",
+        "counting_scope": "raw archived counts; see each table's counting declaration",
         "tonnes_per_contract": 5.0,
         "specification_source": SHFE_CU_MANUAL,
         "tenor_coordinate": ShfeCuPanel.tenor_convention,
@@ -652,6 +839,7 @@ def public_data_provenance(provenance: Mapping[str, Any]) -> dict[str, Any]:
         "non_copper_rows",
         "copper_rows",
         "expanded_merged_contract_labels",
+        "recognized_metadata_rows",
         *(
             f"{kind}_{field}"
             for kind in ("missing", "zero", "negative")
@@ -674,6 +862,24 @@ def public_data_provenance(provenance: Mapping[str, Any]) -> dict[str, Any]:
         "counts": lambda value: _public_mapping(
             value, {key: _public_count for key in sorted(count_names)}
         ),
+        "counting": lambda value: _public_mapping(
+            value,
+            {
+                key: _public_text
+                for key in (
+                    "volume_convention",
+                    "open_interest_convention",
+                    "declaration_source",
+                    "raw_counts",
+                    "single_sided_view",
+                )
+            }
+            | {
+                "declaration_count": _public_count,
+                "first_copper_session": _public_nullable(_public_text),
+                "last_copper_session": _public_nullable(_public_text),
+            },
+        ),
     }
     units_schema = {
         key: _public_text
@@ -684,6 +890,7 @@ def public_data_provenance(provenance: Mapping[str, Any]) -> dict[str, Any]:
             "open_interest_unit",
             "specification_source",
             "tenor_coordinate",
+            "counting_scope",
         )
     } | {"tonnes_per_contract": _public_number}
     schema = {

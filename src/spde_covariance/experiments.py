@@ -24,22 +24,52 @@ def main(argv=None):
         ("empirical-shfe", "calibrate local SHFE copper curves and evaluate subsequent risk"),
         ("empirical-research", "run the exploratory futures risk research notebook suite"),
         ("benchmark-short-history", "compare copper risk transfer under masked target history"),
+        ("benchmark-mechanisms", "isolate copper reconstruction, source and residual policies"),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)
         benchmark.add_argument("--output", type=Path)
-        if command in ("empirical-shfe", "empirical-research", "benchmark-short-history"):
+        if command in (
+            "empirical-shfe",
+            "empirical-research",
+            "benchmark-short-history",
+            "benchmark-mechanisms",
+        ):
             benchmark.add_argument("--data", required=True, type=Path)
             benchmark.add_argument("--export", type=Path, help="export aggregate evidence only")
         if command == "empirical-research":
             benchmark.add_argument("--baseline-run", required=True, type=Path)
-        if command == "benchmark-short-history":
+        if command == "benchmark-mechanisms":
+            benchmark.add_argument(
+                "--older-data",
+                required=True,
+                type=Path,
+                help="directory containing the 2016–2021 archives only",
+            )
+        if command in ("benchmark-short-history", "benchmark-mechanisms"):
             benchmark.add_argument(
                 "--workers", type=int, default=1, help="independent masked-view processes (1–8)"
             )
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "benchmark-short-history":
+        if arguments.command == "benchmark-mechanisms":
+            from .empirical_import_audit import audit_copper_import, load_development_copper
+            from .empirical_mechanisms import (
+                export_mechanism_evidence,
+                load_mechanism_config,
+                run_mechanism_benchmark,
+            )
+
+            config = load_mechanism_config(arguments.config)
+            panel = load_development_copper(arguments.data, arguments.older_data)
+            audit = audit_copper_import(panel)
+            output = arguments.output or arguments.data / "runs" / config.base.name
+            run_mechanism_benchmark(
+                panel, config, output, workers=arguments.workers, importer_audit=audit
+            )
+            if arguments.export is not None:
+                export_mechanism_evidence(output, arguments.export)
+        elif arguments.command == "benchmark-short-history":
             from .empirical_data import load_shfe_cu_archives
             from .empirical_short_history import (
                 export_short_history_evidence,

@@ -252,6 +252,153 @@ def test_archive_bounds_preserve_other_product_calendar_and_skip_ine(tmp_path):
     assert len(panel.provenance["tables"]) == 1
 
 
+def _counting_footer(convention="双边"):
+    return [
+        ["注：", "1、 合约单位：铜为5吨/手", "", "", ""],
+        ["", "2、 报价单位：铜为元/吨", "", "", ""],
+        [
+            "",
+            f"3、 成交量、持仓量、持仓变化单位为手，{convention}计算；成交金额单位为万元，双边计算",
+            "",
+            "",
+            "",
+        ],
+        ["", "4、 涨跌1=收盘价-前结算； 涨跌2=结算价-前结算", "", "", ""],
+    ]
+
+
+def test_old_metadata_in_date_column_is_recognized_without_truncating_later_data():
+    rows = [
+        HEADER,
+        ENGLISH,
+        ["cu1702", "20161229", 100, 11, 21],
+        *_counting_footer(),
+        HEADER,
+        ["cu1702", "20161230", 101, 12, 22],
+    ]
+    panel = data.parse_shfe_rows(rows)
+    assert panel.dates.astype(str).tolist() == ["2016-12-29", "2016-12-30"]
+    assert panel.volume.tolist() == [11, 12]
+    counting = panel.provenance["tables"][0]["counting"]
+    assert counting["volume_convention"] == counting["open_interest_convention"] == "double-sided"
+    assert counting["declaration_count"] == 1
+    assert panel.provenance["tables"][0]["counts"]["recognized_metadata_rows"] == 4
+    normalized = panel.single_sided_counts()
+    assert normalized.volume.tolist() == [5.5, 6]
+    assert normalized.open_interest.tolist() == [10.5, 11]
+    assert normalized.provenance["price_and_multiplier_transformation"] == "none"
+    assert panel.settlement.tolist() == [100, 101] and panel.multiplier == 5
+    with pytest.raises(ValueError):
+        normalized.volume.setflags(write=True)
+    snapshot = normalized.provenance
+    snapshot["declarations"].clear()
+    assert normalized.provenance["declarations"]
+
+
+def test_short_recognized_metadata_rows_and_single_sided_notes_preserve_raw_counts():
+    rows = [
+        HEADER,
+        ["cu2102", "20210104", 100, 11, 21],
+        ["1、 合约单位：铜为5吨/手"],
+        ["3、 成交量、持仓量单位为手，单边计算；成交金额双边计算"],
+    ]
+    panel = data.parse_shfe_rows(rows)
+    normalized = panel.single_sided_counts()
+    np.testing.assert_array_equal(normalized.volume, panel.volume)
+    np.testing.assert_array_equal(normalized.open_interest, panel.open_interest)
+
+
+@pytest.mark.parametrize(
+    "bad_row,match",
+    [
+        (["cu1702", "3、 成交量、持仓量，双边计算", "", "", ""], "trade date"),
+        (["cu1702", "", "", "", ""], "no trade date"),
+        (["cu1702", "20161230", "bad", 10, 20], "settlement"),
+        (["注：", "1、 合约单位：铜为5吨/手", 123, "", ""], "trade date"),
+        (["", "unrecognized footer", "", "", ""], "trade date"),
+    ],
+)
+def test_metadata_recognition_does_not_hide_malformed_quote_rows(bad_row, match):
+    with pytest.raises(ValueError, match=match):
+        data.parse_shfe_rows(
+            [HEADER, ["cu1702", "20161229", 100, 10, 20], *_counting_footer(), bad_row]
+        )
+
+
+def test_counting_conflicts_fail_and_unknown_conventions_are_not_guessed_from_year():
+    with pytest.raises(ValueError, match="conflicting"):
+        data.parse_shfe_rows(
+            [
+                HEADER,
+                ["cu1702", "20161229", 100, 10, 20],
+                *_counting_footer("双边"),
+                *_counting_footer("单边"),
+            ]
+        )
+    with pytest.raises(ValueError, match="conflicting"):
+        data.parse_shfe_rows(
+            [HEADER, ["cu1702", "20161229", 100, 10, 20], ["3、 成交量、持仓量，单边及双边计算"]]
+        )
+    with pytest.raises(ValueError, match="conflicting"):
+        data.parse_shfe_rows(
+            [
+                HEADER,
+                ["cu1702", "20161229", 100, 10, 20],
+                ["3、 成交量、持仓量，单边计算；成交量，双边计算"],
+            ]
+        )
+    unknown = data.parse_shfe_rows(_rows(), source="shfe-futures-2024.zip")
+    assert unknown.provenance["tables"][0]["counting"]["volume_convention"] == "unknown"
+    with pytest.raises(ValueError, match="unknown declaration"):
+        unknown.single_sided_counts()
+
+
+def test_multi_archive_counts_normalize_per_declared_date_scope(tmp_path):
+    old = _archive(
+        tmp_path,
+        [HEADER, ["cu2002", "20191231", 100, 11, 21], *_counting_footer("双边")],
+        name="shfe-futures-2019.zip",
+    )
+    new = _archive(
+        tmp_path,
+        [HEADER, ["cu2002", "20200102", 101, 11, 21], *_counting_footer("单边")],
+        name="shfe-futures-2020.zip",
+    )
+    panel = data.load_shfe_cu_archives([old, new])
+    np.testing.assert_array_equal(panel.volume, [11, 11])
+    np.testing.assert_array_equal(panel.single_sided_counts().volume, [5.5, 11])
+    bounded = data.load_shfe_cu_archives([old, new], start_date="2020-01-01")
+    np.testing.assert_array_equal(bounded.single_sided_counts().volume, [11])
+
+
+def test_counting_declarations_conflicting_across_same_date_scope_fail(tmp_path):
+    first = _archive(
+        tmp_path,
+        [HEADER, ["cu2002", "20200102", 100, 10, 20], *_counting_footer("双边")],
+        name="first.zip",
+    )
+    second = _archive(
+        tmp_path,
+        [HEADER, ["cu2003", "20200102", 100, 10, 20], *_counting_footer("单边")],
+        name="second.zip",
+    )
+    panel = data.load_shfe_cu_archives([first, second])
+    with pytest.raises(ValueError, match="conflicting volume"):
+        panel.single_sided_counts()
+
+
+def test_counting_public_metadata_is_aggregate_and_fail_closed():
+    panel = data.parse_shfe_rows([HEADER, ["cu1702", "20161229", 100, 10, 20], *_counting_footer()])
+    provenance = panel.provenance
+    provenance["tables"][0]["counting"]["raw_prices"] = [100, 101]
+    public = data.public_data_provenance(provenance)
+    assert "raw_prices" not in json.dumps(public)
+    assert public["tables"][0]["counting"]["volume_convention"] == "double-sided"
+    provenance["tables"][0]["counting"]["volume_convention"] = [100, 101]
+    with pytest.raises(ValueError, match="text fields"):
+        data.public_data_provenance(provenance)
+
+
 def test_duplicate_archives_rows_and_manifest_hash_mismatch_fail(tmp_path):
     first = _archive(tmp_path)
     with pytest.raises(ValueError, match="paths must be unique"):

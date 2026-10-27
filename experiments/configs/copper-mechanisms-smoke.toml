@@ -1,0 +1,16 @@
+# Synthetic-panel workflow; use examples/mechanism_pipeline.py (no exchange files).
+dimensions = [2, 3, 4]
+interval_policies = ["all", "one_day"]
+oracle_replications = 2
+
+[base]
+name = "copper-mechanisms-synthetic-smoke"
+training_end = "2022-01-31"
+validation_end = "2022-02-28"
+test_end = "2022-03-31"
+window = 20
+min_training_intervals = 16
+origin_stride = 10
+history_budgets = [0, 5, 20, "all"]
+sensitivity_half_lives = []
+bootstrap_replications = 50
