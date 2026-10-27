@@ -1,0 +1,14 @@
+name = "shfe-cu-short-history-smoke"
+training_end = "2022-12-31"
+validation_end = "2023-12-31"
+test_end = "2025-12-31"
+window = 252
+origin_stride = 120
+history_budgets = [0, 5, 20, "all"]
+half_life = 63.0
+sensitivity_half_lives = [21.0, 126.0]
+min_training_intervals = 126
+seed = 20261027
+bootstrap_replications = 50
+bootstrap_block = 4
+bootstrap_sensitivity_blocks = [1, 2, 8]

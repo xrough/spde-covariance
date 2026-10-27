@@ -1,13 +1,21 @@
 # Three questions, from a toy model to curve dynamics
 
 The [empirical research suite](empirical-research-findings.md) implements the
-six notebook investigations in the [root roadmap](../README.md): data and
+first six notebook investigations in the [root roadmap](../README.md): data and
 targets, representation, matched attribution, forecast evaluation, joint residual
 risk/clocks, and bounded hedging. The [protocol](empirical-research-protocol.md)
 keeps the original benchmark frozen. Revised policies evaluated on inspected
 2024–2025 data remain exploratory; an uninspected confirmation period is the
 next empirical evidence gate. Residual modeling repairs factor-only curvature
 risk without establishing an advantage over direct covariance.
+
+The [short-history risk-transfer study](short_history.md), presented in
+[notebook 07](../notebooks/07_short_history_risk_transfer.ipynb), compares learned
+maturity-dependent return factors and transport source estimation with the same
+residual adapter. Masking older target rows before all transformations tests
+whether other contracts can supply risk information when own history is short.
+This is an inspected-sample information restriction, not a true new-listing or
+execution study; settings and sensitivities are fixed without selecting a winner.
 
 The [first SHFE copper study](shfe-findings.md) now supplies an empirical
 baseline: four years of settlements, a declared finite transport model and

@@ -23,7 +23,7 @@ innovations → covariance/risk forecasts → diagnostics → constrained hedges
 **Start here:** [current project findings](notebooks/00_project_findings.ipynb)
 connects the numerical controls and empirical results in one executed notebook.
 The [short findings report](docs/project-findings.md) gives the same research
-story with evidence links. The six focused notebooks below retain detailed
+story with evidence links. The seven focused notebooks below retain detailed
 audits and sensitivities; they execute from public aggregates, without exchange files.
 
 | Notebook | Investigation |
@@ -34,10 +34,13 @@ audits and sensitivities; they execute from public aggregates, without exchange 
 | [04 · Forecast scores and model risk](notebooks/04_forecast_scores_and_model_risk.ipynb) | QLIKE/quadratic loss, block uncertainty, calibration and influence |
 | [05 · Joint residual risk and clocks](notebooks/05_joint_residual_risk_and_clocks.ipynb) | PSD factor/residual second moments, cross-covariances and diffusion time |
 | [06 · Hedging decisions](notebooks/06_hedging_decisions.ipynb) | Past-only minimum-risk hedges, realized risk and position instability |
+| [07 · Short-history risk transfer](notebooks/07_short_history_risk_transfer.ipynb) | Masked contract histories; learned maturity factors versus transport with shared residual risk |
 
 The [research protocol](docs/empirical-research-protocol.md) states assumptions,
 chronology and evaluation rules. The [suite findings](docs/empirical-research-findings.md)
 and [generated report](experiments/results/shfe-research/report.md) connect conclusions to evidence.
+The [short-history protocol](docs/short_history.md) tests risk transfer to currently
+quoted contracts with restricted own histories; it preserves the earlier evidence.
 
 ## Current evidence
 
@@ -49,6 +52,7 @@ which risks can be recovered; a converged PSD fit alone is insufficient**.
 | Synthetic identification | Different full covariances can have identical observed fragment laws; more native samples do not identify missing spread risk. | Completion requires an explicit structural assumption. |
 | SHFE copper representation | Three smooth factors account for 99.1% of outright second moment, but 38.3% of spread and 11.4% of butterfly second moment. | Sample decomposition retains residual and signed cross terms. |
 | Subsequent hedge outcomes | RMS P&L: direct CNY 501, joint factor/residual 533, source-C 624, factor-only 685. | Same 484 origins; bounded settlement-risk exercise, excluding costs. |
+| Masked short-history transfer | At zero own history, learned-factor spread forecasts are 19.26× realized second moment, versus 1.22× transport and 1.08× maturity pooling. | A distinct 97-origin exploratory study; learned factors do not improve the tested policy and simple pooling remains competitive. |
 
 ![Curve representation and selected hedge outcomes](assets/current-findings.png)
 
@@ -59,6 +63,9 @@ establish no forecasting advantage. In the [frozen first benchmark](notebooks/sh
 spread rankings reverse between primary QLIKE and secondary quadratic loss.
 The [overview notebook](notebooks/00_project_findings.ipynb) reports paired uncertainty;
 RMS bars above are point summaries. Numerical controls and market evidence remain distinct.
+The [short-history results](experiments/results/short-history/report.md) diagnose
+an excessive learned-factor diagonal correction; removing it instead underpredicts
+spread risk. This is a model-risk finding, not a universal SPDE advantage.
 
 **Research boundary:** 2024–2025 has informed model development. New analyses on
 these years are exploratory even when issuance is past-only. A revised policy

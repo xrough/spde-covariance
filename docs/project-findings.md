@@ -99,6 +99,57 @@ The same future P&Ls receive different error weightings. The primary criterion
 has not changed. See notebooks [04: forecast evaluation](../notebooks/04_forecast_scores_and_model_risk.ipynb)
 and [06: hedging](../notebooks/06_hedging_decisions.ipynb).
 
+## Short-history extension: what transfers across contracts?
+
+The [masked-history study](short_history.md) tests 97 evaluation origins with
+three target maturities per origin and budgets of 0, 5, 20 and all own changes.
+It compares learned maturity-dependent return factors with transport source
+estimation, both using a shared residual adapter. This is a separate experiment
+from the 484-origin hedge table above, not an actual new-listing study.
+
+**The proposed DFM does not improve the tested spread-risk policy.** DFM minus
+transport spread QLIKE is positive at every primary budget:
+
+| Permitted own changes | QLIKE difference | Descriptive 95% block range |
+| --- | ---: | ---: |
+| 0 | +0.712 | [0.525, 0.891] |
+| 5 | +0.612 | [0.426, 0.784] |
+| 20 | +0.510 | [0.314, 0.678] |
+| All available | +0.118 | [0.057, 0.182] |
+
+Positive differences favor transport. The direction persists across fixed
+half-life and block-length sensitivities; these are dependent checks on inspected
+data, not independent confirmation or a causal effect of transport alone.
+
+At zero own history, DFM forecast/realized spread second moment is **19.26×**,
+reaching **57.10×** for the near-90-day target. Its diagonal predictive-error
+correction supplies **CNY² 9.074 million of a 9.254 million** aggregate forecast.
+This is failure of the current error-transfer policy, not identification of
+large latent market noise. Without the correction, the ratio falls to 0.374×
+and spread QLIKE worsens from 14.816 to 15.860; factor-only QLIKE is 26.407.
+Simply removing the diagonal term does not repair the representation.
+
+**Simple maturity pooling remains a strong baseline.** At zero own history its
+calibration ratio is 1.081×, versus transport's 1.221×. Transport-minus-pool
+spread QLIKE is −0.068 [−0.204, 0.037], without a resolved advantage; at five
+changes it is +0.130 [0.006, 0.280], favoring pooling. Hedge RMS point summaries
+are:
+
+| Own changes | Maturity pool, CNY | Transport + residual, CNY | Learned factors + residual, CNY |
+| --- | ---: | ---: | ---: |
+| 0 | 621.5 | 647.2 | 669.9 |
+| 5 | 603.6 | 649.1 | 675.0 |
+| 20 | 618.4 | 649.3 | 674.8 |
+| All available | 638.9 | 648.5 | 655.7 |
+
+The numerical algorithms converge, but successful optimization does not establish
+appropriate statistical transfer. Next diagnose loading stability,
+leave-one-donor-out leverage and maturity calibration before revising the rule.
+No retuning or new model selection is performed in this study. See
+[notebook 07](../notebooks/07_short_history_risk_transfer.ipynb) and the
+[generated report](../experiments/results/short-history/report.md) for all model
+ablations, signed component contributions, numerical certificates and provenance.
+
 ## What the infinite-rank benchmark establishes
 
 One fixed trace-class infinite-rank transport model underlies the resolution
@@ -117,12 +168,19 @@ theorem or identification of physical market forcing. See the
 
 ## Reading path, evidence and limits
 
-The [six-notebook roadmap](../README.md#research-roadmap) develops the current
+The [notebook roadmap](../README.md#research-roadmap) develops the current
 empirical suite. Its [findings](empirical-research-findings.md),
 [protocol](empirical-research-protocol.md) and [generated report](../experiments/results/shfe-research/report.md)
 retain chronology, aggregate evidence and provenance. The older
 [first-study notebook](../notebooks/shfe_empirical.ipynb) is a frozen benchmark,
 not the latest executive summary; its unfavorable results remain intact.
+
+The subsequent [short-history experiment](short_history.md) and
+[notebook 07](../notebooks/07_short_history_risk_transfer.ipynb) ask whether other
+contracts can supply risk information when a currently quoted target has little
+permitted own history. Learned maturity-dependent factors and transport models
+share a residual adapter. This is a distinct masked-information experiment;
+the original findings and numerical evidence above remain unchanged.
 
 The empirical data contain 969 SHFE copper sessions and 11,628 settlements from
 2022–2025, with 484 evaluation origins. Raw data and individual P&Ls stay local;

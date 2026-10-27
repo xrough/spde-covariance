@@ -23,18 +23,40 @@ def main(argv=None):
         ),
         ("empirical-shfe", "calibrate local SHFE copper curves and evaluate subsequent risk"),
         ("empirical-research", "run the exploratory futures risk research notebook suite"),
+        ("benchmark-short-history", "compare copper risk transfer under masked target history"),
     ):
         benchmark = commands.add_parser(command, help=help_text)
         benchmark.add_argument("config", type=Path)
         benchmark.add_argument("--output", type=Path)
-        if command in ("empirical-shfe", "empirical-research"):
+        if command in ("empirical-shfe", "empirical-research", "benchmark-short-history"):
             benchmark.add_argument("--data", required=True, type=Path)
             benchmark.add_argument("--export", type=Path, help="export aggregate evidence only")
         if command == "empirical-research":
             benchmark.add_argument("--baseline-run", required=True, type=Path)
+        if command == "benchmark-short-history":
+            benchmark.add_argument(
+                "--workers", type=int, default=1, help="independent masked-view processes (1–8)"
+            )
     arguments = parser.parse_args(argv)
     try:
-        if arguments.command == "empirical-research":
+        if arguments.command == "benchmark-short-history":
+            from .empirical_data import load_shfe_cu_archives
+            from .empirical_short_history import (
+                export_short_history_evidence,
+                load_short_history_config,
+                run_short_history_benchmark,
+            )
+
+            config = load_short_history_config(arguments.config)
+            paths = sorted(arguments.data.glob("shfe-futures-*.zip"))
+            if not paths:
+                raise ValueError("no shfe-futures-YYYY.zip archives in --data directory")
+            panel = load_shfe_cu_archives(paths)
+            output = arguments.output or arguments.data / "runs" / config.name
+            run_short_history_benchmark(panel, config, output, workers=arguments.workers)
+            if arguments.export is not None:
+                export_short_history_evidence(output, arguments.export)
+        elif arguments.command == "empirical-research":
             from .empirical_data import load_shfe_cu_archives
             from .empirical_research import (
                 export_research_evidence,
