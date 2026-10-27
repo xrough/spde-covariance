@@ -1,0 +1,9 @@
+{
+  "scope": "presentation_only_from_committed_aggregate_evidence",
+  "sha256": {
+    "builder": "93eddd74d38821f9b29b8c80d89f9dd66070bd33d756f044dbcdad8e38c2a714",
+    "notebook": "32fd57edcdbce583c1ae2425d4797d7c748bef038910e2a37291db4576eb7691",
+    "figure": "2fbe8d650e831aaa3c2f111a9105c011758083d0457836a5a38832a09976579d",
+    "numerical_checksums": "2dce32da8577c2ed21256673a3c487fd852e7c77d03d903ffc87590a44dcf200"
+  }
+}

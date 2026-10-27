@@ -46,10 +46,43 @@ print("Original baseline source:", evidence["protocol"]["baseline_source_revisio
 assert evidence["protocol"]["baseline_summary_sha256"]
 plt.rcParams.update({"figure.dpi": 110, "axes.spines.top": False, "axes.spines.right": False})
 
+LABELS = {
+    "outright_3m": "Outright", "spread_3m_6m": "Spread",
+    "butterfly_3m_6m_9m": "Butterfly", "factor": "Factor only",
+    "joint": "Factor + residual", "source": "Source C (original)",
+    "direct": "Direct", "unhedged": "Unhedged",
+    "factor_adjusted": "Transport adjusted", "factor_unadjusted": "Unadjusted",
+    "spde_local": "Local source C", "shrinkage": "Direct + shrinkage",
+    "joint_calendar": "Joint / calendar", "joint_session": "Joint / session",
+    "bootstrap_percentile_95": "95% block range", "bootstrap_standard_error": "Block SE",
+    "realized_over_predicted_second_moment": "Realized / predicted",
+    "predicted_rms_cny": "Forecast RMS (CNY)", "realized_rms_cny": "Realized RMS (CNY)",
+    "mean_position_change_proxy": "Position-change proxy",
+    "training_count_min_median_max": "Training count (min/median/max)",
+    "minimum_relative_forecast_eigenvalue": "Min relative eigenvalue",
+    "maximum_exact_transport_identity_absolute_error": "Max transport error",
+    "all_forecast_psd_within_roundoff": "PSD within roundoff",
+}
+
+def readable_label(value):
+    return LABELS.get(value, value.replace("_", " "))
+
+def display_value(value):
+    if value is None:
+        return "Unavailable"
+    if isinstance(value, float):
+        return f"{value:.4g}"
+    if isinstance(value, (list, tuple)):
+        return "[" + ", ".join(display_value(v) for v in value) + "]"
+    if isinstance(value, dict):
+        return "; ".join(f"{readable_label(k)}: {display_value(v)}" for k, v in value.items())
+    return readable_label(value) if isinstance(value, str) else str(value)
+
 def table(rows, columns):
-    print(" | ".join(columns))
-    for row in rows:
-        print(" | ".join(f"{row.get(c):.6g}" if isinstance(row.get(c), float) else str(row.get(c)) for c in columns))
+    cells = [[readable_label(c) for c in columns]] + [[display_value(r.get(c)) for c in columns] for r in rows]
+    widths = [max(len(row[i]) for row in cells) for i in range(len(columns))]
+    for row in cells:
+        print(" | ".join(v.ljust(w) for v, w in zip(row, widths, strict=True)))
 """
 
 FOOTER = markdown(r"""
@@ -64,6 +97,14 @@ The original historical benchmark remains fixed. New analyses on the inspected
 2024–2025 period are exploratory, even though forecast issuance is past-only.
 No final untouched confirmation period, executable trading backtest or physical
 forcing identification is claimed. See the [roadmap](../README.md).
+
+The displayed tables emphasize the primary comparisons. Complete sensitivity,
+availability and numerical diagnostics remain in the checksummed aggregate files:
+[data](../experiments/results/shfe-research/data.json),
+[representation](../experiments/results/shfe-research/representation.json),
+[attribution](../experiments/results/shfe-research/attribution.json),
+[scores](../experiments/results/shfe-research/scores.json), and
+[joint risk / hedging](../experiments/results/shfe-research/joint.json).
 """)
 
 
@@ -132,7 +173,7 @@ additional assumption. These are next-session risks, not accumulated or annual r
 fig, ax = plt.subplots(figsize=(7,3))
 rows = data["tenor_coverage"]
 ax.bar(np.arange(len(rows)), [r["rows"] for r in rows], color="0.35")
-ax.set_xticks(np.arange(len(rows)), [f"{r['lower_days']}–{r['upper_days']}" for r in rows], rotation=30)
+ax.set_xticks(np.arange(len(rows)), ["Before midpoint" if r['upper_days'] == 0 else ">450" if r['lower_days'] == 450 else f"{r['lower_days']}–{r['upper_days']}" for r in rows], rotation=25)
 ax.set(xlabel="Maturity coordinate (days)", ylabel="Contract-session rows", title="Coverage before curve eligibility filtering")
 fig.tight_layout(); plt.show()"""),
             markdown(r"""## Effective history for currently held contracts
@@ -204,7 +245,7 @@ fig, ax = plt.subplots(figsize=(8,3))
 x=np.arange(len(rows)); width=.24
 for j,(key,label,color) in enumerate([("modeled_share","Fitted curve","0.25"),("residual_share","Residual","0.6"),("cross_share","Signed cross","0.85")]):
     ax.bar(x+(j-1)*width,[r[key] for r in rows],width,label=label,color=color,edgecolor="black",linewidth=.4)
-ax.axhline(0,color="black",linewidth=.6); ax.set_xticks(x,[r["exposure"] for r in rows],rotation=12)
+ax.axhline(0,color="black",linewidth=.6); ax.set_xticks(x,[readable_label(r["exposure"]) for r in rows])
 ax.set(ylabel="Share of realized second moment",title="Curve fit and financial risk are different targets"); ax.legend()
 fig.tight_layout(); plt.show()"""),
             markdown(r"""## A clean identification control
@@ -265,8 +306,8 @@ table(rows,["window","exposure","method","count","qlike","risk_ratio"])"""),
 for ax,exposure in zip(axes,["outright_3m","spread_3m_6m","butterfly_3m_6m_9m"],strict=True):
     for method,style in [("factor_adjusted","o-"),("factor_unadjusted","x--"),("direct","s-"),("shrinkage","^:")]:
         points=sorted([r for r in rows if r["exposure"]==exposure and r["method"]==method],key=lambda r:r["window"])
-        ax.plot([r["window"] for r in points],[r["qlike"] for r in points],style,label=method,linewidth=1)
-    ax.set(title=exposure,xlabel="Matched nominal window",ylabel="Mean QLIKE (lower is better)")
+        ax.plot([r["window"] for r in points],[r["qlike"] for r in points],style,label=readable_label(method),linewidth=1)
+    ax.set(title=readable_label(exposure),xlabel="Matched nominal window",ylabel="Mean QLIKE (lower is better)")
 axes[0].legend(fontsize=7);fig.tight_layout();plt.show()"""),
             markdown("""## Paired transport effect and masking stress
 
@@ -323,19 +364,36 @@ distribution is not needed. QLIKE uses the original positive floor; quadratic
 loss uses the unfloored nonnegative forecast. See
 [Patton (2011)](https://public.econ.duke.edu/~ap172/Patton_vol_proxies_JoE_2011.pdf)."""),
             code("""scores=evidence["scores"]
-print(json.dumps(scores["protocol"],indent=2))
+protocol = scores["protocol"]
+print("Primary loss:", protocol["primary_loss"], "; secondary:", protocol["secondary_loss"])
+print("Bootstrap:", protocol["primary_bootstrap_block"], "sessions per block;", protocol["bootstrap_replications"], "draws")
+print(protocol["uncertainty_scope"])
 paired=[r for r in scores["paired_comparisons"] if r["stratum"]=="pooled" and r["method"]=="spde_local"]
 table(paired,["exposure","loss","common_count","mean","bootstrap_standard_error","bootstrap_percentile_95"])"""),
-            code("""fig,axes=plt.subplots(1,2,figsize=(10,3.2))
-for ax,loss,scale in zip(axes,["qlike","quadratic"],[1.,1e12],strict=True):
-    rows=[r for r in paired if r["loss"]==loss and r["available"]]
-    for i,r in enumerate(rows):
-        lo,hi=np.asarray(r["bootstrap_percentile_95"])/scale
-        ax.plot([lo,hi],[i,i],color="black");ax.plot(r["mean"]/scale,i,"o",color="black")
-    ax.axvline(0,color="0.5",linestyle=":");ax.set_yticks(range(len(rows)),[r["exposure"] for r in rows])
-    ax.set(title=loss,xlabel="SPDE − direct"+(" (10¹² CNY⁴)" if scale>1 else ""))
+            code("""fig,axes=plt.subplots(2,3,figsize=(11,5.4))
+exposures=["outright_3m","spread_3m_6m","butterfly_3m_6m_9m"]
+for column,exposure in enumerate(exposures):
+    for row_index,(loss,scale) in enumerate([("qlike",1.),("quadratic",1e12)]):
+        ax=axes[row_index,column]
+        result=next(r for r in paired if r["loss"]==loss and r["exposure"]==exposure)
+        if result["available"]:
+            lo,hi=np.asarray(result["bootstrap_percentile_95"])/scale
+            mean=result["mean"]/scale
+            ax.plot([lo,hi],[0,0],color="black",linewidth=1.5)
+            ax.plot(mean,0,"o",color="black")
+            ax.annotate(f"{mean:.3g}",(mean,0),xytext=(0,12),textcoords="offset points",ha="center")
+        ax.axvline(0,color="0.5",linestyle=":")
+        ax.set(yticks=[],ylim=(-.7,.7),title=readable_label(exposure),xlabel="Local source C − direct"+(" (10¹² CNY⁴)" if scale>1 else ""))
+        ax.margins(x=.18)
+        if column == 0:
+            ax.set_ylabel("QLIKE (primary)" if row_index == 0 else "Quadratic (secondary)")
+fig.suptitle("Paired score differences · 95% descriptive block ranges",fontsize=12)
 fig.tight_layout();plt.show()"""),
             markdown("""## Dependence, calibration and period sensitivity
+
+Each panel above uses its own horizontal scale. Every exposure and both losses
+remain visible: the spread ranking reversal is not compressed by outright
+uncertainty. Negative differences favor the local source model.
 
 Circular moving blocks resample chronologically ordered paired scored sessions.
 The number of sessions is not a Monte Carlo replication count. The percentile
@@ -352,7 +410,7 @@ table(rows,["exposure","forecast_variance_quintile","count","predicted_rms_cny",
 fig,ax=plt.subplots(figsize=(5,4))
 for exposure in sorted({r["exposure"] for r in rows}):
     selected=[r for r in rows if r["exposure"]==exposure and r["available"]]
-    ax.plot([r["predicted_rms_cny"] for r in selected],[r["realized_rms_cny"] for r in selected],"o-",label=exposure)
+    ax.plot([r["predicted_rms_cny"] for r in selected],[r["realized_rms_cny"] for r in selected],"o-",label=readable_label(exposure))
 limit=ax.get_xlim()[1];ax.plot([0,limit],[0,limit],":",color="0.5")
 ax.set(xlabel="Forecast RMS (CNY)",ylabel="Realized RMS within bin (CNY)",title="Forecast-risk calibration bins");ax.legend(fontsize=7)
 fig.tight_layout();plt.show()"""),
@@ -407,29 +465,50 @@ pipeline remains a separate calendar-time control."""),
             code("""joint=evidence["joint"]
 print(joint["clock_convention"])
 print(joint["selection_criterion"])
-print("Joint settings:",json.dumps(joint["joint_config"],indent=2))
+selected=[]
 for method,selection in joint["selection"].items():
-    print(method,selection["selected"],"validation origins",selection["common_validation_origins"],"last outcome",selection["selection_last_outcome"])
-    assert selection["selection_last_outcome"] <= joint["chronology"]["validation_end"]"""),
-            code("""table(joint["risk_summary"],["exposure","method","common_count","qlike","realized_over_predicted_second_moment","predicted_rms_cny","realized_rms_cny"])
-table([r for r in joint["paired_scores"] if r["score"]=="qlike"],["exposure","method","reference","count","mean","bootstrap_standard_error","bootstrap_percentile_95"])"""),
+    selected.append({"method":method,**selection["selected"],"validation origins":selection["common_validation_origins"],"last outcome":selection["selection_last_outcome"]})
+    assert selection["selection_last_outcome"] <= joint["chronology"]["validation_end"]
+table(selected,["method","window","clock","shrinkage","validation origins","last outcome"])"""),
+            code("""primary_methods=["factor","joint","direct"]
+table([r for r in joint["risk_summary"] if r["method"] in primary_methods],["exposure","method","common_count","qlike","realized_over_predicted_second_moment"])
+table([r for r in joint["paired_scores"] if r["score"]=="qlike" and r["method"] in primary_methods and r["reference"]=="direct"],["exposure","method","reference","count","mean","bootstrap_percentile_95"])"""),
             code("""fig,axes=plt.subplots(1,3,figsize=(12,3.2))
 for ax,exposure in zip(axes,["outright_3m","spread_3m_6m","butterfly_3m_6m_9m"],strict=True):
-    rows=[r for r in joint["risk_summary"] if r["exposure"]==exposure]
+    rows=[next(r for r in joint["risk_summary"] if r["exposure"]==exposure and r["method"]==method) for method in primary_methods]
     ax.bar(range(len(rows)),[r["realized_over_predicted_second_moment"] for r in rows],color="0.45")
-    ax.axhline(1,color="black",linestyle=":");ax.set_xticks(range(len(rows)),[r["method"] for r in rows],rotation=80,fontsize=7)
-    ax.set(title=exposure,ylabel="Realized / predicted second moment")
+    ax.axhline(1,color="black",linestyle=":");ax.set_xticks(range(len(rows)),[readable_label(r["method"]) for r in rows],rotation=12)
+    ax.set(title=readable_label(exposure),ylabel="Realized / predicted second moment")
 fig.tight_layout();plt.show()"""),
             markdown("""## Cross-covariances and numerical checks
 
 Dropping cross terms would impose independence without evidence. The components
 below sum to a joint-model forecast; factor/direct controls can use a different
 kernel. Numerical PSD/rank diagnostics establish matrix feasibility, not a
-statistical or market-model guarantee. Availability is reported separately."""),
-            code("""table(joint["risk_components"],["method","exposure","count","components_cny2","cross_over_total"])
-table([r for r in joint["clock_gap_summary"] if r["method"] in ("joint_calendar","joint_session")],["method","gap_group","exposure","count","qlike","realized_over_predicted_second_moment"])
-print(json.dumps(joint["numerical_diagnostics"],indent=2))
-print(json.dumps(joint["availability"],indent=2))"""),
+statistical or market-model guarantee. The table of selected policies above
+uses identical historical support. Fixed calendar/session companions below
+are sensitivity controls, not additional selected winners. The selected joint
+policy coincides with its calendar companion; duplicate bars are omitted.
+
+Complete per-policy components, clock-gap strata and numerical diagnostics are
+preserved in [the joint aggregate file](../experiments/results/shfe-research/joint.json).
+The compact audit retains all 11 policies, including availability and PSD checks."""),
+            code("""components=[]
+for r in joint["risk_components"]:
+    if r["method"]=="joint":
+        total=r["mean_factor_plus_residual_second_moment_cny2"]
+        components.append({"exposure":r["exposure"],"count":r["count"],**{f"{k} share":v/total for k,v in r["components_cny2"].items()}})
+table(components,["exposure","count","factor share","residual share","cross share"])
+print("Fixed-clock sensitivity (all scored origins):")
+table([r for r in joint["risk_summary"] if r["method"] in ("joint_calendar","joint_session")],["method","exposure","common_count","qlike","realized_over_predicted_second_moment"])
+audit=[]
+for method,diagnostic in joint["numerical_diagnostics"].items():
+    counts=joint["availability"][method]
+    audit.append({"method":method,"issued / attempted":f"{counts['issued']} / {counts['attempted']}","fully scored":counts["fully_scored"],"training_count_min_median_max":diagnostic.get("training_count_min_median_max"),"all_forecast_psd_within_roundoff":diagnostic.get("all_forecast_psd_within_roundoff"),"minimum_relative_forecast_eigenvalue":diagnostic.get("minimum_relative_forecast_eigenvalue")})
+    if diagnostic["available"]:
+        assert diagnostic["all_forecast_psd_within_roundoff"]
+table(audit,["method","issued / attempted","fully scored","training_count_min_median_max","all_forecast_psd_within_roundoff","minimum_relative_forecast_eigenvalue"])
+print("Maximum absolute transport identity error:",max(r.get("maximum_exact_transport_identity_absolute_error",0.) for r in joint["numerical_diagnostics"].values()))"""),
             markdown("""## Interpretation and next decision
 
 Validation selects 63 intervals, calendar diffusion and zero shrinkage for the
@@ -472,26 +551,53 @@ hedging-loss-tuned policies."""),
             code("""joint=evidence["joint"]
 print(joint["hedge_scope"])
 print("Bounds:",joint["joint_config"]["hedge_bounds"])
-table(joint["hedge_summary"],["method","common_count","realized_rms_cny","reduction_vs_unhedged","predicted_rms_cny","realized_over_predicted_second_moment"])"""),
-            code("""rows=joint["hedge_summary"]
-fig,axes=plt.subplots(1,2,figsize=(11,3.5))
-axes[0].bar(range(len(rows)),[r["realized_rms_cny"] for r in rows],color="0.4")
-axes[0].set_xticks(range(len(rows)),[r["method"] for r in rows],rotation=75,fontsize=7)
-axes[0].set(ylabel="Realized RMS settlement P&L (CNY)",title="One near contract plus bounded hedges")
-hedged=[r for r in rows if r["method"]!="unhedged"]
-axes[1].bar(range(len(hedged)),[r["mean_position_change_proxy"] or 0 for r in hedged],color="0.65")
-axes[1].set_xticks(range(len(hedged)),[r["method"] for r in hedged],rotation=75,fontsize=7)
-axes[1].set(ylabel="Mean absolute hedge-position change",title="Instability proxy; excludes roll/execution costs")
+primary_methods=["direct","joint","source","factor"]
+rows=[next(r for r in joint["hedge_summary"] if r["method"]==method) for method in ["unhedged",*primary_methods]]
+table(rows,["method","common_count","realized_rms_cny","predicted_rms_cny","realized_over_predicted_second_moment"])"""),
+            code("""unhedged=rows[0]
+hedged=rows[1:]
+fig,axes=plt.subplots(1,3,figsize=(12,4),gridspec_kw={"width_ratios":[1.1,2.5,3.2]})
+axes[0].bar([0],[unhedged["realized_rms_cny"]],color="0.65",width=.55)
+axes[0].set(xticks=[0],xticklabels=["Unhedged"],ylabel="Realized RMS (CNY)",title="Risk scale")
+axes[0].annotate(f"{unhedged['realized_rms_cny']:,.0f}",(0,unhedged["realized_rms_cny"]),xytext=(0,4),textcoords="offset points",ha="center")
+axes[0].margins(y=.15)
+axes[1].barh(range(len(hedged)),[r["realized_rms_cny"] for r in hedged],color="0.4")
+axes[1].set(yticks=range(len(hedged)),yticklabels=[readable_label(r["method"]) for r in hedged],xlabel="Realized RMS (CNY)",title="Selected risk-model policies")
+axes[1].invert_yaxis();axes[1].margins(x=.22)
+for i,r in enumerate(hedged):
+    axes[1].annotate(f"{r['realized_rms_cny']:.0f}",(r["realized_rms_cny"],i),xytext=(4,0),textcoords="offset points",va="center")
+differences=[next(r for r in joint["hedge_paired"] if r["method"]==method and r["reference"]=="direct") for method in primary_methods if method!="direct"]
+for i,r in enumerate(differences):
+    lo,hi=np.asarray(r["bootstrap_percentile_95"])/1e3
+    axes[2].plot([lo,hi],[i,i],color="black",linewidth=1.5)
+    axes[2].plot(r["mean"]/1e3,i,"o",color="black")
+axes[2].axvline(0,color="0.5",linestyle=":")
+axes[2].set(yticks=range(len(differences)),yticklabels=[readable_label(r["method"]) for r in differences],xlabel="Squared P&L difference vs direct (10³ CNY²)",title="Paired 95% block ranges")
+axes[2].invert_yaxis();axes[2].margins(y=.3)
 fig.tight_layout();plt.show()"""),
             markdown("""## Paired realized risk and position stability
+
+The unhedged and hedged RMS panels use different scales. The primary comparison
+shows four validation-selected policies; duplicate calendar companions and
+fixed-clock sensitivities remain in the full aggregate file. The source-$C$
+rule uses its own selected 252-interval coefficient history; the other selected
+rules use 63-interval windows on common current-contract support. These are
+whole-policy comparisons, not an isolated test of a single model mechanism.
 
 All displayed rules use the common scored-origin cohort. Negative paired
 squared-P&L differences favor the listed rule. Bootstrap blocks resample
 paired sessions, not independent strategies. Mean hedge positions and bound
-hits help detect unstable optimization even when average risk is small."""),
-            code("""table(joint["hedge_paired"],["method","reference","count","mean","bootstrap_standard_error","bootstrap_percentile_95"])
-table([r for r in joint["hedge_summary"] if r["method"]!="unhedged"],["method","mean_hedge_positions","bound_hit_fraction","mean_position_change_proxy"])
-print(json.dumps(joint["availability"],indent=2))"""),
+hits help detect unstable optimization even when average risk is small. The
+intervals are descriptive, conditional on this inspected development sample;
+they do not adjust for model development or multiple comparisons. RMS bars
+are point summaries; uncertainty is shown for paired squared-P&L differences.
+
+All 11 policies, sensitivity results and full availability counts are retained
+in [the joint risk / hedge aggregate](../experiments/results/shfe-research/joint.json)."""),
+            code("""table([r for r in joint["hedge_paired"] if r["method"] in primary_methods and r["reference"] in ("unhedged","direct")],["method","reference","count","mean","bootstrap_standard_error","bootstrap_percentile_95"])
+table(hedged,["method","mean_hedge_positions","bound_hit_fraction","mean_position_change_proxy"])
+table([{"method":method,**joint["availability"][method]} for method in primary_methods],["method","attempted","issued","fully_scored","hedge_scored"])
+assert len({r["common_count"] for r in rows}) == 1"""),
             markdown("""## Interpretation and next decision
 
 Realized RMS is CNY 3,487 unhedged, 501 with direct covariance, 533 with joint
@@ -511,6 +617,7 @@ a profitability or CV performance claim."""),
 
 if __name__ == "__main__":
     main()
-    paths = sorted((Path(__file__).resolve().parents[1] / "notebooks").glob("0*.ipynb"))
+    notebook_dir = Path(__file__).resolve().parents[1] / "notebooks"
+    paths = sorted(p for p in notebook_dir.glob("0[1-6]_*.ipynb"))
     subprocess.run([sys.executable, "-m", "ruff", "check", "--fix", *map(str, paths)], check=True)
     subprocess.run([sys.executable, "-m", "ruff", "format", *map(str, paths)], check=True)

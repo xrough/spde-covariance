@@ -20,9 +20,11 @@ innovations → covariance/risk forecasts → diagnostics → constrained hedges
 | **RQ2 · Estimation** | PSD/ridge fitting, source integration and spatial error | Matched mechanism comparisons, joint residual risk and diffusion clocks |
 | **RQ3 · Evaluation** | Past-only synthetic forecasts and risk decisions | Paired forecast scores, calibration and bounded hedging |
 
-Start with the [executive empirical notebook](notebooks/shfe_empirical.ipynb).
-The focused notebooks below are implemented and execute from public aggregate
-evidence; exchange files remain local.
+**Start here:** [current project findings](notebooks/00_project_findings.ipynb)
+connects the numerical controls and empirical results in one executed notebook.
+The [short findings report](docs/project-findings.md) gives the same research
+story with evidence links. The six focused notebooks below retain detailed
+audits and sensitivities; they execute from public aggregates, without exchange files.
 
 | Notebook | Investigation |
 | --- | --- |
@@ -39,23 +41,24 @@ and [generated report](experiments/results/shfe-research/report.md) connect conc
 
 ## Current evidence
 
-The frozen first study uses official copper settlements from 2022–2025:
-969 sessions, 11,628 contract observations and 484 evaluation origins.
-The three-mode local source model materially underpredicts spread and butterfly
-risk under the primary QLIKE criterion. Its spread forecast performs favorably
-under secondary quadratic loss; score choice matters. Adjusted and unadjusted
-coefficient forecasts are close, so an SPDE transport advantage is not established.
+The main finding is that **observation coverage and curve representation determine
+which risks can be recovered; a converged PSD fit alone is insufficient**.
 
-![Frozen first-study risk calibration](experiments/results/shfe-cu/risk-calibration.png)
+| Evidence | Finding | Scope |
+| --- | --- | --- |
+| Synthetic identification | Different full covariances can have identical observed fragment laws; more native samples do not identify missing spread risk. | Completion requires an explicit structural assumption. |
+| SHFE copper representation | Three smooth factors account for 99.1% of outright second moment, but 38.3% of spread and 11.4% of butterfly second moment. | Sample decomposition retains residual and signed cross terms. |
+| Subsequent hedge outcomes | RMS P&L: direct CNY 501, joint factor/residual 533, source-C 624, factor-only 685. | Same 484 origins; bounded settlement-risk exercise, excluding costs. |
 
-A good fit to large price levels does not ensure accurate spread risk. The
-[representation analysis](notebooks/02_representation_and_identification.ipynb)
-retains reconstruction-residual changes and their signed cross term.
-The new suite tests specific explanations and revised risk models while
-preserving the original benchmark, including unfavorable results.
-Joint residual modeling improves on factor-only curvature risk, while direct
-covariance gives lower realized hedge RMS: CNY 501 versus 533 for joint and 685
-for factor-only. These are development-sample settlement risks, excluding costs.
+![Curve representation and selected hedge outcomes](assets/current-findings.png)
+
+The empirical sample contains 969 sessions and 11,628 official copper settlements
+from 2022–2025. Joint residual modeling repairs much of the factor-only weakness,
+but direct covariance remains a strong baseline. Matched transport ablations
+establish no forecasting advantage. In the [frozen first benchmark](notebooks/shfe_empirical.ipynb),
+spread rankings reverse between primary QLIKE and secondary quadratic loss.
+The [overview notebook](notebooks/00_project_findings.ipynb) reports paired uncertainty;
+RMS bars above are point summaries. Numerical controls and market evidence remain distinct.
 
 **Research boundary:** 2024–2025 has informed model development. New analyses on
 these years are exploratory even when issuance is past-only. A revised policy
@@ -73,7 +76,7 @@ git clone https://github.com/xrough/spde-covariance.git
 cd spde-covariance
 uv sync --locked --extra reference --extra empirical
 uv run python examples/empirical_research_pipeline.py  # synthetic, no exchange data
-uv run python scripts/check_notebook.py notebooks/04_forecast_scores_and_model_risk.ipynb
+uv run python scripts/check_notebook.py notebooks/00_project_findings.ipynb
 uv run pytest
 ```
 
@@ -103,8 +106,8 @@ settlement P&L; interpreting it as variance requires a negligible conditional me
 
 ## Numerical foundations and next phase
 
-The [numerical findings notebook](notebooks/current_findings.ipynb) covers the
-finite toy model, partial identification and canonical completion. The
+The [synthetic completion notebook](notebooks/current_findings.ipynb) covers
+partial identification, canonical completion and Gaussian uncertainty. The
 [transport example](notebooks/transport_covariance.ipynb) validates the
 SPDE-to-innovation connection. A [fixed infinite-rank model](docs/infinite-transport.md)
 separates noise truncation, curve projection and time discretization.

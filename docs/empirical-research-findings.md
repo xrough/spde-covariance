@@ -7,6 +7,7 @@ sample**. The software now carries the investigation through constrained hedge
 decisions. These are exploratory development findings on already inspected years.
 
 Read the [six notebook roadmap](../README.md#research-roadmap),
+[current project overview](../notebooks/00_project_findings.ipynb),
 [protocol](empirical-research-protocol.md),
 [generated report](../experiments/results/shfe-research/report.md) and
 [source manifest](../experiments/results/shfe-research/manifest.json).
@@ -90,8 +91,8 @@ settlement-P&L RMS is:
 | Original source-C |624|
 | Factor-only |685|
 
-The joint hedge's squared-P&L difference versus direct averages+32,657 CNY²,
-with descriptive block-bootstrap range [17,545,47,609]. Direct hedging has lower
+The joint hedge's squared-P&L difference versus direct averages +32,657 CNY²,
+with descriptive block-bootstrap range [17,545, 47,609]. Direct hedging has lower
 realized risk on this sample. Large reductions relative to unhedged exposure
 mainly reflect correlated contracts and are not trading alpha. Position-change
 statistics omit executable turnover, roll costs, fills, margin and capacity.
