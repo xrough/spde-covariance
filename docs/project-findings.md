@@ -117,12 +117,19 @@ theorem or identification of physical market forcing. See the
 
 ## Reading path, evidence and limits
 
-The [six-notebook roadmap](../README.md#research-roadmap) develops the current
+The [notebook roadmap](../README.md#research-roadmap) develops the current
 empirical suite. Its [findings](empirical-research-findings.md),
 [protocol](empirical-research-protocol.md) and [generated report](../experiments/results/shfe-research/report.md)
 retain chronology, aggregate evidence and provenance. The older
 [first-study notebook](../notebooks/shfe_empirical.ipynb) is a frozen benchmark,
 not the latest executive summary; its unfavorable results remain intact.
+
+The subsequent [short-history experiment](short_history.md) and
+[notebook 07](../notebooks/07_short_history_risk_transfer.ipynb) ask whether other
+contracts can supply risk information when a currently quoted target has little
+permitted own history. Learned maturity-dependent factors and transport models
+share a residual adapter. This is a distinct masked-information experiment;
+the original findings and numerical evidence above remain unchanged.
 
 The empirical data contain 969 SHFE copper sessions and 11,628 settlements from
 2022–2025, with 484 evaluation origins. Raw data and individual P&Ls stay local;

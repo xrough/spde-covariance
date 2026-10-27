@@ -29,12 +29,14 @@ jobs:
       - run: uv run --no-sync ruff format --check .
       - run: uv run --no-sync pytest
       - run: uv run --no-sync python scripts/check_empirical_research.py
+      - run: uv run --no-sync python scripts/check_short_history.py
       - run: uv run --no-sync python examples/transport_pipeline.py
       - run: uv run --no-sync python examples/canonical_pipeline.py
       - run: uv run --no-sync python examples/coherent_pipeline.py
       - run: uv run --no-sync python examples/futures_pipeline.py
       - run: uv run --no-sync python examples/empirical_pipeline.py
       - run: uv run --no-sync python examples/empirical_research_pipeline.py
+      - run: uv run --no-sync python examples/short_history_pipeline.py
       - run: uv run --no-sync python examples/statistical_completion.py
       - run: uv run --no-sync python scripts/check_notebook.py
       - run: uv run --no-sync python scripts/check_notebook.py notebooks/current_findings.ipynb
@@ -83,6 +85,7 @@ jobs:
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/futures_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/empirical_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/empirical_research_pipeline.py"
+          "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/short_history_pipeline.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/examples/statistical_completion.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py"
           "$RUNNER_TEMP/spde-clean/bin/python" "$GITHUB_WORKSPACE/scripts/check_notebook.py" "$GITHUB_WORKSPACE/notebooks/current_findings.ipynb"
@@ -92,6 +95,7 @@ jobs:
           done
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" empirical-research --help
+          "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-short-history --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-rq3 --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-infinite-transport --help
           "$RUNNER_TEMP/spde-clean/bin/spde-covariance" benchmark-partial --help

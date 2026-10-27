@@ -114,7 +114,7 @@ def fit_cross_section(tenors, prices, dimension=3, smoothing=1e-6, *, rank_rtol=
     )
 
 
-@lru_cache(maxsize=512)
+@lru_cache(maxsize=64)
 def _dynamics(dimension, delta, transport_adjustment):
     if not transport_adjustment:
         size = dimension * (dimension + 1) // 2
@@ -209,6 +209,7 @@ def fit_source_covariance(
     times,
     window=None,
     *,
+    interval_weights=None,
     regularization_relative=1e-3,
     trace_cap=None,
     trace_cap_multiplier=100.0,
@@ -233,6 +234,12 @@ def fit_source_covariance(
     fitted drift/reconstructed states, not statistical error or a latent C.
     Default trace cap is 100 times a training trace proxy, not a confidence
     bound. Explicit cap zero, including a zero-residual fit, is supported.
+
+    interval_weights, when supplied, is a nonnegative vector aligned with the
+    selected trailing intervals, with at least two positive entries. Weights
+    are normalized to sum one and apply to drift fitting, moment fitting and
+    all training-derived scales. They do not change physical interval lengths.
+    None retains the historical uniform-window arithmetic.
     """
     values, dates = _trajectory(coefficients, times)
     if not isinstance(transport_adjustment, (bool, np.bool_)):
@@ -242,6 +249,26 @@ def fit_source_covariance(
     if count < 2 or count >= len(dates):
         raise ValueError("window must select at least two available trailing intervals")
     values, dates = values[-count - 1 :], dates[-count - 1 :]
+    if interval_weights is None:
+        weights = np.full(count, 1.0 / count)
+        uniform_weights = True
+    else:
+        weights = _real_array(interval_weights, name="interval_weights")
+        if weights.shape != (count,) or np.any(weights < 0) or np.count_nonzero(weights) < 2:
+            raise ValueError(
+                "interval_weights must match the selected interval count and contain "
+                "nonnegative weights with at least two positive entries"
+            )
+        # Scaling before summation also handles finite but very large inputs.
+        weights = weights / float(weights.max())
+        weights = weights / float(weights.sum())
+        if np.count_nonzero(weights) < 2:
+            raise ValueError(
+                "interval_weights must retain at least two positive entries after normalization"
+            )
+        uniform_weights = bool(np.all(weights == weights[0]))
+    positive = weights > 0
+    effective_n = float(1.0 / np.sum(weights**2))
     dimension = values.shape[1]
     deltas = np.diff(dates)
     relative = _scalar(regularization_relative, "regularization_relative", positive=True)
@@ -261,13 +288,25 @@ def fit_source_covariance(
     drift_design = np.vstack(
         [item[1] / np.sqrt(delta) for item, delta in zip(dynamics, deltas, strict=True)]
     )
-    drift_gram = drift_design.T @ drift_design / count
+    weighted_drift_design = (
+        drift_design / np.sqrt(count)
+        if uniform_weights
+        else np.repeat(np.sqrt(weights), dimension)[:, None] * drift_design
+    )
+    drift_gram = (
+        drift_design.T @ drift_design / count
+        if uniform_weights
+        else weighted_drift_design.T @ weighted_drift_design
+    )
     drift_penalty = drift_relative * float(np.linalg.eigvalsh(drift_gram)[-1])
     if drift == "constant":
-        augmented = np.vstack(
-            [drift_design / np.sqrt(count), np.sqrt(drift_penalty) * np.eye(dimension)]
-        )
-        response = np.r_[raw.reshape(-1) / np.sqrt(count), np.zeros(dimension)]
+        augmented = np.vstack([weighted_drift_design, np.sqrt(drift_penalty) * np.eye(dimension)])
+        response = np.r_[
+            raw.reshape(-1) / np.sqrt(count)
+            if uniform_weights
+            else (np.sqrt(weights)[:, None] * raw).reshape(-1),
+            np.zeros(dimension),
+        ]
         fitted_drift = np.linalg.lstsq(augmented, response, rcond=None)[0]
     else:
         fitted_drift = np.zeros(dimension)
@@ -275,16 +314,31 @@ def fit_source_covariance(
         values, dates, drift=fitted_drift, transport_adjustment=transport_adjustment
     )
     maps = [item[2] for item in dynamics]
-    gram = sum(item.T @ item for item in maps) / count
+    gram = (
+        sum(item.T @ item for item in maps) / count
+        if uniform_weights
+        else sum(weight * (item.T @ item) for weight, item in zip(weights, maps, strict=True))
+    )
     spectrum = np.linalg.eigvalsh(gram)
     regularization = relative * float(spectrum[-1])
     hessian = gram + regularization * np.eye(len(gram))
     eigenvalues = np.linalg.eigvalsh(hessian)
     strong, lipschitz = float(eigenvalues[0]), float(eigenvalues[-1])
-    trace_gain = smat(sum(item.T @ svec(np.eye(dimension)) for item in maps) / count)
+    trace_gain = smat(
+        sum(item.T @ svec(np.eye(dimension)) for item in maps) / count
+        if uniform_weights
+        else sum(
+            weight * (item.T @ svec(np.eye(dimension)))
+            for weight, item in zip(weights, maps, strict=True)
+        )
+    )
     minimum_trace_gain = float(np.linalg.eigvalsh(trace_gain)[0])
     with np.errstate(over="ignore", invalid="ignore"):
-        empirical_trace = float(np.sum(residuals**2) / count)
+        empirical_trace = float(
+            np.sum(residuals**2) / count
+            if uniform_weights
+            else np.sum(weights[positive, None] * residuals[positive] ** 2)
+        )
     if not np.isfinite(empirical_trace) or minimum_trace_gain <= 0:
         raise ValueError("residual covariance scale or transport trace gain is not representable")
     scale = empirical_trace / minimum_trace_gain if empirical_trace > 0 else 1.0
@@ -297,9 +351,25 @@ def fit_source_covariance(
     if not np.isfinite(scale) or not np.isfinite(cap) or not np.isfinite(scaled_cap):
         raise ValueError("source trace scale exceeds floating-point range; rescale price units")
     scaled_residuals = residuals / np.sqrt(scale)
-    moments = [svec(np.outer(row, row)) for row in scaled_residuals]
-    rhs = sum(item.T @ moment for item, moment in zip(maps, moments, strict=True)) / count
-    constant = sum(float(moment @ moment) for moment in moments) / (2 * count)
+    if uniform_weights:
+        moments = [svec(np.outer(row, row)) for row in scaled_residuals]
+        rhs = sum(item.T @ moment for item, moment in zip(maps, moments, strict=True)) / count
+        constant = sum(float(moment @ moment) for moment in moments) / (2 * count)
+    else:
+        moments = [svec(np.outer(row, row)) for row in scaled_residuals[positive]]
+        rhs = sum(
+            weight * (item.T @ moment)
+            for weight, item, moment in zip(
+                weights[positive], np.asarray(maps)[positive], moments, strict=True
+            )
+        )
+        constant = (
+            sum(
+                weight * float(moment @ moment)
+                for weight, moment in zip(weights[positive], moments, strict=True)
+            )
+            / 2
+        )
     candidate = np.zeros((dimension, dimension))
     extrapolated = candidate.copy()
     momentum = (np.sqrt(lipschitz) - np.sqrt(strong)) / (np.sqrt(lipschitz) + np.sqrt(strong))
@@ -334,7 +404,11 @@ def fit_source_covariance(
     converged = bool(gap <= 0.5 * strong * budget**2)
     error_relative = float(np.sqrt(2 * gap / strong))
     threshold = float(spectrum[-1] * 1e-10)
-    residual_eigenvalues = np.linalg.eigvalsh(residuals.T @ residuals / count)
+    residual_eigenvalues = np.linalg.eigvalsh(
+        residuals.T @ residuals / count
+        if uniform_weights
+        else residuals[positive].T @ (weights[positive, None] * residuals[positive])
+    )
     return EmpiricalSourceFit(
         covariance,
         fitted_drift,
@@ -346,6 +420,11 @@ def fit_source_covariance(
             "iterations": iteration,
             "dimension": dimension,
             "interval_count": count,
+            "interval_weights": weights,
+            "interval_weight_policy": "uniform" if uniform_weights else "supplied nonuniform",
+            "interval_weight_scope": "selected trailing intervals; drift, moment objective, Gram and training scales; physical interval lengths unchanged",
+            "positive_weight_interval_count": int(np.count_nonzero(positive)),
+            "effective_n": effective_n,
             "training_start_time": float(dates[0]),
             "training_end_time": float(dates[-1]),
             "interval_lengths": deltas,
@@ -362,12 +441,14 @@ def fit_source_covariance(
             "fitted_drift_parameter_count": dimension if drift == "constant" else 0,
             "drift_regularization_relative": drift_relative,
             "drift_regularization": drift_penalty,
-            "drift_design_rank": int(np.linalg.matrix_rank(drift_design)),
+            "drift_design_rank": int(np.linalg.matrix_rank(weighted_drift_design)),
             "regularization_relative": relative,
             "regularization": regularization,
             "covariance_scale": scale,
             "empirical_residual_trace": empirical_trace,
-            "normalized_residual_mean": np.mean(residuals, axis=0),
+            "normalized_residual_mean": np.mean(residuals, axis=0)
+            if uniform_weights
+            else np.sum(weights[positive, None] * residuals[positive], axis=0),
             "minimum_mean_transport_trace_gain": minimum_trace_gain,
             "trace_cap": cap,
             "trace_cap_policy": "training residual scale times declared multiplier"
