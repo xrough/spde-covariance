@@ -1,0 +1,2759 @@
+{
+  "schema": "copper-mechanisms-v1",
+  "code_revision": "68e3f17f4edc1c4230ad571e38ff7b06c7acd1c9",
+  "source_dirty": false,
+  "source_sha256": {
+    "__init__.py": "963213f6f58591ed78028f2e62300e2cabb8c17beec390341839b9e006ea237f",
+    "admissibility.py": "bf24f29890c59a8ac2476d9b1bcb4629d57ffc0dccd6f26930cb090f029ede01",
+    "baselines.py": "227470f9dc2630140769a088ecc5d12edda2a40da1c52c8802a02890c6d1b8dc",
+    "benchmark_stress.py": "ef150d31cb5af8dff86999942e88037073c862fab85dd4b353e3f6ebab53cd2d",
+    "benchmarks.py": "b6a4766de4525f537a2584efe246dc0143729f60645e1c9999762f4a5323bc49",
+    "bridge.py": "686269a75f79a83af4ae923b068e7797623a10e58da98337b8781f1ea9b6d80a",
+    "coherent.py": "8bd1d53868558ee04a1509aeca97fd68dfb7a243c04e04ba14bb7356a1baff74",
+    "coherent_benchmark.py": "ba226af3487d9c1b8be5721bda10adcdbdb2b3ec65c26b5ac42542aa7f7abe12",
+    "coherent_config.py": "adab2684e4fe0d6934a215e45b9934fcfbe329a8e586833ab1adb1ba43a85b3a",
+    "coherent_reporting.py": "c8d4d0dcfe151bf34335b35738152841a0329be5e7f337661f45525e88332304",
+    "completion.py": "d2413d344cbc6af816e63bcfe690a543295c02d0ff9378ebb41d906da59da964",
+    "completion_forecast.py": "3c4df6d5e000a87781f0284ed8d2de68aa0d972f0e8deea6aa394e81b73c318b",
+    "completion_forecast_config.py": "5b1700cb63acdd17786fc8fc10a7061e266ef45ec21a9b39b9dc469b3b7b1cf7",
+    "completion_forecast_reporting.py": "feb367903ffeefb189310d2fd8728d82ff4df048e0e8d1627e0b532fc013a78e",
+    "completion_research.py": "7fd1face4944c73fe671b93989a4b4776cd0a0418e9c7fadee5286696de29739",
+    "completion_research_config.py": "b63617b4f70acdedd6031e9362763d5442bbe8c98e8054653db824fbbaf30945",
+    "completion_research_reporting.py": "c65e4ce1581a640819732751ef851bc82840fc84afb1b0a85ff9bb4b6f9706af",
+    "completion_source_study.py": "e1bfe9d42b5ff73f71525c3e23d913019207d517825b50f4a4a50c0007dde991",
+    "completion_strategy.py": "ced191d94b1ac0228ea63f08bd2563da412aedbf68dcb6ba040c9b0208ef8797",
+    "completion_uncertainty.py": "8f7048f24eb211932eb88377155884420ec40c65230c543cd6657edbd30a4e8b",
+    "empirical_attribution.py": "92aa7ccf638e8a26a1a4dcc0bf1a63d009f8e00a1771d82e83582662e8a8b374",
+    "empirical_calibration.py": "a83211052b2f2841804f44798b5fb231eb2f2eb01bc7bb8da46b4d2dcac60e09",
+    "empirical_data.py": "d29d6ac7306a2ce630b5120ce2547f1747fa76ea72a36743b06f44212afdc189",
+    "empirical_diagnostics.py": "60eecc83518bc3860274b0e791b10da1bfdb7537e7d999b5ee0ae1b4b0ff0d9a",
+    "empirical_import_audit.py": "527a6a4f821b214d832d46d78b27e1c7210509c7daaf2ee29b3f2f947c29b442",
+    "empirical_joint.py": "a849224ffcf0441074e1407b77ca074341e5420d215d78d9a47db6b0b6e0be4f",
+    "empirical_mechanism_models.py": "8d977a9e794033460ee790c5c44d4bb20982f52f378d12f9ee39070aa0e2cece",
+    "empirical_mechanisms.py": "5b4f4cf65d3731c9bd7dfded7dfa5e3aa8352c7640cfff837221f6148fc87d46",
+    "empirical_research.py": "e8761e6843f5f8e9db1420eaec102eebcc2526fe7ec096da7701693dbc91c6be",
+    "empirical_score_analysis.py": "0faff51998ea0434ebb7fb88200fbcb0ef114ae7ce2eb08636bc455d788bbbff",
+    "empirical_short_history.py": "e1dd2051d6eef7c48b3d7293600c623a8a0a7b025cfb360b4be33e34f6240745",
+    "empirical_short_history_data.py": "45af15b097475d87f35e4691aa197a763f79f0d508b4d8d3fa148a81bae40beb",
+    "empirical_short_history_models.py": "77c6c755f1ddbfe0b0c1d60b657026aba0e394f201b0f0cfdddb3e6e5f73e803",
+    "empirical_study.py": "e2441673009761d58040ecb7c9e84441d55fb16402aac034ee0393059b3ed824",
+    "estimation.py": "1b13ece40ad204fe4873d8294b1f470c4cd630af7a4660898d91132fe792e917",
+    "experiments.py": "937390a50a0515cd3d81c0836d3d1853db9c4c84a0b51d0edca211176a053395",
+    "fragment_benchmark.py": "9f32c0c3f923dbe3cd3cf7ae8025791b905a6c3eda5779323669f684e30ee2d0",
+    "fragment_config.py": "dd70e9934911e10a983314f3da5bfbf69af42497e571047c47005a31de7c355a",
+    "fragment_reference.py": "3b024ba1afd086fa94904e9dfdb5b56d4d483d31e7111a1c819d2310d85485bd",
+    "fragment_reporting.py": "e8f5d9d00987e2c9f43e69064eda79b0f37a44a2f57bef38ac56eb612f93a578",
+    "fragments.py": "36fae20395f89572097d7340d32ca9c25d265458d8de348a2f8eaee8bf64adf3",
+    "futures.py": "ed5a697311aa280d7d6b2280340127ca524e4e2a3cdc38372a3e26850b1f31c7",
+    "gaussian_completion.py": "449d5522dea09007a448031280ea021abfa9d39551fd5836d975188aa823514e",
+    "gaussian_workflow.py": "5ab71ce506fe3d80db1c02f70b1f28cfb52843720085ff5cb7a5ebc879f8959a",
+    "geometry.py": "76c4de796a49a7dbc4738261dcedda7cb3e4ff2059f68a26432a34c0a25ed8eb",
+    "hedging.py": "c98f0ac66790133ae5406f73af8f479c42669311aa2d8fdf1ab0486445c84af2",
+    "hedging_controls.py": "4a252bac3b5d4884a316f837c884390cc87861afab491edfa1bd9d987c43db22",
+    "hedging_pilot.py": "6a3f20ad110a1a40b825b758fad6e40eb10f2abdbfd9cef5fc4e1e4d51e73313",
+    "hedging_population.py": "d491cda9f9314ba1b156df9c18de37d2606152aee22a8e0a8ecc4d9269b2e1c7",
+    "hedging_reporting.py": "26d88f1c1543ef7c351e5956cff823cbd429a9259691df865ff8798db7219881",
+    "hedging_statistics.py": "27bc96ec2ab54ce8dd3ad889a46a9f9387c3270a9334bbcf9638ba6782f344a5",
+    "hedging_true_points.py": "cdddee4a4c56a61b24a9282eb49ca57eca1db96041187150b5d2ec7b17eeb6ca",
+    "hedging_workflow.py": "01fce5ae1cd23a2f45d43e80b64e8274f1b291ac537bb1e78ade26b87a765efc",
+    "infinite_benchmark.py": "a3d5f7140b752b94be6cae9b6ca37e5ee4652dbe75f357d06d03f9ac079f671c",
+    "infinite_config.py": "2ee16307ce050da5a6aa51e48240d52d80a96552c173ed764801be850523a7ea",
+    "infinite_reporting.py": "d4830dfa894607c5287999e3f633b31b58a2e2d2457f7b3421afb699f1c175aa",
+    "kernel_workflow.py": "320ba4341eb2b27ba9ab4e5a3b2b441245f5f1ad2f09f561ee7547bc58f8b594",
+    "laguerre.py": "dc20c4e17957cbb5f4663c40f88bf3fe47c90cc1b868a26503fca06c041ce53f",
+    "linalg.py": "eaf4db8ef4cecb13cb0b742858fe187fc30ba0a6659a0ac7567f307473ea32db",
+    "mechanism_oracle.py": "b1fdc00ae193710fc59aaaa27b7a024767f0259c7ce7bc5cfa52e4bd4973a5e4",
+    "observation_statistics.py": "ead0e25c2a5861d875f430af168006c02e9b54e4466f2cccadc4f0f033041197",
+    "observations.py": "f7ed586b1d89eba00f9733453063868a72146f84a9be6f34fc25bd2c3a528139",
+    "partial_benchmark.py": "789049f5ecde6ccd057c5ad9a0605811a60decc5c10bcb348edba9f0df77744f",
+    "partial_config.py": "508057a48805db900e7eefe5cd1b06c58bcc4ea5b6ce323c9636ae586b74bdc7",
+    "partial_design.py": "76c81fdeb0e291ae684e01fdfd04a681cdf10543094c522acb2f737dac36a071",
+    "partial_reporting.py": "7e95790f5768a4e8a315100325ff918a4ecefc3462f5f5570d7f6d516b3b8f90",
+    "provenance.py": "1ab616f5bb8c6e94cc6c7a20de4cdd29b009da60f82bf251db35e684c82b1e5c",
+    "rq2.py": "e762e3d0a4fcd9263d5c9cae80c245a92a078e64c68c6d62875f8919381c6666",
+    "rq2_design.py": "ccd4e356d86f4333d027f91fc3922450f193ebe2016a2c5f3bec33aa73231168",
+    "rq2_reporting.py": "d29aedd450a9d6dd6f3cca4a7f2e0ed806398c8f362f4d35d55fbc4387a52b3a",
+    "rq3.py": "5fc668d8e5d845f58364fca15046dab9a90a6e1339995bda378d005ea39bd6be",
+    "rq3_config.py": "b5a5efdb1b99eb8452392d322ea6a3a350c3fb29008227dbf8da2c5a1b8a21a8",
+    "rq3_reporting.py": "e25615295a043e46a2189f5a9bb84cce198a0c5c708b3d8b996cc25628885bc0",
+    "simulation.py": "c9e2d91da8ccd3f62f32017e04ca94b00da4cb850f4acdca7693977390a931b1",
+    "source_classes.py": "3a1c4f2d9693d44b1695af6e65ebf1736f9566b65b188695c2f4217d5fe6ac45",
+    "spaces.py": "9d550e79fea9fbbf2d4d5f6ef0dcdccf0ba8726888021a5083a7c6f4cd3bdc15",
+    "statistical_completion_benchmark.py": "0bd754b9e87b2067066432b2a150dd4dede49efe274dc2b4e4135e83cb5762d0",
+    "statistical_completion_reporting.py": "35838473c1a750fa848dbb438ee5a0b6001278b5eb541dbf15468e2960beb7d9",
+    "trajectories.py": "68e99ba04dc11bba910a1ad7ac2c23e6b116c61a9d25598c890fa1b39ee2e857",
+    "transport.py": "b2d49868b677a66320dd2051c210b46000307c0d8b1328a8c9873b64816968de",
+    "workflow.py": "644650a48a40382f3d6636fd7fae42e2d49bd9c42553b2377c686e8b6dc734f2"
+  },
+  "numerical_source_unchanged": true,
+  "uv_lock_sha256": "5d155d7e9095e9429e4c098e0a956fbbe415ca940245f59c7815ed3e1c521ac8",
+  "config_sha256": "ec6b214e03fb7ec217bef70355bc333bd99a243a5fb215b1c460c578bafe79f8",
+  "data_provenance": {
+    "archives": [
+      {
+        "filename": "shfe-futures-2016.zip",
+        "sha256": "71b8996857b26a5cdb6e84a04ebbf773bffdc2f7b62249fc2573f8ff30a6949b",
+        "bytes": 1815988,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119585669672682.zip",
+        "retrieved_utc": "2026-10-27T05:45:29.463222+00:00",
+        "year": 2016
+      },
+      {
+        "filename": "shfe-futures-2017.zip",
+        "sha256": "f2a2f754f700025551db296f5da1c53d0443b36a3b9d66bf8212490771c79d87",
+        "bytes": 1847623,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119585862827439.zip",
+        "retrieved_utc": "2026-10-27T05:45:39.203090+00:00",
+        "year": 2017
+      },
+      {
+        "filename": "shfe-futures-2018.zip",
+        "sha256": "feb7cf908c0f748f060fde1c41161cddcc169fba138031871e41a28d26d0d422",
+        "bytes": 3339665,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119586086733906.zip",
+        "retrieved_utc": "2026-10-27T05:45:45.994338+00:00",
+        "year": 2018
+      },
+      {
+        "filename": "shfe-futures-2019.zip",
+        "sha256": "e2f25d9e02facde9bbd08dd8a9db8aac45f2729c2200e1995d4ccb99fc795992",
+        "bytes": 10268799,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119586374207845.zip",
+        "retrieved_utc": "2026-10-27T05:46:58.900090+00:00",
+        "year": 2019
+      },
+      {
+        "filename": "shfe-futures-2020.zip",
+        "sha256": "a2cc888d9c2abfd2988611c25f6abe860ef167dca46a0ca21e82f273a8f3ec87",
+        "bytes": 20895928,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119586621179538.zip",
+        "retrieved_utc": "2026-10-27T05:47:25.796166+00:00",
+        "year": 2020
+      },
+      {
+        "filename": "shfe-futures-2021.zip",
+        "sha256": "e9962695770b84da1001a108fd42b2422ce5be2b9c954fcd7c40e879c32eba48",
+        "bytes": 20448589,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119586875148395.zip",
+        "retrieved_utc": "2026-10-27T05:48:03.132136+00:00",
+        "year": 2021
+      },
+      {
+        "filename": "shfe-futures-2022.zip",
+        "sha256": "38be8b5ff728a6aa34aa1e25a961857cac319a194db8f9c161d3e1af10b5399c",
+        "bytes": 18790402,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119587093379978.zip",
+        "retrieved_utc": "2026-10-26T00:25:23.346462+00:00",
+        "year": 2022
+      },
+      {
+        "filename": "shfe-futures-2023.zip",
+        "sha256": "605e119b8f6e7cd73b02fa18aa75ce1b388d5628aa024d7f5b7961d028a9ec2c",
+        "bytes": 24187534,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202401/P020240119587353273027.zip",
+        "retrieved_utc": "2026-10-26T00:25:52.368288+00:00",
+        "year": 2023
+      },
+      {
+        "filename": "shfe-futures-2024.zip",
+        "sha256": "68505aefe460ffa3167bd200477a5ebb05a8aaac5e477bb013e97ffbcf7bc99e",
+        "bytes": 35087891,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202501/P020250103380580546440.zip",
+        "retrieved_utc": "2026-10-26T00:25:00.244119+00:00",
+        "year": 2024
+      },
+      {
+        "filename": "shfe-futures-2025.zip",
+        "sha256": "fe0122e1ff0e072fc200ce924c488407a0305d3e5790692a19efc999709d4902",
+        "bytes": 76397695,
+        "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/historicaldata/futures/202601/P020260317382428557825.zip",
+        "retrieved_utc": "2026-10-26T00:27:09.040950+00:00",
+        "year": 2025
+      }
+    ],
+    "tables": [
+      {
+        "source": "shfe-futures-2016.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6(1).xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6(1).xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "2ca3afcf04ad5ef1727a9678d4923126414543c585e84a3e26ae5edac3cde3a4",
+        "counts": {
+          "copper_rows": 2928,
+          "dated_rows": 39264,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 38939,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 36336,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2016-01-04",
+          "last_copper_session": "2016-12-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2017.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3b09d5b3448b4471ad28fdbac18461d58d8ade8404b870ea8d755522effaf7f5",
+        "counts": {
+          "copper_rows": 2928,
+          "dated_rows": 39302,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 38976,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 36374,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2017-01-03",
+          "last_copper_session": "2017-12-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2018.zip:2018\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "2018\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "fcb21080c7990337bc90a7036fc004b2f92404f8da71f48d9fbfbbc5bd6b4340",
+        "counts": {
+          "copper_rows": 2916,
+          "dated_rows": 51240,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 50655,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 48324,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2018-01-02",
+          "last_copper_session": "2018-12-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.3.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.3.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "f8171a0fad53ae9935e6c2fd28df9fe973e8a1ff3a9957a4f78c422fd7e65e36",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 16093,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 15272,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 15841,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-03-01",
+          "last_copper_session": "2019-03-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.4.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.4.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "32cb5648f53b28623696c16fa88bbd2ba45ac14b61a3158e83f0cd1fad026b44",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 17093,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 16205,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 16841,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-04-01",
+          "last_copper_session": "2019-04-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.5.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.5.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3adc9b831ccf3726f7a7a31bfac0370c20c5a9b800b343b96bf79ebefb00f428",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 16816,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 15921,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 16576,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-05-06",
+          "last_copper_session": "2019-05-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.1.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.1.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "a5c0003e879b31b3e365fa2c04878f967e2b2f02e6aaa34230102a11113a0d41",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 10128,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 9472,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 9864,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-01-02",
+          "last_copper_session": "2019-01-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.2.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.2.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "00223a16fc87cab64dd47e5fd541e77a9660ee2149314310ec5f2596f796d634",
+        "counts": {
+          "copper_rows": 180,
+          "dated_rows": 10451,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 9685,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 10271,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-02-01",
+          "last_copper_session": "2019-02-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "216171cfe9e58e2b7fd634a4e0bab6ca249269ccc8fe6394d3febd66a8706d18",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 16138,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 15222,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 15910,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-06-03",
+          "last_copper_session": "2019-06-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.7.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.7.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "b21c03e06bdfb175168063b90a7e9f1bc204e9bae6c5514e9ab3ba06088d6e55",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 20638,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 19658,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 20362,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 3
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-07-01",
+          "last_copper_session": "2019-07-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.8.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.8.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "08d483292dee58d73cdbd30179c493124121e332e05e2fcb30b21cc7b5898f73",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 20332,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 19342,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 20068,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-08-01",
+          "last_copper_session": "2019-08-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.9.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.9.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "b01f500ddc60f637b3b56f3062167f499c51c5387eebe765bd7e7061bd979fb6",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 18404,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 17405,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 18164,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-09-02",
+          "last_copper_session": "2019-09-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "8ebdc27ec343c4aafbfee434296fe0f3be8e9332d8c5ca46756bab2b606bd3b0",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 16828,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 15835,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 16612,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-10-08",
+          "last_copper_session": "2019-10-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.11.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.11.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "5e8c12335397672624c5f8069f8004ba849d17057e662e15b24ba9fdc6cc461c",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 19581,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 18589,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 19329,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 4
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-11-01",
+          "last_copper_session": "2019-11-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2019.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.12.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62019.12.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "27376a8b95fcce25219572217f20ebce5b32cc2e4ee95b4e96c88890b4a3f0c3",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 22377,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 21206,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 22113,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "double-sided",
+          "open_interest_convention": "double-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2019-12-02",
+          "last_copper_session": "2019-12-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.1.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.1.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3e565d0c713edf57ec12033a2cc3034804ef4c1eeb94b2484aa8618ed3b85be8",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 18550,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 17279,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 18358,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-01-02",
+          "last_copper_session": "2020-01-23"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.2.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.2.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "16bb457c42ac797b1e3399c702698d6c15f9281631a719978cf9c9a1ff4581e2",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 26714,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 25268,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 26474,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-02-03",
+          "last_copper_session": "2020-02-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.3.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.3.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "41871a8375b4d6b69dd438328f0497f15442decbf0a0d03dc1d53c3e24314ee6",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 35266,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 33169,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 35002,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-03-02",
+          "last_copper_session": "2020-03-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.4.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.4.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "b82b1b2fe7f753294d9b6a376d15cd358c8a3d9b5a1ed7f5a342ba3efa329480",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 41134,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 39017,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 40882,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-04-01",
+          "last_copper_session": "2020-04-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.5.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.5.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "f8ace99158f298594ff6f8b3ffa6fb6ff528aaa93309533ab5fda71a3b97ad66",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 35102,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 33011,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 34886,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-05-06",
+          "last_copper_session": "2020-05-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "200a23f616d1f51ffa424379b6403745c5c049ad34e4c4f70636666f0f616a8f",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 38228,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36165,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 37988,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 2,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-06-01",
+          "last_copper_session": "2020-06-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.7.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.7.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3c11eaca366c74b1f801562b362ca4c0c4de2e3ee02f57bc9fde1554990e5753",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 45360,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 43199,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 45084,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-07-01",
+          "last_copper_session": "2020-07-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.8.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.8.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "47ce87fb139450908d24a92b34773b8ffd5364328f6341f03ff3e291384f5331",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 49314,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 46693,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 49062,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-08-03",
+          "last_copper_session": "2020-08-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.9.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.9.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "2010122338d5fabde6ab22ba324b5aff4235afa2164866e676eb0053b5cc82a3",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 53706,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 50970,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 53442,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 3
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-09-01",
+          "last_copper_session": "2020-09-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "d5a820b503add0761b26720b67798f067ca31a34b9f003cf7d9af96e1425498e",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 39496,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36709,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 39304,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-10-09",
+          "last_copper_session": "2020-10-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.11.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.11.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "12080a622b6473540300725ad19d9a96a53aee7597cbe73df14b55e86e6cebc4",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 52774,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 49985,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 52522,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-11-02",
+          "last_copper_session": "2020-11-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2020.zip:\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.12.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u2566\u2219\u2500\u250c\u2551\u2567\u2558\u255d\u2568\u2568\u255f\u0398\u2592\u00bf\u2592\u03c62020.12.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "280e8997697f9e47130800aac68f937eb72700c03de0d9f4a7d6304b0fd7258a",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 59382,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 56555,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 59106,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2020-12-01",
+          "last_copper_session": "2020-12-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.01.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.01.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "ff9fa2add5f517ab04ecc472fb477619764238874cffd707fc43248327fed1b3",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 47972,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 45443,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 47732,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 3
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-01-04",
+          "last_copper_session": "2021-01-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.02.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.02.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "515dd5dcdaffafc171cd3b44ad72c8937670f0c167176950053c79b0fca5ded2",
+        "counts": {
+          "copper_rows": 180,
+          "dated_rows": 32962,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 30310,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 32782,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-02-01",
+          "last_copper_session": "2021-02-26"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.03.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.03.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "58b4c5376f96abf1bba18b794c9124f56bca7f68c0f6a266b299f2ac015e3484",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 51118,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 48647,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 50842,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-03-01",
+          "last_copper_session": "2021-03-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.04.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.04.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "6a31968984152d6c4eec951cdcd10a4d00e628c506e6d4e314631ac5180d99a6",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 43384,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 40903,
+          "footer_rows": 4,
+          "header_rows": 1,
+          "non_copper_rows": 43132,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 3
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-04-01",
+          "last_copper_session": "2021-04-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.05.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.05.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "28e6e600a32ab2af96d235afdb0b8cc0257f8b0a81731954cc6afea66bdb2946",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 36160,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 34011,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 35944,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-05-06",
+          "last_copper_session": "2021-05-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.06.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.06.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "cf5d0f06b027ded756ac51914264c9e29fcafc269fa47ef5d6f50315ed873828",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 38084,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36087,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 37832,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-06-01",
+          "last_copper_session": "2021-06-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.07.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.07.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "d53672b384b1f24c9a178e4b408137f06005ce38c39220741b2b73d1479e4fb2",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 35326,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 33559,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 35062,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-07-01",
+          "last_copper_session": "2021-07-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.08.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.08.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "8432649e5619dc544893c519aa0d78800ba45ef8c811bebc2fa2f04d670504f0",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 32692,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 30849,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 32428,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 3
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-08-02",
+          "last_copper_session": "2021-08-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.09.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.09.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "897666bd3505f8606a4beac50822210329e92bc6c065ce8e85714d2a3bc29e80",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 30186,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 28370,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 29946,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-09-01",
+          "last_copper_session": "2021-09-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "f9e7d03a37d2dcb78a227e926a2d3671403515b86823cfc3f0d7138eae6650d8",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 23232,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 21383,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 23040,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-10-08",
+          "last_copper_session": "2021-10-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.11.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.11.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "43d7d847707a108249a78506aa716d175c35f119d81dc96aecf11b229dd6222a",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 38282,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36295,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 38018,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-11-01",
+          "last_copper_session": "2021-11-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2021.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.12.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682021.12.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "0794f5ae9da93bf9ad8100f8a2022039f43c68152461c674a7af6e06dda62342",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 38210,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36319,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 37934,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 6
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2021-12-01",
+          "last_copper_session": "2021-12-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.1.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.1.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "bd563d29bf95c80566b2009a6679cf9c6d96d9f7afd85c210a09d6fb2527d73c",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 30786,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 28970,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 30558,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-01-04",
+          "last_copper_session": "2022-01-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.2.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.2.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "9da9622c737f6176a2557f147a0b0de0cd29cf9e517b5498786a3b5b6f0aebd7",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 25042,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 23284,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 24850,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-02-07",
+          "last_copper_session": "2022-02-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.3.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.3.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "d31cad734ff73fa8947eb17ef68da1a816e747343901a2b4352ab5840b8ecc2c",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 37688,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 35731,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 37412,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-03-01",
+          "last_copper_session": "2022-03-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.4.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.4.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "45202162cda5107985b46943a78a9547446af6702741c4e8617d1e8672e6127d",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 33246,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 31199,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 33018,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-04-01",
+          "last_copper_session": "2022-04-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.5.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.5.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "7ef208581b2ab7593f5d81f595cfb17bdd0ce928e820e98b9a1116e1609b68ba",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 33014,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 31073,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 32786,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-05-05",
+          "last_copper_session": "2022-05-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "2d768595ebe3cce7981ecab1a32aa2db9b83f0fb74a9d5e515440026fbfc4e0f",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 34360,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 32315,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 34108,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-06-01",
+          "last_copper_session": "2022-06-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.7.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.7.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "57c1deef0d909e604a632e60c5aa3c49a753114a07e64acfc1ca50545eb9c5e3",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 39888,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 37611,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 39636,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_open_interest": 1,
+          "zero_volume": 2
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-07-01",
+          "last_copper_session": "2022-07-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.8.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.8.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "a3008dcd0a87a7b84637385d89bce987491ecceb2144b7ec04bced73e901478f",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 42586,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 40405,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 42310,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-08-01",
+          "last_copper_session": "2022-08-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.9.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.9.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "5552f5347472fa4a077cb72b9dcbbb020833534e08857368bda625f6e96454ea",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 37072,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 35014,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 36820,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-09-01",
+          "last_copper_session": "2022-09-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "505b51073387e3f697aa6d11fedf4b508a7c42392cb0c4f0f5994cd8b768598a",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 27776,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 25787,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 27584,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-10-10",
+          "last_copper_session": "2022-10-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.11.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.11.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "98b69a0df187ef494c21db3011439a6c73ea5de48ea9dbe7c1feffe3da503f66",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 39430,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 37413,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 39166,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-11-01",
+          "last_copper_session": "2022-11-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2022.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.12.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682022.12.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "5f013a6e45582af4b4b406fa0b426a800cfc36145232ff8e42e2fc262ab2b0d2",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 41934,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 39377,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 41670,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2022-12-01",
+          "last_copper_session": "2022-12-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.1.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.1.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "63babb5fa7e60386d9454b014df9cb0c892f9daaa70ce18ec17a239c611c2557",
+        "counts": {
+          "copper_rows": 192,
+          "dated_rows": 37366,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 34718,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 37174,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-01-03",
+          "last_copper_session": "2023-01-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.2.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.2.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "2dc518318f64f444d22b63ca196fee14e19f5e66bbb033bdeef7c68f8c07e92d",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 48524,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 45730,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 48284,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-02-01",
+          "last_copper_session": "2023-02-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.3.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.3.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3269a81c1d1471f99b40c28b5a754e44f08cb31b2e4ea401e2716e15b7a00bb2",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 55930,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 53143,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 55654,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-03-01",
+          "last_copper_session": "2023-03-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.4.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.4.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "beb9c6f454a606c96c4fe6d4791e28fc0c7a760fffb2aaa40330ef93545d6e32",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 46512,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 43669,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 46284,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4,
+          "zero_volume": 1
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-04-03",
+          "last_copper_session": "2023-04-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.5.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.5.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "3e78abd275a43cbfae285291f33fc4d5d4ef34dfb43eb90ac26978e309269542",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 50366,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 47407,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 50126,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-05-04",
+          "last_copper_session": "2023-05-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "61a0c24ef700fe08d6021298bc9938f8ad2f44bf84327c49616d82ac4d420188",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 48138,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 45491,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 47898,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-06-01",
+          "last_copper_session": "2023-06-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.7.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.7.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "f66a6a8ee50ce3aee8f7c7138f2e1be222a86a06c97245830861c7799f51e20f",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 45206,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 42747,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 44954,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-07-03",
+          "last_copper_session": "2023-07-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.8.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.8.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "d1f323db1c55d8bc9176d67d6b34c357bbb752d521992b4729e7ec34e6294cb4",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 48400,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 46055,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 48124,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-08-01",
+          "last_copper_session": "2023-08-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.9.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.9.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "715af5ad17b2e0982bccbb52e223d8a6af8059151d3cfb27109259f3d680df9f",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 40856,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 38461,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 40616,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-09-01",
+          "last_copper_session": "2023-09-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "a5fe5974d20d7c0ef40faa7d70b4f53f791c493be25d7e54ea3e2985fe16717d",
+        "counts": {
+          "copper_rows": 204,
+          "dated_rows": 33958,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 31711,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 33754,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-10-09",
+          "last_copper_session": "2023-10-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.11.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.11.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "fa1036fcf09b525f40bd0af1f5e7c07223f53e560fe60b1f3630905c10a463c8",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 41581,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 39356,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 41317,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-11-01",
+          "last_copper_session": "2023-11-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2023.zip:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.12.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682023.12.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "4a12e6c8d6232b1ad246792120909707feafd4ea8b993a5a39c0da09fcd11115",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 39849,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 37650,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 39597,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2023-12-01",
+          "last_copper_session": "2023-12-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.1.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.1.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "08562c79362e87f3435abbdd069876951c6481141f8d745c265b59238e43feed",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 39658,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 37613,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 39394,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-01-02",
+          "last_copper_session": "2024-01-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.10.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.10.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "911cde261eab4dc15acf8e3bd678371bbb3a42be1f9de36a0372d8d26e4aa1c9",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 55504,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 51795,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 55288,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-10-08",
+          "last_copper_session": "2024-10-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.11.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.11.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "096d211a8d54ca95ff0f1591f326408819e7aa50685dfbc0d1342a0d497c7f22",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 68154,
+          "header_rows": 2,
+          "non_copper_rows": 67902,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2024-11-01",
+          "last_copper_session": "2024-11-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.12.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.12.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "a0c1eb05de477078a745fef4fc6bb67ff7183fbd9d1727f5102f5790d9b21e09",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 67534,
+          "header_rows": 2,
+          "non_copper_rows": 67270,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2024-12-02",
+          "last_copper_session": "2024-12-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.2.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.2.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "f91dc3b5c74b0d9358d265cfd93f658683a777118789f3b2c2b3851818d912dd",
+        "counts": {
+          "copper_rows": 180,
+          "dated_rows": 25772,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 23708,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 25592,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-02-01",
+          "last_copper_session": "2024-02-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.3.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.3.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "35dfacc46882a39a0bf748287060dc31b5fe1acc165c234a219d32bebc6afe75",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 38412,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 36157,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 38160,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-03-01",
+          "last_copper_session": "2024-03-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.4.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.4.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "13f526374f710216d7d2ea2ed77c0d7293ec7db36f90023502a21a6006a1d28e",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 45736,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 42815,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 45496,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-04-01",
+          "last_copper_session": "2024-04-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.5.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.5.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "b28542ac40fbac5f0e1df59833066f67342e72daf89a22be3f93f0266e767e3d",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 52836,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 49667,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 52596,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-05-06",
+          "last_copper_session": "2024-05-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.6.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.6.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "738b77409294160130a71aeb585dc96845cabad148241101ae646c3811a32a47",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 51230,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 48285,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 51002,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-06-03",
+          "last_copper_session": "2024-06-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.7.xls:\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.7.xls",
+        "sheet": "\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "4c1374523db771dc862a95fb49c6e0ec3c3828876d66c73099844fa0b3b5bc55",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 56642,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 53683,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 56366,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-07-01",
+          "last_copper_session": "2024-07-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.8.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.8.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "796339e82a9973c39fdefbd9ab86904bacdd3bd3c3c3be84b3af057202ee5beb",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 56152,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 53203,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 55888,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-08-01",
+          "last_copper_session": "2024-08-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2024.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.9.xls:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u88682024/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682024.9.xls",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u8868",
+        "member_sha256": "94c1c9e845a054e5736fcb328ce3f97f9c82455d22b502c91bc61777888de091",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 53726,
+          "empty_rows": 1,
+          "expanded_merged_contract_labels": 50313,
+          "footer_rows": 4,
+          "header_rows": 2,
+          "non_copper_rows": 53498,
+          "preamble_rows": 2,
+          "recognized_metadata_rows": 4
+        },
+        "counting": {
+          "volume_convention": "single-sided",
+          "open_interest_convention": "single-sided",
+          "declaration_source": "explicit workbook notes",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 1,
+          "first_copper_session": "2024-09-02",
+          "last_copper_session": "2024-09-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.1.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.1.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "2d54e38c0608df11166dfd3e88717794a760d42304b2f1bc92809fab50b74e3e",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 54208,
+          "header_rows": 2,
+          "non_copper_rows": 53992,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-01-02",
+          "last_copper_session": "2025-01-27"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.10.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.10.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "7a864c8c21eef1db66ba0ee070adce0d5c6351db6fa858ca5313eb81fd382f04",
+        "counts": {
+          "copper_rows": 204,
+          "dated_rows": 83350,
+          "header_rows": 2,
+          "non_copper_rows": 83146,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-10-09",
+          "last_copper_session": "2025-10-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.11.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.11.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "25ce395def661a8068b4f8ea9b0798dbee2ed95b1d6aed34c285ba0291e8cf43",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 98519,
+          "header_rows": 2,
+          "non_copper_rows": 98279,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-11-03",
+          "last_copper_session": "2025-11-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.12.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.12.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "5538981a9709512143a7dc12d4f9495193ec1a36fcbb91419ac18163f90131de",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 125181,
+          "header_rows": 2,
+          "non_copper_rows": 124905,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-12-01",
+          "last_copper_session": "2025-12-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.2.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.2.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "e1ecb53b0f958db45e534c8a17312097c36268682e48fc14de69e8696d808b9c",
+        "counts": {
+          "copper_rows": 216,
+          "dated_rows": 56206,
+          "header_rows": 2,
+          "non_copper_rows": 55990,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-02-05",
+          "last_copper_session": "2025-02-28"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.3.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.3.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "20ec2b883ab7dac12ba1155996d3f021930ba32c5b49cb4da102ab4122034e7a",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 66934,
+          "header_rows": 2,
+          "non_copper_rows": 66682,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-03-03",
+          "last_copper_session": "2025-03-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.4.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.4.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "167aee1b7dcb06bdc7a3e95c3493ad9d8d92bd6261d5c4b59277baecd36f9c6b",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 81156,
+          "header_rows": 2,
+          "non_copper_rows": 80904,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-04-01",
+          "last_copper_session": "2025-04-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.5.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.5.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "75de0f47c090aafaca105ace9c71080a3a67ed2ba26cbc9c8d840ee195ecd504",
+        "counts": {
+          "copper_rows": 228,
+          "dated_rows": 75706,
+          "header_rows": 2,
+          "non_copper_rows": 75478,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-05-06",
+          "last_copper_session": "2025-05-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.6.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.6.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "d1be6ce732ac2686acc9a9ceac6385aaa343f79a41ddbc4ab33ab9db74f8baea",
+        "counts": {
+          "copper_rows": 240,
+          "dated_rows": 81845,
+          "header_rows": 2,
+          "non_copper_rows": 81605,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-06-03",
+          "last_copper_session": "2025-06-30"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.7.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.7.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "3ca17fe35ecac18abf888be5adfe904e1194c51ae23d23b9ae18aa8ac3e67af4",
+        "counts": {
+          "copper_rows": 276,
+          "dated_rows": 90098,
+          "header_rows": 2,
+          "non_copper_rows": 89822,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-07-01",
+          "last_copper_session": "2025-07-31"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.8.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.8.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "2b5cce5138e48a4a47c64f858b567931342e0d7cfaeafb2802d3fb34817aa52d",
+        "counts": {
+          "copper_rows": 252,
+          "dated_rows": 79839,
+          "header_rows": 2,
+          "non_copper_rows": 79587,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-08-01",
+          "last_copper_session": "2025-08-29"
+        }
+      },
+      {
+        "source": "shfe-futures-2025.zip:\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.9.xlsx:\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member": "\u4e0a\u671f\u6240\u5408\u7ea6\u884c\u60c5\u62a5\u8868/\u6240\u5185\u5408\u7ea6\u884c\u60c5\u62a5\u88682025.9.xlsx",
+        "sheet": "\u6240\u5185\u5408\u7ea6\u884c\u60c5\u8868",
+        "member_sha256": "5357bb1550aa0df327440ba2958bd5a4ade688fa3c051428c2fcef518816c3cc",
+        "counts": {
+          "copper_rows": 264,
+          "dated_rows": 91834,
+          "header_rows": 2,
+          "non_copper_rows": 91570,
+          "preamble_rows": 2
+        },
+        "counting": {
+          "volume_convention": "unknown",
+          "open_interest_convention": "unknown",
+          "declaration_source": "unavailable",
+          "raw_counts": "archived integer contract counts; no normalization applied",
+          "single_sided_view": "explicit opt-in; double-sided counts divided by two",
+          "declaration_count": 0,
+          "first_copper_session": "2025-09-01",
+          "last_copper_session": "2025-09-30"
+        }
+      }
+    ],
+    "units": {
+      "currency": "CNY",
+      "price_unit": "CNY/tonne",
+      "volume_unit": "contracts",
+      "open_interest_unit": "contracts",
+      "specification_source": "https://tsite.shfe.com.cn/upload/20190919/1568892145195.pdf",
+      "tenor_coordinate": "15th of contract month; coordinate only, not expiry",
+      "counting_scope": "raw archived counts; see each table's counting declaration",
+      "tonnes_per_contract": 5.0
+    },
+    "date_range": {
+      "start_inclusive": "2016-01-01",
+      "end_inclusive": "2025-12-31"
+    },
+    "data_vintage": "retrospective official annual archives; point-in-time not verified",
+    "calendar": "dates observed in SHFE workbooks; unfilled, not an inferred holiday list",
+    "transformations": "declared merged contract labels expanded; cuYYMM selected and sorted; no roll, date filling or price repair",
+    "expiry_metadata": "not supplied; contract-month midpoint is a coordinate only"
+  },
+  "importer_audit": {
+    "scope": "2016--2025 copper only; reserved 2026 archive not opened by import audit",
+    "rows": 29160,
+    "sessions": 2430,
+    "distinct_contracts": 132,
+    "legacy_parity_available": true,
+    "price_and_raw_count_parity_2022_2025": {
+      "dates": true,
+      "contract_ids": true,
+      "contract_month_dates": true,
+      "settlement": true,
+      "volume": true,
+      "open_interest": true
+    },
+    "by_year": [
+      {
+        "year": 2016,
+        "rows": 2928,
+        "sessions": 244,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 1,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "double-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "double-sided"
+        ]
+      },
+      {
+        "year": 2017,
+        "rows": 2928,
+        "sessions": 244,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 0,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "double-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "double-sided"
+        ]
+      },
+      {
+        "year": 2018,
+        "rows": 2916,
+        "sessions": 243,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 0,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "double-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "double-sided"
+        ]
+      },
+      {
+        "year": 2019,
+        "rows": 2928,
+        "sessions": 244,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 13,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "double-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "double-sided"
+        ]
+      },
+      {
+        "year": 2020,
+        "rows": 2916,
+        "sessions": 243,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 21,
+        "open_interest_zero": 5,
+        "volume_counting_conventions": [
+          "single-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "single-sided"
+        ]
+      },
+      {
+        "year": 2021,
+        "rows": 2916,
+        "sessions": 243,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 16,
+        "open_interest_zero": 2,
+        "volume_counting_conventions": [
+          "single-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "single-sided"
+        ]
+      },
+      {
+        "year": 2022,
+        "rows": 2904,
+        "sessions": 242,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 8,
+        "open_interest_zero": 2,
+        "volume_counting_conventions": [
+          "single-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "single-sided"
+        ]
+      },
+      {
+        "year": 2023,
+        "rows": 2904,
+        "sessions": 242,
+        "normalization_unavailable_rows": 0,
+        "normalization_unavailable_sessions": 0,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 2,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "single-sided"
+        ],
+        "open_interest_counting_conventions": [
+          "single-sided"
+        ]
+      },
+      {
+        "year": 2024,
+        "rows": 2904,
+        "sessions": 242,
+        "normalization_unavailable_rows": 516,
+        "normalization_unavailable_sessions": 43,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 0,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "single-sided",
+          "unknown"
+        ],
+        "open_interest_counting_conventions": [
+          "single-sided",
+          "unknown"
+        ]
+      },
+      {
+        "year": 2025,
+        "rows": 2916,
+        "sessions": 243,
+        "normalization_unavailable_rows": 2916,
+        "normalization_unavailable_sessions": 243,
+        "settlement_nonfinite": 0,
+        "settlement_nonpositive": 0,
+        "volume_zero": 0,
+        "open_interest_zero": 0,
+        "volume_counting_conventions": [
+          "unknown"
+        ],
+        "open_interest_counting_conventions": [
+          "unknown"
+        ]
+      }
+    ],
+    "counting_policy": {
+      "raw": "archived integer volume/open_interest preserved exactly",
+      "view": "explicit opt-in single-sided equivalents from per-workbook notes only; no year fallback",
+      "known_double_sided": "only where workbook notes explicitly declare double-sided counts",
+      "known_single_sided": "only where workbook notes explicitly declare single-sided counts",
+      "unavailable": "missing declarations remain unknown; no year inference",
+      "prices_and_multiplier": "unchanged; CNY/tonne and 5 tonnes/contract",
+      "positive_liquidity_eligibility": "unchanged under positive rescaling",
+      "normalized_open_interest_half_integer_count": 0,
+      "normalized_known_scope_rows": 25728,
+      "normalized_volume_half_integer_count": 0,
+      "double_sided_divisor": 2
+    },
+    "held_out_2026": {
+      "year": 2026,
+      "bytes": 93190580,
+      "sha256": "5ff3e4e8ce2446b6e0db294b2c123383c32f5de62c8c27779d312096c7dbc557",
+      "url": "https://www.shfe.com.cn/reports/tradedata/datadownload/annualdata/annualdata_futures/202602/P020261009564142736862.zip",
+      "source": "provided acquisition metadata only; reserved archive not opened by audit"
+    }
+  },
+  "environment": {
+    "python": "3.13.12 (main, Feb  3 2026, 17:53:27) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-15.0.1-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "python-calamine": "0.9.0"
+    },
+    "threads": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    }
+  },
+  "runtime_seconds": 1572.705476458883,
+  "workers": 8,
+  "episode_count": 1311,
+  "issued_count": 197940,
+  "scheduled_origins": 437,
+  "first_origin": "2017-01-03",
+  "last_origin": "2025-12-24",
+  "local_records_sha256": "45d1dbaad38ad4380462e0a63581010be809db564d684e581506589143a1a534",
+  "local_record_policy": "contract-level prices, forecasts and P&Ls are not exported"
+}

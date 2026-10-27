@@ -1,0 +1,24 @@
+# Frozen diagnostic study. 2016 warmup; 2017–2025 inspected evaluation.
+# No 2026 observations are accepted. No model or parameter selection.
+dimensions = [2, 3, 4]
+interval_policies = ["all", "one_day"]
+oracle_replications = 20
+
+[base]
+name = "copper-mechanisms-2016-2025"
+training_end = "2015-12-31"
+validation_end = "2016-12-31"
+test_end = "2025-12-31"
+window = 252
+origin_stride = 5
+min_training_intervals = 126
+history_budgets = [0, 5, 20, "all"]
+half_life = 63.0
+sensitivity_half_lives = []
+relative_regularization = 0.001
+numerical_error_budget = 0.00001
+trace_cap_multiplier = 100.0
+bootstrap_replications = 1000
+bootstrap_block = 4
+bootstrap_sensitivity_blocks = [1, 2, 8]
+seed = 20261027

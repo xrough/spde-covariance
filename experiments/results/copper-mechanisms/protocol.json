@@ -1,0 +1,83 @@
+{
+  "question": "matched reconstruction, source-estimation policy and residual-correction contrasts",
+  "config": {
+    "base": {
+      "name": "copper-mechanisms-2016-2025",
+      "training_end": "2015-12-31",
+      "validation_end": "2016-12-31",
+      "test_end": "2025-12-31",
+      "window": 252,
+      "origin_stride": 5,
+      "history_budgets": [
+        0,
+        5,
+        20,
+        null
+      ],
+      "half_life": 63.0,
+      "sensitivity_half_lives": [],
+      "min_training_intervals": 126,
+      "dimension": 3,
+      "factor_dimension": 3,
+      "smoothing": 1e-06,
+      "reconstruction_ridge": 1e-06,
+      "relative_regularization": 0.001,
+      "numerical_error_budget": 1e-05,
+      "trace_cap_multiplier": 100.0,
+      "rank_rtol": 1e-10,
+      "min_tenor_days": 30,
+      "max_tenor_days": 365,
+      "target_tenors_days": [
+        90,
+        180,
+        270
+      ],
+      "multiplier": 5.0,
+      "pnl_variance_floor": 25.0,
+      "min_direct_count": 20,
+      "hedge_bounds": [
+        -2.0,
+        2.0
+      ],
+      "bootstrap_block": 4,
+      "bootstrap_sensitivity_blocks": [
+        1,
+        2,
+        8
+      ],
+      "bootstrap_replications": 1000,
+      "seed": 20261027,
+      "cache_entries": 64,
+      "cache_bytes": 67108864
+    },
+    "dimensions": [
+      2,
+      3,
+      4
+    ],
+    "interval_policies": [
+      "all",
+      "one_day"
+    ],
+    "oracle_replications": 20
+  },
+  "chronology": "2016 warmup; 2017\u20132025 descriptive rolling evaluation; 2026 sealed reserve",
+  "selection": "fixed settings, no tuning, no winner selection; one calendar stride anchored once",
+  "factorial": "same reconstructed innovations and joint residual blocks; source-C versus direct-H, crossed with factor/correlated/diagonal",
+  "source_policy": "changes interval integration, ridge and trace constraints; not a pure covariance estimation error against latent truth",
+  "reconstruction": "raw versus reconstructed maturity pool holds observed IDs, selectors, ages, own-history counts and blend fixed",
+  "one_day": "training weights zero for non-one-day intervals, no calendar compression; score only next one-day intervals; master origin blocks preserved",
+  "all_intervals": "direct H is an EWMA local mixture of normalized interval covariances, not a claimed terminal covariance",
+  "units": "ACT/365.25 normalized training, next actual interval, five-tonne CNY P&L moments",
+  "counting": "raw archived counts retained; explicit note-based single-sided view; unknown unavailable; no count magnitudes used in fitting",
+  "information": "mask target history before every transformation; future only in scoring; 2026 never parsed",
+  "interpretation": "policy contrasts with interactions, not unique additive percentages of latent error",
+  "limitations": [
+    "daily inspected data",
+    "maturity proxy is contract-month15th",
+    "no latent continuum or source truth",
+    "four residual features plus diagonal is a restriction",
+    "masked histories are not new listings",
+    "not prices, derivative pricing or execution backtesting"
+  ]
+}
