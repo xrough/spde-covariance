@@ -65,8 +65,33 @@ def check(directory, *, verify_current_source=False):
                 inspect(item)
 
     inspect(evidence)
+    root = Path(__file__).resolve().parents[1]
+    presentation = directory / "report-manifest.json"
+    if presentation.exists():
+        rendered = json.loads(presentation.read_text())
+        assert (
+            rendered["numerical_checksums_sha256"]
+            == hashlib.sha256((directory / "checksums.json").read_bytes()).hexdigest()
+        )
+        assert (
+            rendered["renderer_sha256"]
+            == hashlib.sha256((root / "scripts/render_short_history.py").read_bytes()).hexdigest()
+        )
+        for name, digest in rendered["artifacts_sha256"].items():
+            assert Path(name).name == name
+            assert hashlib.sha256((directory / name).read_bytes()).hexdigest() == digest
+        notebook = json.loads((root / "notebooks/07_short_history_risk_transfer.ipynb").read_text())
+        source = [
+            {"cell_type": cell["cell_type"], "source": "".join(cell["source"])}
+            for cell in notebook["cells"]
+        ]
+        assert (
+            rendered["notebook_source_sha256"]
+            == hashlib.sha256(
+                json.dumps(source, sort_keys=True, ensure_ascii=False).encode()
+            ).hexdigest()
+        )
     if verify_current_source:
-        root = Path(__file__).resolve().parents[1]
         for name, digest in manifest["source_sha256"].items():
             assert (
                 hashlib.sha256((root / "src/spde_covariance" / name).read_bytes()).hexdigest()

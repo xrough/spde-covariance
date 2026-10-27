@@ -95,7 +95,7 @@ def primary(evidence, *, tenor="all"):
 def paired(evidence, *, exposure, tenor="all", half_life=None):
     config = evidence["protocol"]["config"]
     half_life = config["half_life"] if half_life is None else half_life
-    return [
+    rows = [
         r
         for r in evidence["paired"]["rows"]
         if r["phase"] == phase(evidence)
@@ -105,6 +105,7 @@ def paired(evidence, *, exposure, tenor="all", half_life=None):
         and r["reference"] == "spde_joint"
         and r["exposure"] == exposure
     ]
+    return sorted(rows, key=lambda row: budgets(evidence).index(row["budget"]))
 
 
 def interval(row, block):
@@ -226,6 +227,62 @@ def plot_hedges(evidence):
     return fig
 
 
+def findings_text(evidence):
+    """Interpret the frozen copper study; synthetic controls retain their own scope."""
+    if evidence["protocol"]["config"]["name"] != "shfe-cu-short-history":
+        return "## Reading the results\n\nThis is a synthetic control. Its numerical outcomes are software checks, not empirical copper findings."
+    rows = primary(evidence)
+    lookup = {(r["budget"], r["method"]): r for r in rows}
+    cold = lookup[("0", "dfm_joint")]["metrics"]["spread"]
+    near = next(
+        r for r in primary(evidence, tenor=90) if r["budget"] == "0" and r["method"] == "dfm_joint"
+    )["metrics"]["spread"]
+    diagonal = cold["components"]["diagonal_prediction_error"]
+    corrected = lookup[("0", "dfm_joint_no_nugget")]["metrics"]["spread"]
+    factor = lookup[("0", "dfm_factor")]["metrics"]["spread"]
+    comparisons = {r["budget"]: r for r in paired(evidence, exposure="spread")}
+    lines = [
+        "## What this experiment finds",
+        "",
+        "**The proposed learned-factor policy does not improve short-history spread-risk forecasting in this study.** The transport model is more stable than this DFM implementation, while a simple maturity-pooling baseline remains competitive. These are complete-policy comparisons on inspected data, not a universal result about SPDEs or factor models.",
+        "",
+        f"At zero own history, the DFM spread forecast is **{cold['calibration_ratio']:.2f} times** realized second moment, reaching **{near['calibration_ratio']:.2f} times** for the near-90-day target. The diagonal leave-one-donor-out correction contributes **CNY² {diagonal / 1e6:.3f} million** of the **CNY² {cold['forecast'] / 1e6:.3f} million** forecast ({100 * diagonal / cold['forecast']:.1f}%). This flags a failure of the present predictive-error transfer policy, not evidence of high true latent noise.",
+        "",
+        "Primary DFM-minus-transport spread QLIKE differences (positive favors transport):",
+        "",
+    ]
+    for budget in budgets(evidence):
+        row = comparisons[budget]
+        bounds = interval(row, evidence["protocol"]["config"]["bootstrap_block"])
+        lines.append(
+            f"- Own history {display(budget)}: **+{row['difference']:.3f}**, block range [{bounds[0]:.3f}, {bounds[1]:.3f}]."
+        )
+    sensitivity_rows = [
+        r
+        for r in evidence["paired"]["rows"]
+        if r["phase"] == phase(evidence)
+        and r["tenor"] == "all"
+        and r["method"] == "dfm_joint"
+        and r["reference"] == "spde_joint"
+        and r["exposure"] == "spread"
+    ]
+    if all(x["percentile_95"][0] > 0 for r in sensitivity_rows for x in r["bootstrap"]):
+        lines += [
+            "",
+            "The direction persists across all prespecified half-lives and block lengths. These dependent sensitivity checks do not constitute independent confirmation.",
+        ]
+    lines += [
+        "",
+        f"**Removing the diagonal correction is not a complete repair.** At zero own history, the DFM without it forecasts only {corrected['calibration_ratio']:.3f} times realized spread second moment and has QLIKE {corrected['qlike']:.3f}; factor-only QLIKE is {factor['qlike']:.3f}, versus {cold['qlike']:.3f} with the full correction. The current factor/residual representation underpredicts without the correction and overpredicts with it.",
+        "",
+        "**The simple pooled baseline must remain central.** At zero own history, transport-minus-pool spread QLIKE is −0.068, block range [−0.204, 0.037], which does not resolve an advantage. At five own changes it is +0.130 [0.006, 0.280], favoring pooling. Pooled hedge RMS is lower at every history budget; this is settlement-risk evidence without execution costs.",
+        "",
+        "The next diagnostic should examine learned-loading stability, leave-one-donor-out leverage and how predictive errors transfer across maturities. Do not retune this inspected sample or add complexity before explaining this failure. A revised rule requires a frozen protocol and an uninspected confirmation period.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def report_text(evidence):
     config, manifest = evidence["protocol"]["config"], evidence["manifest"]
     rows = primary(evidence)
@@ -272,6 +329,7 @@ def report_text(evidence):
         }
         for r in evidence["diagnostics"]["methods"]
     ]
+    ablations, components, numerical = detail_tables(evidence)
     return "\n".join(
         [
             "# Copper short-history risk transfer",
@@ -283,6 +341,8 @@ def report_text(evidence):
             f"Numerical source: `{manifest['code_revision']}`; clean at execution: `{not manifest['source_dirty']}`. The run issued {manifest['issued_count']:,} method forecasts over {manifest['episode_count']:,} target episodes, including development validation and fixed half-life sensitivities. Repeated contracts, targets and dates are not independent replications.",
             "",
             f"Primary settings: {config['window']} historical intervals, {config['half_life']:g}-session EWMA half-life, history budgets {display(budgets(evidence))}, five-tonne contract multiplier. Outcomes are the next observed session of the same actual contracts. The current settlement is always visible. Target comparisons are averaged within origin before pooling.",
+            "",
+            findings_text(evidence),
             "",
             "## Principal comparison",
             "",
@@ -332,6 +392,41 @@ def report_text(evidence):
             "",
             "One target contract is hedged with the two selected other contracts, with each hedge position bounded to [−2,2]. Half-life and bootstrap-block sensitivities were fixed, not selected by evaluation performance. Repeated budgets are resampled jointly over calendar origins. No fills, roll mechanics, transaction costs, margin or capacity are modeled.",
             "",
+            "### All model policies and ablations",
+            "",
+            "These prespecified policies use the primary half-life setting. Uniform policies ignore that half-life by construction. Results are origin-averaged descriptive levels; differences should use paired common outcomes. Joint quadratic scores are in trillion CNY⁴ and may be negative because the score omits a forecast-independent term.",
+            "",
+            table(
+                ablations,
+                [
+                    ("budget", "Own history"),
+                    ("method", "Policy"),
+                    ("outright", "Outright QLIKE"),
+                    ("spread", "Spread QLIKE"),
+                    ("butterfly", "Butterfly QLIKE"),
+                    ("joint", "Joint quadratic / 10¹² CNY⁴"),
+                    ("rms", "Hedge RMS CNY"),
+                ],
+            ),
+            "",
+            "### Factor, cross and residual contributions",
+            "",
+            "Components are percentages of each policy's aggregate forecast second moment. The signed cross correction can be negative; the parts are not independent sources of risk. Totals remain in CNY². Diagonal prediction error can include estimation error and is not identified latent noise.",
+            "",
+            table(
+                components,
+                [
+                    ("budget", "Own history"),
+                    ("method", "Policy"),
+                    ("exposure", "Risk"),
+                    ("factor", "Factor %"),
+                    ("cross", "Signed cross %"),
+                    ("residual", "Correlated residual %"),
+                    ("diagonal", "Diagonal %"),
+                    ("total", "Forecast CNY²"),
+                ],
+            ),
+            "",
             "## Availability and numerical scope",
             "",
             table(
@@ -347,6 +442,53 @@ def report_text(evidence):
             "",
             "The full numerical diagnostics include source optimizer certificates, factor-boundary gaps, effective counts, Schur support/correction checks and bounded-cache measurements in [diagnostics.json](diagnostics.json). All fixed policies, maturity strata, component contributions and sensitivities remain in [summary.json](summary.json); paired ranges are in [paired.json](paired.json). No unavailable result is replaced by a fallback.",
             "",
+            "### Solver certificates",
+            "",
+            "These extrema pool validation/evaluation, budgets and fixed sensitivities. Source bounds certify numerical optimization under the fitted objective, not statistical accuracy. Missing entries are not applicable or were unavailable; they are not zeros.",
+            "",
+            table(
+                numerical,
+                [
+                    ("method", "Policy"),
+                    ("covariance_bound", "Max relative covariance bound"),
+                    ("objective_gap", "Max certified objective gap"),
+                    ("iterations", "Max iterations"),
+                ],
+            ),
+            "",
+            "### Conditioning and factor separation",
+            "",
+            "A small third/fourth eigenvalue gap makes individual learned loading directions sensitive. Rotations within the retained subspace do not change its covariance forecast. Condition numbers and effective counts describe the permitted information rather than additional observations.",
+            "",
+            table(
+                numerical,
+                [
+                    ("method", "Policy"),
+                    ("effective", "Median effective intervals"),
+                    ("curve_condition", "Max curve condition"),
+                    ("residual_condition", "Max residual-feature condition"),
+                    ("eigen_gap", "Min relative third/fourth gap"),
+                ],
+            ),
+            "",
+            "Uniform source-C ESS is marked N/A: the aggregate common-context field contains EWMA effective counts, while the actual source fit uses uniform weights. The authoritative local solver diagnostic is source_fit.effective_n. No covariance fit or numerical evidence has been changed for this display correction.",
+            "",
+            "### Support, roundoff and component checks",
+            "",
+            "Support residuals are relative. PSD corrections are absolute matrix-norm changes made only within the declared roundoff tolerance. Remaining signed residual pair products are a descriptive dependence diagnostic; cancellation can conceal dependence and a small ratio does not prove independence.",
+            "",
+            table(
+                numerical,
+                [
+                    ("method", "Policy"),
+                    ("support", "Max relative support residual"),
+                    ("schur", "Max Schur correction"),
+                    ("psd", "Max forecast PSD correction"),
+                    ("component", "Max relative component residual"),
+                    ("remaining", "Remaining signed pair ratio: min / median / max"),
+                ],
+            ),
+            "",
             f"Run time: {manifest['runtime_seconds']:.1f} seconds, including masked preparation and model fitting, excluding archive acquisition. This is a single environment measurement. Environment and archive provenance: [manifest.json](manifest.json); frozen settings: [protocol.json](protocol.json).",
             "",
             "## Interpretation and reproduction",
@@ -357,6 +499,84 @@ def report_text(evidence):
             "",
         ]
     )
+
+
+def detail_tables(evidence):
+    """Human-scale ablation, component and numerical tables from aggregates."""
+    rows, ablations, components, numerical = primary(evidence), [], [], []
+    model_names = (
+        "spde_uniform",
+        "spde_ewma",
+        "spde_joint",
+        "dfm_joint",
+        "dfm_uniform_joint",
+        "dfm_factor",
+        "spde_joint_no_nugget",
+        "dfm_joint_no_nugget",
+    )
+    for budget in budgets(evidence):
+        for method in model_names:
+            matches = [r for r in rows if r["budget"] == budget and r["method"] == method]
+            if not matches:
+                continue
+            row = matches[0]
+            item = {"budget": budget, "method": method}
+            for exposure in ("outright", "spread", "butterfly"):
+                item[exposure] = row["metrics"][exposure].get("qlike")
+            value = row["metrics"]["joint"].get("quadratic")
+            item["joint"] = None if value is None else value / 1e12
+            item["rms"] = row["metrics"]["hedge"].get("realized_rms_cny")
+            ablations.append(item)
+        for method in ("dfm_joint", "spde_joint"):
+            matches = [r for r in rows if r["budget"] == budget and r["method"] == method]
+            if not matches:
+                continue
+            for exposure in ("outright", "spread", "butterfly"):
+                values = matches[0]["metrics"][exposure]
+                total = values.get("forecast")
+                item = {"budget": budget, "method": method, "exposure": exposure, "total": total}
+                for name, key in (
+                    ("factor", "factor"),
+                    ("cross", "cross_correction"),
+                    ("residual", "correlated_residual"),
+                    ("diagonal", "diagonal_prediction_error"),
+                ):
+                    value = values.get("components", {}).get(key)
+                    item[name] = (
+                        None
+                        if total is None or total <= 0 or value is None
+                        else 100 * value / total
+                    )
+                components.append(item)
+    for row in evidence["diagnostics"]["methods"]:
+        if row["method"] not in model_names:
+            continue
+        values = row["numeric_min_median_max"]
+
+        def pick(name, position=2):
+            triple = values.get(name)
+            return triple[position] if triple else None
+
+        numerical.append(
+            {
+                "method": row["method"],
+                "covariance_bound": pick("source_relative_covariance_error_bound"),
+                "objective_gap": pick("source_objective_gap_bound"),
+                "iterations": pick("source_iterations"),
+                "effective": "N/A"
+                if row["method"] == "spde_uniform"
+                else pick("effective_interval_count", 1),
+                "curve_condition": pick("curve_condition_max"),
+                "residual_condition": pick("residual_feature_condition_max"),
+                "eigen_gap": pick("third_fourth_relative_eigengap", 0),
+                "support": pick("relative_support_residual"),
+                "schur": pick("schur_psd_roundoff_correction"),
+                "psd": pick("forecast_psd_roundoff_correction"),
+                "component": pick("component_sum_relative_residual"),
+                "remaining": values.get("remaining_residual_signed_pair_product_ratio"),
+            }
+        )
+    return ablations, components, numerical
 
 
 def render(directory):
@@ -427,6 +647,7 @@ def build_notebook(path=ROOT / "notebooks/07_short_history_risk_transfer.ipynb")
             plot_scores,
             plot_calibration,
             plot_hedges,
+            detail_tables,
         )
     )
     setup = f"""from pathlib import Path
@@ -465,6 +686,9 @@ rows are removed before reconstruction, loading fitting, scaling and estimation.
 · [Project findings](00_project_findings.ipynb)
 """),
         code(setup),
+        markdown(
+            findings_text(load_short_history_evidence(ROOT / "experiments/results/short-history"))
+        ),
         markdown(r"""## Information and financial targets
 
 The 2022 initial period, 2023 development validation and inspected 2024–2025
@@ -513,12 +737,10 @@ which can contain estimation error; it is not identified latent market noise.
 """),
         code("""plot_calibration(evidence)
 plt.show()
-components = []
-for row in rows:
-    if row["method"] in ("dfm_joint", "spde_joint"):
-        values = row["metrics"]["spread"]
-        components.append({"budget": row["budget"], "method": row["method"], "ratio": values.get("calibration_ratio"), "forecast": values.get("forecast"), "components": "; ".join(f"{name}: {value:.4g}" for name, value in values.get("components", {}).items())})
-print(table(components, [("budget", "Own history"), ("method", "Policy"), ("ratio", "Forecast / realized"), ("forecast", "Spread CNY²"), ("components", "Component CNY²")]))
+ablations, components, numerical = detail_tables(evidence)
+print("Component shares as percentages of forecast second moment; signed cross terms are retained.")
+print(table(components, [("budget", "Own history"), ("method", "Policy"), ("exposure", "Risk"), ("factor", "Factor %"), ("cross", "Signed cross %"), ("residual", "Correlated residual %"), ("diagonal", "Diagonal %"), ("total", "Forecast CNY²")]))
+assert all(abs(sum(row[key] for key in ("factor", "cross", "residual", "diagonal")) - 100) < 1e-5 for row in components if all(row[key] is not None for key in ("factor", "cross", "residual", "diagonal")))
 """),
         markdown("""## Bounded hedges and prespecified sensitivities
 
@@ -534,6 +756,17 @@ plt.show()
 hedges = [{"budget": row["budget"], "method": row["method"], "rms": row["metrics"]["hedge"].get("realized_rms_cny"), "origins": row["origins"]} for row in rows if row["method"] in METHODS]
 print(table(hedges, [("budget", "Own history"), ("method", "Policy"), ("rms", "Hedge RMS CNY"), ("origins", "Origins")]))
 """),
+        markdown("""## Full policy and ablation audit
+
+All eight model policies remain visible, including original uniform source C,
+recency weighting, factor-only and no-diagonal-correction ablations. Joint
+quadratic values are scaled by 10¹² CNY⁴. A negative quadratic score is valid:
+the score omits a forecast-independent term. These are descriptive levels;
+use matched common-outcome differences for comparisons.
+"""),
+        code("""print(table(ablations, [("budget", "Own history"), ("method", "Policy"), ("outright", "Outright QLIKE"), ("spread", "Spread QLIKE"), ("butterfly", "Butterfly QLIKE"), ("joint", "Joint quadratic / 10¹² CNY⁴"), ("rms", "Hedge RMS CNY")]))
+assert len({row["method"] for row in ablations}) == 8
+"""),
         markdown("""## Availability, numerical checks and interpretation
 
 Convergence certificates concern numerical optimization, not statistical validity.
@@ -546,9 +779,11 @@ not identify the missing historical target path.
 print(table(diagnostics["methods"], [("method", "Policy"), ("issued", "Attempted"), ("available", "Available"), ("scored", "Scored"), ("failures", "Failure counts")]))
 print("Cache:", diagnostics["cache"])
 print("Runtime seconds:", evidence["manifest"]["runtime_seconds"])
-print("Numerical diagnostics:")
-for method in diagnostics["methods"]:
-    print(LABELS.get(method["method"], method["method"]), method["numeric_min_median_max"])
+print("Numerical extrema pool validation/evaluation, budgets and fixed sensitivities; missing values are not zero.")
+print(table(numerical, [("method", "Policy"), ("covariance_bound", "Max relative covariance bound"), ("objective_gap", "Max objective gap"), ("iterations", "Max iterations")]))
+print(table(numerical, [("method", "Policy"), ("effective", "Median effective intervals"), ("curve_condition", "Max curve condition"), ("residual_condition", "Max residual-feature condition"), ("eigen_gap", "Min relative third/fourth gap")]))
+print("Uniform source-C ESS: N/A here. The aggregate common-context field is EWMA; the actual solver uses uniform weights and its authoritative local diagnostic is source_fit.effective_n. Fits and numerical JSON are unchanged.")
+print(table(numerical, [("method", "Policy"), ("support", "Max relative support residual"), ("schur", "Max Schur correction"), ("psd", "Max PSD correction"), ("component", "Max relative component residual"), ("remaining", "Remaining signed pair ratio: min/median/max")]))
 assert evidence["manifest"]["local_record_policy"] == "contract-level prices, forecasts and P&Ls are not exported"
 """),
         markdown("""## Evidence boundary and reproduction

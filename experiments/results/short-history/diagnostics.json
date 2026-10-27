@@ -1,0 +1,468 @@
+{
+  "methods": [
+    {
+      "method": "dfm_factor",
+      "issued": 5256,
+      "available": 5256,
+      "scored": 5256,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          60.557546233143846,
+          160.39536076853798,
+          218.13604029894375
+        ],
+        "third_fourth_relative_eigengap": [
+          7.499672218975132e-05,
+          0.0025310259019924444,
+          0.026188985291505228
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.11200651451731478,
+          -0.10510482292915452,
+          -0.10004036513141029
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "method": "dfm_joint",
+      "issued": 5256,
+      "available": 5256,
+      "scored": 5256,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          60.557546233143846,
+          160.39536076853798,
+          218.13604029894375
+        ],
+        "relative_support_residual": [
+          0.0,
+          7.79624486107855e-19,
+          1.8630986538212872e-17
+        ],
+        "schur_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "third_fourth_relative_eigengap": [
+          7.499672218975132e-05,
+          0.0025310259019924444,
+          0.026188985291505228
+        ],
+        "forecast_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "component_sum_relative_residual": [
+          0.0,
+          6.016873963228982e-17,
+          1.9675808363449668e-16
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.11200651451731478,
+          -0.10510482292915452,
+          -0.10004036513141029
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "method": "dfm_joint_no_nugget",
+      "issued": 1752,
+      "available": 1752,
+      "scored": 1752,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          158.07029235790347,
+          160.39536076853798,
+          160.39536076853798
+        ],
+        "relative_support_residual": [
+          0.0,
+          7.053863814708367e-19,
+          9.188543087427583e-18
+        ],
+        "schur_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "third_fourth_relative_eigengap": [
+          0.0001805500117156815,
+          0.002441095692611135,
+          0.01302835418307459
+        ],
+        "forecast_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "component_sum_relative_residual": [
+          0.0,
+          7.107335229751154e-17,
+          1.710461815485261e-16
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.11107345683846714,
+          -0.10497718284575511,
+          -0.10010704045840825
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "method": "dfm_uniform_joint",
+      "issued": 1752,
+      "available": 1752,
+      "scored": 1752,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          241.99999999999983,
+          252.00000000000006,
+          252.00000000000006
+        ],
+        "relative_support_residual": [
+          0.0,
+          8.097620956362157e-19,
+          1.4121435039727863e-17
+        ],
+        "schur_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "third_fourth_relative_eigengap": [
+          0.00026403253193025883,
+          0.0030052595173981236,
+          0.016845019081529085
+        ],
+        "forecast_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "component_sum_relative_residual": [
+          0.0,
+          6.068294306576644e-17,
+          1.703227748618992e-16
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.11051328920448156,
+          -0.10245089356462565,
+          -0.10009060058208123
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "method": "direct",
+      "issued": 5256,
+      "available": 2628,
+      "scored": 2628,
+      "failures": {
+        "insufficient_complete_same_contract_changes": 2628
+      },
+      "numeric_min_median_max": {}
+    },
+    {
+      "method": "pooled_shrink",
+      "issued": 5256,
+      "available": 5256,
+      "scored": 5256,
+      "failures": {},
+      "numeric_min_median_max": {}
+    },
+    {
+      "method": "spde_ewma",
+      "issued": 5256,
+      "available": 5256,
+      "scored": 5256,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          60.557546233143846,
+          160.39536076853798,
+          218.13604029894375
+        ],
+        "curve_condition_max": [
+          83.68377051899856,
+          85.45002833233131,
+          102.69389370751632
+        ],
+        "source_relative_covariance_error_bound": [
+          1.0308483688632691e-06,
+          6.715839801419974e-06,
+          9.988548492974631e-06
+        ],
+        "source_objective_gap_bound": [
+          786810.7683862285,
+          65554335.35216275,
+          1201679710.8440528
+        ],
+        "source_iterations": [
+          6.0,
+          6.0,
+          7.0
+        ],
+        "source_source_trace": [
+          487738172.5289022,
+          1762868827.5304208,
+          6981244090.110167
+        ],
+        "source_trace_cap": [
+          49053923773.388275,
+          177270190947.90854,
+          701694522064.6764
+        ]
+      }
+    },
+    {
+      "method": "spde_joint",
+      "issued": 5256,
+      "available": 5256,
+      "scored": 5256,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          60.557546233143846,
+          160.39536076853798,
+          218.13604029894375
+        ],
+        "relative_support_residual": [
+          7.027368152238039e-19,
+          2.8494669497000826e-17,
+          4.489332308844547e-16
+        ],
+        "schur_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "forecast_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "component_sum_relative_residual": [
+          0.0,
+          7.147903319333375e-17,
+          1.7725441830221771e-16
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.11251452229693742,
+          -0.1052354797489055,
+          -0.10003752155923568
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_relative_covariance_error_bound": [
+          1.0308483688632691e-06,
+          6.715839801419974e-06,
+          9.988548492974631e-06
+        ],
+        "source_objective_gap_bound": [
+          786810.7683862285,
+          65554335.35216275,
+          1201679710.8440528
+        ],
+        "source_iterations": [
+          6.0,
+          6.0,
+          7.0
+        ],
+        "source_source_trace": [
+          487738172.5289022,
+          1762868827.5304208,
+          6981244090.110167
+        ],
+        "source_trace_cap": [
+          49053923773.388275,
+          177270190947.90854,
+          701694522064.6764
+        ]
+      }
+    },
+    {
+      "method": "spde_joint_no_nugget",
+      "issued": 1752,
+      "available": 1752,
+      "scored": 1752,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          158.07029235790347,
+          160.39536076853798,
+          160.39536076853798
+        ],
+        "relative_support_residual": [
+          1.2729962887570196e-18,
+          2.9473728819992973e-17,
+          1.9973425441373412e-16
+        ],
+        "schur_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "forecast_psd_roundoff_correction": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "component_sum_relative_residual": [
+          0.0,
+          7.389668190559211e-17,
+          1.7906974804974956e-16
+        ],
+        "remaining_residual_signed_pair_product_ratio": [
+          -0.1111271210318022,
+          -0.10499890333227861,
+          -0.10009797392446719
+        ],
+        "residual_feature_condition_max": [
+          6.6429829189272205,
+          18.5308749955346,
+          45.39934999343405
+        ],
+        "leave_one_donor_out_unavailable_count": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_relative_covariance_error_bound": [
+          5.623131415490517e-06,
+          6.740803531645161e-06,
+          8.17529027691077e-06
+        ],
+        "source_objective_gap_bound": [
+          21269126.504503675,
+          68644770.89246765,
+          950515053.7038918
+        ],
+        "source_iterations": [
+          6.0,
+          6.0,
+          6.0
+        ],
+        "source_source_trace": [
+          1010479076.9424958,
+          1797156538.391821,
+          5778691749.76734
+        ],
+        "source_trace_cap": [
+          101593339413.20969,
+          180685067677.23087,
+          580830277023.6829
+        ]
+      }
+    },
+    {
+      "method": "spde_uniform",
+      "issued": 1752,
+      "available": 1752,
+      "scored": 1752,
+      "failures": {},
+      "numeric_min_median_max": {
+        "effective_interval_count": [
+          158.07029235790347,
+          160.39536076853798,
+          160.39536076853798
+        ],
+        "curve_condition_max": [
+          83.68377051899856,
+          85.45002833233131,
+          102.69389370751632
+        ],
+        "source_relative_covariance_error_bound": [
+          6.031884311058661e-06,
+          6.783603172172201e-06,
+          7.831346678062381e-06
+        ],
+        "source_objective_gap_bound": [
+          37111970.83505513,
+          76449051.22134463,
+          1615887292.5473092
+        ],
+        "source_iterations": [
+          6.0,
+          6.0,
+          6.0
+        ],
+        "source_source_trace": [
+          1312237157.890064,
+          1876506798.8851194,
+          8377755508.622371
+        ],
+        "source_trace_cap": [
+          131964588062.39021,
+          188697770208.61053,
+          842054788516.8601
+        ]
+      }
+    }
+  ],
+  "cache": {
+    "scope": "per worker; bounded independently",
+    "workers": 4,
+    "max_entries_observed": 64,
+    "max_bytes_observed": 38916880,
+    "max_entries": 64,
+    "max_bytes": 67108864
+  },
+  "episode_runtime_seconds_min_median_max": [
+    1.0786312092095613,
+    1.4921632499899715,
+    6.9050526660867035
+  ],
+  "timing_scope": "per masked view, all methods and half-lives; worker wall time"
+}

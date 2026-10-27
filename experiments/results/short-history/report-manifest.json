@@ -1,0 +1,11 @@
+{
+  "renderer_sha256": "7c648527ac1cb60a6770e0755fca8eda065d464031dff194834fe15a0eb32a0a",
+  "numerical_checksums_sha256": "c2a1e543662bd5e6e89e2587e7543f38697adb621d6129cef8c5af44eda0c493",
+  "artifacts_sha256": {
+    "scores-by-budget.png": "efa03d5a607f6b5bb33a4fc78ba813a8373090d496c64f97a35c7ea7cee66fd9",
+    "risk-calibration.png": "fa610a3ca6156f923f2a1056225b09ae4aa13ebcd0b91240d0644c3f6cdd65af",
+    "hedge-sensitivity.png": "77c3c0e166ab296b1f65e0e7b88dfa5fddfea71c8ad4e11417faecce4576eb19",
+    "report.md": "1635f55e4e850cb6c0c63468408a8fdba8e98031847554dcabe2624bf5a92f24"
+  },
+  "notebook_source_sha256": "1d0c11fae5e2a511056891be8855badbc29dd5859006b08e0d5b7df554ac3476"
+}

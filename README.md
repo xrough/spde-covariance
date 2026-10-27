@@ -52,6 +52,7 @@ which risks can be recovered; a converged PSD fit alone is insufficient**.
 | Synthetic identification | Different full covariances can have identical observed fragment laws; more native samples do not identify missing spread risk. | Completion requires an explicit structural assumption. |
 | SHFE copper representation | Three smooth factors account for 99.1% of outright second moment, but 38.3% of spread and 11.4% of butterfly second moment. | Sample decomposition retains residual and signed cross terms. |
 | Subsequent hedge outcomes | RMS P&L: direct CNY 501, joint factor/residual 533, source-C 624, factor-only 685. | Same 484 origins; bounded settlement-risk exercise, excluding costs. |
+| Masked short-history transfer | At zero own history, learned-factor spread forecasts are 19.26× realized second moment, versus 1.22× transport and 1.08× maturity pooling. | A distinct 97-origin exploratory study; learned factors do not improve the tested policy and simple pooling remains competitive. |
 
 ![Curve representation and selected hedge outcomes](assets/current-findings.png)
 
@@ -62,6 +63,9 @@ establish no forecasting advantage. In the [frozen first benchmark](notebooks/sh
 spread rankings reverse between primary QLIKE and secondary quadratic loss.
 The [overview notebook](notebooks/00_project_findings.ipynb) reports paired uncertainty;
 RMS bars above are point summaries. Numerical controls and market evidence remain distinct.
+The [short-history results](experiments/results/short-history/report.md) diagnose
+an excessive learned-factor diagonal correction; removing it instead underpredicts
+spread risk. This is a model-risk finding, not a universal SPDE advantage.
 
 **Research boundary:** 2024–2025 has informed model development. New analyses on
 these years are exploratory even when issuance is past-only. A revised policy
