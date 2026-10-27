@@ -22,6 +22,9 @@ no outcome-based tuning or newly untouched validation claim: this is a rolling,
 descriptive diagnostic study that includes previously inspected years. **2026
 is held out:** its archive is not parsed, incorporated into reconstruction or
 used for scores or model selection.
+This boundary concerns observation dates rather than delivery months. Prices
+observed in 2025 for 2026-delivery contracts remain contemporaneously known and
+eligible; excluding those contracts would truncate the 2025 maturity curve.
 
 The archive importer distinguishes data rows from exchange footer material;
 unexpected nonblank rows are not silently accepted as observations. The source
@@ -58,6 +61,11 @@ ACT/365.25 normalization and a 63-session EWMA half-life are fixed. The model
 dimension is three in the primary comparison, with nested two- and four-mode
 Laguerre representations as prespecified sensitivities.
 
+The longer panel adds market regimes and forecast origins. It does not lengthen
+individual contract lifetimes: even all-available current-triad history is
+limited by actual listings and overlapping observation dates inside the
+252-interval window. Expired contracts do not stay observable indefinitely.
+
 The target is the uncentered next-session price-change second moment. A variance
 interpretation requires negligible conditional means. CNY P&L second moments
 multiply price-change moments by $5^2$. Report target outright, target/nearest
@@ -90,6 +98,11 @@ mapping or add transport drift. Report fitted, residual and **signed cross**
 second moments; they add to the raw second moment. In-sample quote error,
 leverage and donor-excluded diagnostics describe the reconstruction but do not
 reveal the true continuum approximation error.
+
+The own-triad component retains the direct baseline's positive-settlement
+history, whose tenors may lie outside the 30–365-day donor fitting range. Its
+reconstructed values can therefore include extrapolation. This is a contrast
+of the complete reconstruction policy, not a pure interpolation-error estimate.
 
 ## Source control: hold reconstructed innovations fixed
 
@@ -141,6 +154,13 @@ comparison, only $H_f$ changes: reconstruction, training joint moment, Schur
 blocks and donor-excluded diagonal correction remain frozen. Column contrasts
 add the named correction. Comparing those effects across rows reveals
 interactions rather than forcing an additive error attribution.
+
+The matched interventions also do not telescope into the full SPDE-minus-raw-pool
+performance gap. Pooling maps historical maturity slots and blends own history;
+the six-cell policies evaluate the current actual contracts at their future
+maturities. Those target-mapping and blending policies remain additional
+differences. Isolating these specified interventions does not uniquely assign
+every risk error to reconstruction, source fitting or residual correction.
 
 The diagonal D is fitted from leave-one-donor-out predictive errors. The donor
 is absent from both endpoint curve fits and the interval residual fit. Its

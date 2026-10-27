@@ -6,6 +6,8 @@ import argparse
 import hashlib
 import inspect
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -132,8 +134,9 @@ def plot_six_cells(evidence):
                 ax.plot(
                     range(3),
                     values,
-                    "o-",
+                    "s--" if index == 0 else "o-",
                     color=color,
+                    ms=6 if index == 0 else 4,
                     label="Source C" if index == 0 else "Direct H",
                 )
             ax.set(
@@ -257,7 +260,14 @@ def plot_calibration(evidence):
                 .get("calibration_ratio", np.nan)
                 for budget in history
             ]
-            ax.plot(range(len(history)), values, "o-", color=color, ms=4, label=label)
+            ax.plot(
+                range(len(history)),
+                values,
+                "s--" if method == "source_diagonal" else "o-",
+                color=color,
+                ms=6 if method == "source_diagonal" else 4,
+                label=label,
+            )
         ax.set(
             title=exposure.title(),
             xticks=range(len(history)),
@@ -284,13 +294,21 @@ def policy_table(evidence, *, context="all", dimension=3):
                 "method": row["method"],
                 "scored": f"{row['scored']}/{row['episodes']}",
                 "origins": row["origins"],
+                "outright": metrics.get("outright", {}).get("qlike"),
                 "spread": metrics.get("spread", {}).get("qlike"),
                 "butterfly": metrics.get("butterfly", {}).get("qlike"),
                 "calibration": metrics.get("spread", {}).get("calibration_ratio"),
                 "rms": metrics.get("hedge", {}).get("realized_rms_cny"),
+                "joint": metrics.get("joint", {}).get("quadratic") / 1e12
+                if metrics.get("joint", {}).get("quadratic") is not None
+                else None,
             }
         )
-    return output
+    methods = ("direct", "pooled_shrink", *CELLS, "reconstructed_pool")
+    return sorted(
+        output,
+        key=lambda row: (budgets(evidence).index(row["budget"]), methods.index(row["method"])),
+    )
 
 
 def contrast_table(evidence, *, contrast, policy=None, context="all", exposure="spread"):
@@ -314,7 +332,14 @@ def contrast_table(evidence, *, contrast, policy=None, context="all", exposure="
                     "origins": row["paired_origins"],
                 }
             )
-    return output
+    return sorted(
+        output,
+        key=lambda row: (
+            evidence["protocol"]["config"]["dimensions"].index(row["dimension"]),
+            budgets(evidence).index(row["budget"]),
+            row["policy"],
+        ),
+    )
 
 
 def findings_text(evidence):
@@ -323,6 +348,25 @@ def findings_text(evidence):
         "",
     ]
     block = base_config(evidence)["bootstrap_block"]
+    primary_source = [
+        row
+        for row in select_pairs(evidence, contrast="source_policy", policy="diagonal")
+        if row["history_budget"] == "0"
+    ]
+    reconstruction = [
+        row
+        for row in select_pairs(evidence, contrast="reconstruction_pool", policy="fixed_selectors")
+        if row["history_budget"] == "0"
+    ]
+    if (
+        primary_source
+        and reconstruction
+        and abs(primary_source[0]["difference"]) < 0.01 * abs(reconstruction[0]["difference"])
+    ):
+        lines += [
+            "**The practical bottleneck in these controls is the chosen curve representation and its residual-risk repair.** Replacing the source-C estimator with direct innovation H changes the primary spread score by much less than reconstructing raw movements or adding the residual corrections. A small source-policy gap neither proves that C is correctly estimated nor identifies the physical forcing operator.",
+            "",
+        ]
     for contrast, policy, label in (
         (
             "reconstruction_pool",
@@ -354,6 +398,65 @@ def findings_text(evidence):
     lines += [
         "",
         "Negative changes favor the positive-weight or added policy. Compare the full six cells and interaction contrasts before interpreting a single addition as a general improvement. Availability, annual strata and the one-day control remain part of the evidence.",
+        "These matched interventions do not telescope into the entire SPDE-minus-raw-pool performance gap: historical maturity-slot mapping and own-history blending differ from evaluating the current actual contracts at their future maturities. They remain additional policy choices rather than errors uniquely assigned to one of these three stages.",
+    ]
+    one_day = [
+        row
+        for row in select_pairs(
+            evidence, contrast="source_policy", policy="diagonal", context="one_day"
+        )
+        if row["history_budget"] == "0"
+    ]
+    if one_day:
+        row = one_day[0]
+        lines += [
+            "",
+            f"The matched one-day source-C minus direct-H spread difference is {row['difference']:+.6f}, with block range {display(bounds(row, block))}. This controls interval-length mixing while retaining the source estimator's regularization and constraints.",
+        ]
+    retention, _ = diagnostic_tables(evidence)
+    retained = {
+        row["exposure"]: row["retention"]
+        for row in retention
+        if row["dimension"] == 3 and row["budget"] == "0"
+    }
+    if all(retained.get(name) is not None for name in ("outright", "spread", "butterfly")):
+        lines += [
+            "",
+            f"At zero own history, three-mode reconstruction retains {retained['outright']:.1%} of outright, {retained['spread']:.1%} of spread and {retained['butterfly']:.1%} of butterfly training second moments in the matched pooling control. These are ratios of mean window moments, rather than shares of true latent risk or out-of-sample calibration.",
+        ]
+    rows = {row["method"]: row for row in select_summary(evidence) if row["history_budget"] == "0"}
+    raw = {
+        row["method"]: row
+        for row in select_summary(evidence, dimension=0)
+        if row["history_budget"] == "0"
+    }
+    if "source_diagonal" in rows and "pooled_shrink" in raw:
+        repaired, pool = rows["source_diagonal"]["metrics"], raw["pooled_shrink"]["metrics"]
+        lines += [
+            "",
+            f"Full residual repair gives source-C spread QLIKE {repaired['spread']['qlike']:.3f}, versus raw pooling {pool['spread']['qlike']:.3f}; their hedge RMS levels are CNY {repaired['hedge']['realized_rms_cny']:.1f} and {pool['hedge']['realized_rms_cny']:.1f}. These descriptive levels illustrate that a better risk score need not imply a lower realized hedge RMS; they are not an additional paired significance test.",
+        ]
+    if "source_correlated" in rows and "source_factor" in rows:
+        correlated, factor = rows["source_correlated"]["metrics"], rows["source_factor"]["metrics"]
+        lines += [
+            "",
+            f"Correlated residuals alone are not a universal repair: at zero own history the source model's butterfly QLIKE changes from {factor['butterfly']['qlike']:.3f} to {correlated['butterfly']['qlike']:.3f}, and hedge RMS from CNY {factor['hedge']['realized_rms_cny']:.1f} to {correlated['hedge']['realized_rms_cny']:.1f}, despite the improved spread QLIKE. Evaluate all exposures and the diagonal addition separately.",
+        ]
+    stress_2022 = [
+        row
+        for row in select_pairs(
+            evidence, contrast="residual_diagonal", policy="source", year="2022"
+        )
+        if row["history_budget"] == "0"
+    ]
+    if stress_2022:
+        lines += [
+            "",
+            f"The 2022 diagonal-repair spread contrast is {stress_2022[0]['difference']:+.3f}, a particularly large annual effect. QLIKE means are sensitive to severe underprediction on stress observations; the large pooled effects and wide block ranges should not be read as equal improvement across regimes or as proof of erroneous source quotes.",
+        ]
+    lines += [
+        "",
+        "Annual results are essential: large correction effects and wide block ranges can be concentrated in particular years. The pooled mean is not a claim of equal improvement in every market regime.",
     ]
     return "\n".join(lines)
 
@@ -382,6 +485,137 @@ def oracle_tables(evidence):
     return transport, residual
 
 
+def diagnostic_tables(evidence):
+    """Expose reconstruction retention and optimization, without private rows."""
+    retention, numerical = [], []
+    for row in evidence["diagnostics"]["rows"]:
+        numeric = row["numeric"]
+
+        def value(key, statistic="mean"):
+            item = numeric.get(key, {})
+            return item.get(statistic)
+
+        def maximum(key):
+            values = value(key, "min_median_max")
+            return values[-1] if values else None
+
+        if row["context"] == "all" and row["method"] == "reconstructed_pool":
+            for exposure in ("outright", "spread", "butterfly"):
+                prefix = f"reconstruction_retention.{exposure}."
+                raw = value(prefix + "raw_second_moment")
+                retention.append(
+                    {
+                        "dimension": row["dimension"],
+                        "budget": row["history_budget"],
+                        "exposure": exposure,
+                        "count": numeric.get(prefix + "raw_second_moment", {}).get("count", 0),
+                        "retention": value(prefix + "fitted_second_moment") / raw
+                        if raw and value(prefix + "fitted_second_moment") is not None
+                        else None,
+                        "residual": value(prefix + "residual_second_moment") / raw
+                        if raw and value(prefix + "residual_second_moment") is not None
+                        else None,
+                        "cross": value(prefix + "signed_cross_second_moment") / raw
+                        if raw and value(prefix + "signed_cross_second_moment") is not None
+                        else None,
+                        "identity": maximum("reconstruction_identity_relative_residual"),
+                    }
+                )
+        if row["method"] == "source_diagonal" and row["history_budget"] in ("0", "all"):
+            numerical.append(
+                {
+                    "dimension": row["dimension"],
+                    "context": row["context"],
+                    "budget": row["history_budget"],
+                    "attempted": row["issued"],
+                    "scored": row["scored"],
+                    "certificate": maximum("source_fit.relative_covariance_error_bound"),
+                    "condition": maximum("reconstruction.curve_condition_max"),
+                    "leverage": maximum("reconstruction.level_fit_leverage_max"),
+                    "support": maximum("relative_support_residual"),
+                    "component": maximum("component_sum_relative_residual"),
+                    "loo": value("leave_one_donor_out_annual_mse"),
+                }
+            )
+    retention.sort(
+        key=lambda row: (
+            row["dimension"],
+            budgets(evidence).index(row["budget"]),
+            ("outright", "spread", "butterfly").index(row["exposure"]),
+        )
+    )
+    numerical.sort(
+        key=lambda row: (row["dimension"], row["context"], budgets(evidence).index(row["budget"]))
+    )
+    return retention, numerical
+
+
+def data_audit_table(evidence):
+    audit = evidence["manifest"].get("importer_audit") or {}
+    return [
+        {
+            "year": row["year"],
+            "sessions": row["sessions"],
+            "rows": row["rows"],
+            "missing": row["settlement_nonfinite"],
+            "nonpositive": row["settlement_nonpositive"],
+            "volume_zero": row["volume_zero"],
+            "oi_zero": row["open_interest_zero"],
+            "convention": ", ".join(row.get("volume_counting_conventions", [])),
+            "unknown_sessions": row["normalization_unavailable_sessions"],
+        }
+        for row in audit.get("by_year", [])
+    ]
+
+
+def history_availability_table(evidence):
+    output = [
+        {
+            "budget": row["history_budget"],
+            "windows": row["issued"],
+            "own_count": row["numeric"].get("complete_changes", {}).get("min_median_max"),
+            "pooled_count": row["numeric"].get("pooled_changes", {}).get("min_median_max"),
+        }
+        for row in evidence["diagnostics"]["rows"]
+        if row["context"] == "all" and row["dimension"] == 0 and row["method"] == "pooled_shrink"
+    ]
+    return sorted(output, key=lambda row: budgets(evidence).index(row["budget"]))
+
+
+def maturity_table(evidence):
+    output = []
+    for tenor in base_config(evidence)["target_tenors_days"]:
+        for dimension, method in (
+            (0, "pooled_shrink"),
+            (3, "source_diagonal"),
+            (3, "empirical_diagonal"),
+        ):
+            for row in select_summary(evidence, dimension=dimension, tenor=tenor):
+                if row["method"] == method and row["history_budget"] in ("0", "all"):
+                    metrics = row["metrics"]
+                    output.append(
+                        {
+                            "tenor": tenor,
+                            "budget": row["history_budget"],
+                            "method": method,
+                            "scored": f"{row['scored']}/{row['episodes']}",
+                            "outright": metrics.get("outright", {}).get("qlike"),
+                            "spread": metrics.get("spread", {}).get("qlike"),
+                            "butterfly": metrics.get("butterfly", {}).get("qlike"),
+                            "calibration": metrics.get("spread", {}).get("calibration_ratio"),
+                            "rms": metrics.get("hedge", {}).get("realized_rms_cny"),
+                        }
+                    )
+    return sorted(
+        output,
+        key=lambda row: (
+            row["tenor"],
+            budgets(evidence).index(row["budget"]),
+            ("pooled_shrink", "source_diagonal", "empirical_diagonal").index(row["method"]),
+        ),
+    )
+
+
 def report_text(evidence):
     config, manifest = base_config(evidence), evidence["manifest"]
     policies = policy_table(evidence)
@@ -394,6 +628,7 @@ def report_text(evidence):
         ("origins", "Paired origins"),
     ]
     transport, residual = oracle_tables(evidence)
+    retention, numerical = diagnostic_tables(evidence)
     return "\n".join(
         [
             "# Copper pipeline mechanisms: 2016–2025",
@@ -402,9 +637,42 @@ def report_text(evidence):
             "",
             "2016 provides initial history; 2017–2025 is descriptive rolling evaluation. **2026 remains held out and is not parsed or scored.** Raw archived counts are preserved, counting conventions are note-based, and unknown declarations remain unknown. Prices and the five-tonne contract multiplier are unchanged.",
             "",
+            "The holdout concerns observation dates and the 2026 archive, not delivery months. Prices observed in 2025 for contracts delivering in 2026 are contemporaneously known and remain eligible; removing those contracts would truncate the 2025 maturity curve.",
+            "",
             f"Numerical source: `{manifest['code_revision']}`; clean source at execution: `{not manifest['source_dirty']}`. The run covers {manifest['scheduled_origins']:,} scheduled origins and {manifest['episode_count']:,} target episodes, from {manifest['first_origin']} to {manifest['last_origin']}. Repeated targets and contracts are dependent.",
             "",
             f"Fixed primary settings: {config['window']} adjacent training intervals, {config['half_life']:g}-session EWMA, own-history budgets {display(budgets(evidence))}, three Laguerre modes with two/four-mode sensitivities. Outcomes use the next actual session and the same contract IDs. Current target settlements remain visible; hidden older levels are removed before every transformation.",
+            "",
+            "## Imported data and counting audit",
+            "",
+            table(
+                data_audit_table(evidence),
+                [
+                    ("year", "Year"),
+                    ("sessions", "Sessions"),
+                    ("rows", "Copper rows"),
+                    ("missing", "Nonfinite settlements"),
+                    ("nonpositive", "Nonpositive settlements"),
+                    ("volume_zero", "Zero volume"),
+                    ("oi_zero", "Zero OI"),
+                    ("convention", "Declared volume convention"),
+                    ("unknown_sessions", "Count normalization unavailable sessions"),
+                ],
+            ),
+            "",
+            "Counts are preserved as archived integers. An opt-in single-sided view divides only explicitly double-sided declarations by two. Missing declarations, including late-2024/2025 workbooks, remain unknown and a full normalized view is unavailable. This study uses count positivity only, so that normalization does not change donor eligibility or rescale prices. The importer audit is limited to 2016–2025.",
+            "",
+            "The ten-year panel adds market regimes and forecast origins, rather than extending the lifetime of any individual contract. All-available current-triad history remains limited by actual listings and overlap inside the 252-interval window. Expired contracts do not remain observable indefinitely.",
+            "",
+            table(
+                history_availability_table(evidence),
+                [
+                    ("budget", "Permitted own history"),
+                    ("windows", "Masked windows"),
+                    ("own_count", "Complete actual-triad changes: min / median / max"),
+                    ("pooled_count", "Pooled changes: min / median / max"),
+                ],
+            ),
             "",
             "## Findings",
             "",
@@ -422,6 +690,46 @@ def report_text(evidence):
                     ("budget", "Own history"),
                     ("method", "Policy"),
                     ("scored", "Scored / attempted"),
+                    ("outright", "Outright QLIKE"),
+                    ("spread", "Spread QLIKE"),
+                    ("butterfly", "Butterfly QLIKE"),
+                    ("calibration", "Spread forecast / realized"),
+                    ("joint", "Joint quadratic / 10¹² CNY⁴"),
+                    ("rms", "Hedge RMS CNY"),
+                ],
+            ),
+            "",
+            "QLIKE is lower-is-better. Calibration is a ratio of origin-averaged forecast and realized second moments, not conditional calibration. Hedge RMS is a settlement-risk outcome with positions bounded to [−2,2], without execution costs.",
+            "",
+            "### Raw-data baselines on the same history budgets",
+            "",
+            table(
+                policy_table(evidence, dimension=0),
+                [
+                    ("budget", "Own history"),
+                    ("method", "Raw-data policy"),
+                    ("scored", "Scored / attempted"),
+                    ("outright", "Outright QLIKE"),
+                    ("spread", "Spread QLIKE"),
+                    ("butterfly", "Butterfly QLIKE"),
+                    ("calibration", "Spread forecast / realized"),
+                    ("joint", "Joint quadratic / 10¹² CNY⁴"),
+                    ("rms", "Hedge RMS CNY"),
+                ],
+            ),
+            "",
+            "The direct baseline requires at least twenty complete changes and is unavailable below that threshold. Joint quadratic scores omit a forecast-independent term and can be negative. Availability can differ across policies; use matched contrasts rather than unpaired level differences to establish a ranking.",
+            "",
+            "### Maturity strata: raw pooling and the two fully repaired policies",
+            "",
+            table(
+                maturity_table(evidence),
+                [
+                    ("tenor", "Target days"),
+                    ("budget", "Own history"),
+                    ("method", "Policy"),
+                    ("scored", "Scored / attempted"),
+                    ("outright", "Outright QLIKE"),
                     ("spread", "Spread QLIKE"),
                     ("butterfly", "Butterfly QLIKE"),
                     ("calibration", "Spread forecast / realized"),
@@ -429,13 +737,11 @@ def report_text(evidence):
                 ],
             ),
             "",
-            "QLIKE is lower-is-better. Calibration is a ratio of origin-averaged forecast and realized second moments, not conditional calibration. Hedge RMS is a settlement-risk outcome with positions bounded to [−2,2], without execution costs.",
-            "",
             "## Matched reconstruction and source-policy contrasts",
             "",
             "![Stage contrasts by history and representation dimension](stage-contrasts.png)",
             "",
-            "The reconstructed pooling control preserves raw donor selection, actual IDs, adjacent intervals, ages, complete counts and own-history blend weights. Only endpoint prices pass through reconstruction. This avoids attributing a change of maturity mapping to curve smoothing.",
+            "The reconstructed pooling control preserves raw donor selection, actual IDs, adjacent intervals, ages, complete counts and own-history blend weights. Only endpoint prices pass through reconstruction. This avoids attributing a change of maturity mapping to curve smoothing. Historical own-triad prices can have tenors outside the 30–365-day fitting domain; their fitted values include extrapolation, so this is an entire reconstruction-policy contrast rather than a pure interpolation-error estimate.",
             "",
             "### Reconstructed versus raw maturity pooling",
             "",
@@ -507,6 +813,43 @@ def report_text(evidence):
             "",
             "## Availability, numerical diagnostics and limitations",
             "",
+            "### Reconstruction retention",
+            "",
+            "All three ratios use means of the corresponding training-window second moments across available masked views; each window uses its fixed EWMA and own-history blend. Fitted, residual and signed-cross parts therefore sum to one up to roundoff. The count reports available diagnostic windows, which overlap and are dependent. These are visible-change diagnostics rather than out-of-sample calibration or latent approximation errors.",
+            "",
+            table(
+                retention,
+                [
+                    ("dimension", "Modes"),
+                    ("budget", "Own history"),
+                    ("exposure", "Exposure"),
+                    ("count", "Available windows"),
+                    ("retention", "Fitted / raw means"),
+                    ("residual", "Residual / raw means"),
+                    ("cross", "Signed cross / raw means"),
+                    ("identity", "Max identity residual"),
+                ],
+            ),
+            "",
+            "### Source certificates and reconstruction leverage",
+            "",
+            "The numerical certificate bounds optimization error under the fitted objective, not statistical error. Leverage concerns the permitted level reconstruction; the donor-excluded predictive correction can contain that estimation uncertainty. Source support and component checks retain their relative scales.",
+            "",
+            table(
+                numerical,
+                [
+                    ("dimension", "Modes"),
+                    ("context", "Intervals"),
+                    ("budget", "Own history"),
+                    ("scored", "Scored"),
+                    ("certificate", "Max relative optimizer bound"),
+                    ("condition", "Max curve condition"),
+                    ("leverage", "Max level leverage"),
+                    ("support", "Max support residual"),
+                    ("component", "Max component residual"),
+                ],
+            ),
+            "",
             "No unavailable method receives a hidden fallback. Source numerical certificates, PSD/support checks, cross-term identities, reconstruction leverage, donor-excluded prediction errors and cache bounds are retained in [diagnostics.json](diagnostics.json). All history/maturity/year/context/dimension summaries are in [summary.json](summary.json); fixed contrasts, interaction effects and block sensitivities are in [paired.json](paired.json).",
             "",
             "The data have monthly maturity spacing and daily observations. Two/four-mode sensitivities change a finite representation; they do not measure continuum convergence. Four residual maturity features plus a diagonal remainder remain restrictive. No real-data latent source or curve truth is available. These are exploratory covariance-risk comparisons, not price forecasting, derivative pricing, new-listing performance or an executable hedge backtest.",
@@ -517,7 +860,8 @@ def report_text(evidence):
             "",
             "```sh",
             "uv run spde-covariance benchmark-mechanisms experiments/configs/copper-mechanisms.toml \\",
-            "  --data data/local/shfe --older-data data/local/shfe-extension \\",
+            "  --data data/local/shfe \\",
+            "  --older-data data/local/shfe-extension/development-2016-2021 \\",
             "  --output data/local/shfe/runs/mechanisms-v1 --workers 8 \\",
             "  --export experiments/results/copper-mechanisms",
             "uv run python scripts/render_mechanisms.py experiments/results/copper-mechanisms --build-notebook",
@@ -530,7 +874,7 @@ def report_text(evidence):
     )
 
 
-def build_notebook(path=ROOT / "notebooks/08_copper_mechanism_attribution.ipynb"):
+def build_notebook(path=ROOT / "notebooks/08_copper_mechanism_attribution.ipynb", *, evidence=None):
     def markdown(source):
         return {"cell_type": "markdown", "metadata": {}, "source": source.strip().splitlines(True)}
 
@@ -562,6 +906,10 @@ def build_notebook(path=ROOT / "notebooks/08_copper_mechanism_attribution.ipynb"
             contrast_table,
             findings_text,
             oracle_tables,
+            diagnostic_tables,
+            data_audit_table,
+            history_availability_table,
+            maturity_table,
         )
     )
     setup = f"""from pathlib import Path
@@ -605,14 +953,29 @@ held out and is never parsed or scored.** The current settlement is permitted;
 older target prices are masked before every transformation. Raw counts are
 preserved, documented counting conventions have an explicit normalized view,
 and unknown declarations are not guessed.
+The 2026 holdout concerns observation dates, not delivery months: 2025 quotes
+for 2026-delivery contracts are contemporaneously known and remain eligible.
+
+More calendar years add regimes and origins, not longer lives for individual
+contracts. Even all-available current-triad history is limited by listings and
+overlap inside the 252-interval window.
 
 This notebook reads checksummed aggregate evidence only. It estimates policy
 effects, rather than causal percentages of unobserved true covariance error.
 [Protocol](../docs/mechanism-attribution.md) · [Report](../experiments/results/copper-mechanisms/report.md)
 """),
+        markdown(
+            "## Findings before the implementation details\n\n" + findings_text(evidence)
+            if evidence is not None
+            else "## Findings\n\nBuild this notebook from the verified evidence bundle to populate the numerical findings."
+        ),
         code(setup),
         code(
-            "print(findings_text(evidence))\nprint('Importer audit:', evidence['manifest'].get('importer_audit'))"
+            """print(findings_text(evidence))
+print(table(data_audit_table(evidence), [("year", "Year"), ("sessions", "Sessions"), ("rows", "Copper rows"), ("missing", "Nonfinite settlements"), ("nonpositive", "Nonpositive settlements"), ("volume_zero", "Zero volume"), ("oi_zero", "Zero OI"), ("convention", "Count convention"), ("unknown_sessions", "Unknown-count sessions")]))
+print("Raw archived counts remain unchanged; unknown normalized views are unavailable, not guessed.")
+print(table(history_availability_table(evidence), [("budget", "Own history"), ("windows", "Masked windows"), ("own_count", "Actual-triad complete changes: min/median/max"), ("pooled_count", "Pooled changes: min/median/max")]))
+"""
         ),
         markdown(r"""## 1. A matched six-cell experiment
 
@@ -620,6 +983,9 @@ Hold fitted curves and innovations
 $$z_i=(\widehat a_i-M_{\Delta_i}\widehat a_{i-1})/\sqrt{\Delta_i}$$
 fixed. Compare source-C integration with direct EWMA innovation H. Cross both
 with factor-only, correlated-residual/cross-term and added-diagonal forecasts.
+The two main covariance forecasts are
+$$\widehat H_D=\sum_iw_i z_i z_i^\top,\qquad
+\widehat H_C(\delta)=\delta^{-1}\int_0^\delta M_u\widehat C M_u^\top\,du.$$
 Row comparisons share exactly the same fitted residual statistics. Source-C
 also imposes ridge and trace constraints, so its difference is a complete
 source-estimation policy effect. A variance interpretation assumes negligible
@@ -628,7 +994,11 @@ conditional means. CNY risk uses the five-tonne multiplier squared.
         code("""plot_six_cells(evidence)
 plt.show()
 rows = policy_table(evidence)
-print(table(rows, [("budget", "Own history"), ("method", "Policy"), ("scored", "Scored / attempted"), ("spread", "Spread QLIKE"), ("butterfly", "Butterfly QLIKE"), ("calibration", "Spread calibration"), ("rms", "Hedge RMS CNY")]))
+print(table(rows, [("budget", "Own history"), ("method", "Policy"), ("scored", "Scored / attempted"), ("outright", "Outright QLIKE"), ("spread", "Spread QLIKE"), ("butterfly", "Butterfly QLIKE"), ("calibration", "Spread calibration"), ("joint", "Joint quadratic / 10¹² CNY⁴"), ("rms", "Hedge RMS CNY")]))
+print("Raw-data baselines; direct unavailable below twenty complete changes:")
+print(table(policy_table(evidence, dimension=0), [("budget", "Own history"), ("method", "Policy"), ("scored", "Scored / attempted"), ("outright", "Outright QLIKE"), ("spread", "Spread QLIKE"), ("butterfly", "Butterfly QLIKE"), ("calibration", "Spread calibration"), ("joint", "Joint quadratic / 10¹² CNY⁴"), ("rms", "Hedge RMS CNY")]))
+print("Maturity strata at zero/all available history:")
+print(table(maturity_table(evidence), [("tenor", "Target days"), ("budget", "History"), ("method", "Policy"), ("scored", "Scored / attempted"), ("outright", "Outright QLIKE"), ("spread", "Spread QLIKE"), ("butterfly", "Butterfly QLIKE"), ("calibration", "Spread calibration"), ("rms", "Hedge RMS CNY")]))
 assert all(row["scored"] <= row["available"] <= row["episodes"] for row in evidence["summary"]["rows"])
 """),
         markdown("""## 2. Separate reconstruction from maturity selection
@@ -639,6 +1009,8 @@ curve fit. In this invariant finite basis, adjusted innovations evaluated at
 end maturity equal fitted same-ID endpoint changes exactly. Retained spread and
 butterfly movements, residuals and signed cross terms describe this filter.
 Two- and four-mode sensitivity runs are fixed; they do not reveal continuum truth.
+Historical own-triad fitted prices can extrapolate beyond the 30–365-day donor
+fit domain. This is a reconstruction-policy effect, not pure interpolation error.
 """),
         code(f"""plot_stage_contrasts(evidence)
 plt.show()
@@ -646,13 +1018,23 @@ print(table(contrast_table(evidence, contrast="reconstruction_pool"), {columns!r
 print("Source-C minus direct-H with full residual repair:")
 print(table(contrast_table(evidence, contrast="source_policy", policy="diagonal"), {columns!r}))
 """),
-        markdown("""## 3. Residual additions and their interactions
+        markdown(r"""## 3. Residual additions and their interactions
 
 The correlated correction retains factor/residual cross terms through a Schur
 decomposition. The diagonal correction uses truly donor-excluded predictive
 errors and can include estimation and reconstruction error. It is not identified
 latent noise. Compare column additions in both covariance rows and their
 difference-in-differences; do not force an additive allocation of error.
+These within-family contrasts do not telescope into the full SPDE/raw-pool gap:
+historical maturity-slot mapping and own-history blending also differ from
+evaluation at the current actual contracts' future maturities.
+
+For the shared training blocks $(H,G,R)$, let $A=G^\top H^\dagger$ and
+$\Omega=R-G^\top H^\dagger G$. The fully repaired price-change moment is
+$$\widehat\Sigma=\delta\left[(B+\Psi A)H_f(B+\Psi A)^\top
++\Psi\Omega\Psi^\top+D\right].$$
+The row chooses $H_f$; the other quantities stay fixed. The factor/residual
+cross correction is signed, so it is not an independent positive risk source.
 """),
         code(f"""for contrast in ("residual_correlated", "residual_diagonal", "interaction_correlated", "interaction_diagonal"):
     print(contrast)
@@ -690,7 +1072,12 @@ no fallback. Four residual features plus a diagonal remainder remain restrictive
 Held-out 2026 has not been used for protocol choices or model comparison. No
 price prediction, derivative pricing or execution-cost result is established.
 """),
-        code("""availability = [{key: row[key] for key in ("context", "dimension", "method", "history_budget", "issued", "scored", "failures")} for row in evidence["diagnostics"]["rows"]]
+        code("""retention, numerical = diagnostic_tables(evidence)
+print("Training reconstruction retention: ratios of mean window second moments; windows overlap.")
+print(table(retention, [("dimension", "Modes"), ("budget", "History"), ("exposure", "Exposure"), ("count", "Available windows"), ("retention", "Fitted/raw means"), ("residual", "Residual/raw means"), ("cross", "Signed cross/raw means"), ("identity", "Identity residual")]))
+assert all(abs(row["retention"] + row["residual"] + row["cross"] - 1) < 1e-8 for row in retention if all(row[key] is not None for key in ("retention", "residual", "cross")))
+print(table(numerical, [("dimension", "Modes"), ("context", "Intervals"), ("budget", "History"), ("certificate", "Max optimizer bound"), ("condition", "Curve condition"), ("leverage", "Level leverage"), ("support", "Support residual"), ("component", "Component residual")]))
+availability = [{key: row[key] for key in ("context", "dimension", "method", "history_budget", "issued", "scored", "failures")} for row in evidence["diagnostics"]["rows"]]
 print(table(availability, [("context", "Intervals"), ("dimension", "Modes"), ("method", "Policy"), ("history_budget", "History"), ("issued", "Attempted"), ("scored", "Scored"), ("failures", "Unavailable reasons")]))
 print("Cache audit:", evidence["diagnostics"]["cache"])
 print("Recorded runtime seconds:", evidence["manifest"]["runtime_seconds"])
@@ -718,6 +1105,15 @@ before opening the held-out 2026 data.
         "nbformat_minor": 5,
     }
     Path(path).write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n")
+    # Notebook source is generated from functions and long literal metadata.
+    # Format before render() records its source hash, rather than changing the
+    # source after a presentation manifest has already been issued.
+    subprocess.run(
+        [sys.executable, "-m", "ruff", "format", str(path)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     return Path(path)
 
 
@@ -771,7 +1167,7 @@ def main():
     parser.add_argument("--build-notebook", action="store_true")
     arguments = parser.parse_args()
     if arguments.build_notebook:
-        print(build_notebook())
+        print(build_notebook(evidence=load_mechanism_evidence(arguments.directory)))
     print(render(arguments.directory))
 
 

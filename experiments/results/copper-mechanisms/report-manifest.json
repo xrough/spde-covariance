@@ -1,0 +1,12 @@
+{
+  "renderer_sha256": "fb1b28c9d4580bbec150f1907a57be8360db12faee2b1633551af4e4f7d48f02",
+  "numerical_checksums_sha256": "0258922bb93c86da0848894c9a3c39d8c502ed5410277fb6b1ca0f95dbf6ad9f",
+  "artifacts_sha256": {
+    "six-cell-scores.png": "7e036b0e034dc20b73df507b53035becb39129da148b897b756b1cfdb619bcd5",
+    "stage-contrasts.png": "a256ba9ba0f835b4c7da5a6fc92a5cc5307c6326f2438c57fbd85d6dd11e771e",
+    "calendar-context.png": "a6b3eefd8c9f535673e1b2d69bdc01cfe7ad4e7796f64cac75faab51f3ad617e",
+    "risk-calibration.png": "be29f120f0db93b8770499ef558d4e1ffa4114b0e52841de176156ced4d0b693",
+    "report.md": "7e15cb760d60c1cb8506f61f759d4c81659b28f7e584c847ea52426dda1f3f1b"
+  },
+  "notebook_source_sha256": "1ca2b7cefe547c4cd74abd41a4e8321fa313c9e51d0354d26f6c6cee9a09a9b5"
+}

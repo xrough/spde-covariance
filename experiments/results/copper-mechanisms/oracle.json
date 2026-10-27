@@ -1,0 +1,196 @@
+{
+  "schema": "mechanism-oracle-v1",
+  "seed": 20261028,
+  "replications": 20,
+  "scope": "synthetic known-truth diagnostics, not empirical copper attribution",
+  "transport": {
+    "scope": "exact finite transport with known latent coefficients and source C",
+    "settings": {
+      "dimension": 3,
+      "spatial_quotes": 12,
+      "spatial_quote_noise_sd": 0.0001,
+      "spatial_quote_policy": "fixed remaining-tenor snapshots, not contract returns",
+      "calendar_day_pattern": [
+        1,
+        1,
+        1,
+        1,
+        3
+      ],
+      "intervals": 252,
+      "half_life_sessions": 63,
+      "source": [
+        [
+          0.7,
+          0.08,
+          0.02
+        ],
+        [
+          0.08,
+          0.3,
+          0.03
+        ],
+        [
+          0.02,
+          0.03,
+          0.15
+        ]
+      ],
+      "reconstruction_smoothing": 1e-06,
+      "source_relative_ridge": 0.001,
+      "source_numerical_budget": 1e-05
+    },
+    "coefficient_relative_error": {
+      "mean": 0.00017368129780642472,
+      "mcse": 3.559439107286975e-06,
+      "median": 0.00017059280768932401,
+      "replications": 20
+    },
+    "maximum_relative_covariance_certificate": 9.436795847004911e-06,
+    "oracle_C_relative_kernel_error": 0.0,
+    "rows": [
+      {
+        "representation": "known_coefficients",
+        "covariance_policy": "direct_H",
+        "future_calendar_days": 1,
+        "relative_kernel_error": {
+          "mean": 0.09613395487169209,
+          "mcse": 0.017266738512388097,
+          "median": 0.09113242406515717,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "known_coefficients",
+        "covariance_policy": "direct_H",
+        "future_calendar_days": 3,
+        "relative_kernel_error": {
+          "mean": 0.0961870733909716,
+          "mcse": 0.01722205096692531,
+          "median": 0.09201203714199127,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "known_coefficients",
+        "covariance_policy": "source_C",
+        "future_calendar_days": 1,
+        "relative_kernel_error": {
+          "mean": 0.09629054859152121,
+          "mcse": 0.0172118263894688,
+          "median": 0.09237782811976836,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "known_coefficients",
+        "covariance_policy": "source_C",
+        "future_calendar_days": 3,
+        "relative_kernel_error": {
+          "mean": 0.09623698661840231,
+          "mcse": 0.017219676608596156,
+          "median": 0.09252988041623096,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "reconstructed_coefficients",
+        "covariance_policy": "direct_H",
+        "future_calendar_days": 1,
+        "relative_kernel_error": {
+          "mean": 0.09618788181028318,
+          "mcse": 0.017269725402199614,
+          "median": 0.09135878675862055,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "reconstructed_coefficients",
+        "covariance_policy": "direct_H",
+        "future_calendar_days": 3,
+        "relative_kernel_error": {
+          "mean": 0.09624080544654355,
+          "mcse": 0.017225043001856823,
+          "median": 0.09223840044180025,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "reconstructed_coefficients",
+        "covariance_policy": "source_C",
+        "future_calendar_days": 1,
+        "relative_kernel_error": {
+          "mean": 0.09634418357905009,
+          "mcse": 0.017214778732776062,
+          "median": 0.09260435052658408,
+          "replications": 20
+        }
+      },
+      {
+        "representation": "reconstructed_coefficients",
+        "covariance_policy": "source_C",
+        "future_calendar_days": 3,
+        "relative_kernel_error": {
+          "mean": 0.09629051436573287,
+          "mcse": 0.017222657090225572,
+          "median": 0.0927550749387069,
+          "replications": 20
+        }
+      }
+    ]
+  },
+  "residual": {
+    "scope": "Gaussian increment control; no level-consistent residual SPDE is asserted",
+    "settings": {
+      "intervals": 252,
+      "main_dimension": 3,
+      "residual_features": 4
+    },
+    "oracle_identity_relative_error": 4.479058991812158e-17,
+    "oracle_component_relative_error": 6.334345972889916e-17,
+    "sampled_full_joint_relative_kernel_error": {
+      "mean": 0.07835967276675718,
+      "mcse": 0.010816043437477073,
+      "median": 0.07640389922999397,
+      "replications": 20
+    },
+    "rows": [
+      {
+        "policy": "oracle_full_joint",
+        "relative_kernel_error": 4.479058991812158e-17,
+        "risk_ratio": {
+          "outright": 1.0,
+          "spread": 1.0,
+          "butterfly": 1.0
+        }
+      },
+      {
+        "policy": "oracle_omit_cross",
+        "relative_kernel_error": 0.10744769381384141,
+        "risk_ratio": {
+          "outright": 0.9295489340402419,
+          "spread": 1.0815108223052077,
+          "butterfly": 0.9845587628166164
+        }
+      },
+      {
+        "policy": "oracle_factor_only",
+        "relative_kernel_error": 0.12156943601989288,
+        "risk_ratio": {
+          "outright": 0.867930148077046,
+          "spread": 0.2063069160754817,
+          "butterfly": 0.005728379959451113
+        }
+      },
+      {
+        "policy": "oracle_no_diagonal",
+        "relative_kernel_error": 0.0021725788708021054,
+        "risk_ratio": {
+          "outright": 0.9951773136471237,
+          "spread": 0.8625444634569668,
+          "butterfly": 0.885032756860853
+        }
+      }
+    ]
+  }
+}

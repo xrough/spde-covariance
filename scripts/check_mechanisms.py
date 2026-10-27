@@ -61,14 +61,26 @@ def check(directory, *, verify_current_source=False):
         "matched_raw_pool_covariance",
     }
 
-    def inspect(value):
+    def inspect(value, path=()):
         if isinstance(value, dict):
+            if path == ("manifest", "importer_audit", "price_and_raw_count_parity_2022_2025"):
+                assert set(value) <= {
+                    "dates",
+                    "contract_ids",
+                    "contract_month_dates",
+                    "settlement",
+                    "volume",
+                    "open_interest",
+                    "session_dates",
+                }
+                assert all(type(item) is bool for item in value.values())
+                return
             assert not forbidden.intersection(value)
-            for item in value.values():
-                inspect(item)
+            for key, item in value.items():
+                inspect(item, (*path, key))
         elif isinstance(value, list):
             for item in value:
-                inspect(item)
+                inspect(item, (*path, "[]"))
 
     inspect(evidence)
     root = Path(__file__).resolve().parents[1]
