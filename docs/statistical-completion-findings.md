@@ -115,9 +115,12 @@ common-step target and unit checks, immutable results and informative failure
 states. A region's ambiguity model can feed the existing downstream hedge
 interface, but this increment makes no new hedging-performance claim.
 
-An empirical stage still needs contract-to-curve observation maps, appropriate
-drift and price-noise assumptions, treatment of time dependence, and legally
-usable histories. The likelihood model is finite-grid and does not impose an
+The separate [SHFE empirical suite](empirical-research-findings.md) now implements
+a settlement-risk baseline. Applying this Gaussian completion model to that
+market study still needs defensible contract-to-curve observation maps, drift
+and price-noise assumptions, and treatment of time dependence. Its Gaussian
+coverage guarantees have not been calibrated for empirical returns.
+The likelihood model is finite-grid and does not impose an
 H-operator rank constraint or transport-source cone. Singular algebraic
 completions remain a separate supported method. No operator recovery theorem,
 unknown-tail inference or uniform infinite-dimensional coverage is established.
